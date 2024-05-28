@@ -30,9 +30,14 @@ export class UsuariosController {
     return this.usuariosService.findOne(+id);
   }
 
-  @Get('buscarci/:nomci')
+  @Get('buscarnomci/:nomci')
   findOneCi(@Param('nomci') nomci: string) {
     return this.usuariosService.findOneCi(nomci);
+  }
+
+  @Get('buscarci/:ci')
+  findOneByUserCi(@Param('ci') ci: string) {
+    return this.usuariosService.findOneByUserCi(ci);
   }
 
   @Patch(':id')

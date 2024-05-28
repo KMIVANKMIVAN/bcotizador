@@ -1,7 +1,7 @@
 import {
-  BadRequestException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -34,13 +34,13 @@ export class UnidadesService {
 
       return await this.unidadRepository.save(nuevaUnidad);
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          statusCode: 500,
+          
           message: `Error del Servidor. Revisar el metodo (create) de la ruta "unidades"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }
@@ -50,20 +50,20 @@ export class UnidadesService {
     try {
       const unidades = await this.unidadRepository.find({ relations: ['direccion'] });
       if (!unidades || unidades.length === 0) {
-        throw new BadRequestException({
-          statusCode: 404,
+        throw new NotFoundException({
+          
           message: `No se encontraron Unidades`,
         });
       }
       return unidades;
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          statusCode: 500,
+          
           message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "unidades"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }
@@ -76,20 +76,20 @@ export class UnidadesService {
         relations: ['direccion'],
       });
       if (!unidad) {
-        throw new BadRequestException({
-          statusCode: 404,
+        throw new NotFoundException({
+          
           message: `Unidad con ID: ${id} no fue encontrada`,
         });
       }
       return unidad;
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          statusCode: 500,
+          
           message: `Error del Servidor. Revisar el metodo (findOne) de la ruta "unidades"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }
@@ -110,13 +110,13 @@ export class UnidadesService {
 
       return await this.unidadRepository.save(actualizarUnidad);
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          statusCode: 500,
+          
           message: `Error del Servidor. Revisar el metodo (update) de la ruta "unidades"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }
@@ -131,13 +131,13 @@ export class UnidadesService {
         message: `Se eliminó el Unidad con ID: ${id}`,
       };
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          statusCode: 500,
+          
           message: `Error del Servidor. Revisar el metodo (remove) de la ruta "unidades"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }

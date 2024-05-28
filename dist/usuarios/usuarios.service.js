@@ -21,6 +21,7 @@ const usuario_entity_1 = require("./entities/usuario.entity");
 const sucursales_service_1 = require("../sucursales/sucursales.service");
 const roles_service_1 = require("../roles/roles.service");
 const cargos_service_1 = require("../empresa/cargos/cargos.service");
+const class_validator_1 = require("class-validator");
 let UsuariosService = class UsuariosService {
     constructor(usuarioRepository, rolesService, sucursalesService, cargosService) {
         this.usuarioRepository = usuarioRepository;
@@ -45,44 +46,59 @@ let UsuariosService = class UsuariosService {
             return this.usuarioRepository.save(usuario);
         }
         catch (error) {
-            throw new common_1.InternalServerErrorException({
-                statusCode: 500,
-                message: `Error del Servidor. Revisar el metodo (createSemilla) de la ruta "usuarios"`,
-                error: error,
-            });
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (createSemilla) de la ruta "usuarios"`,
+                    error: `${error}`,
+                });
+            }
         }
     }
     async create(createUsuarioDto) {
         try {
-            const { roles, sucursal_id, ...userData } = createUsuarioDto;
+            const errors = await (0, class_validator_1.validate)(createUsuarioDto);
+            if (errors.length > 0) {
+                throw new common_1.InternalServerErrorException({
+                    message: 'Error de validación en los datos proporcionados',
+                    errors: errors.map(error => Object.values(error.constraints)),
+                });
+            }
             const existeRoles = await this.rolesService.findByIds(createUsuarioDto.roles);
             const existeSucursal = await this.sucursalesService.findOne(createUsuarioDto.sucursal_id);
             const existeCargo = await this.cargosService.findOne(createUsuarioDto.cargo_id);
-            const hashedPassword = await bcrypt.hash(userData.contrasenia, 10);
+            const hashedPassword = createUsuarioDto.contrasenia === null || createUsuarioDto.contrasenia === undefined ?
+                createUsuarioDto.ci : createUsuarioDto.contrasenia;
+            const { roles, sucursal_id, ...userData } = createUsuarioDto;
+            const hashedPasswordHashed = await bcrypt.hash(hashedPassword, 10);
             const nuevoUsuario = this.usuarioRepository.create({
                 ...userData,
-                contrasenia: hashedPassword,
+                contrasenia: hashedPasswordHashed,
                 roles: existeRoles,
                 sucursal: existeSucursal,
                 cargo: existeCargo
             });
-            delete nuevoUsuario.contrasenia;
             return this.usuarioRepository.save(nuevoUsuario);
         }
         catch (error) {
-            throw new common_1.InternalServerErrorException({
-                statusCode: 500,
-                message: `Error del Servidor. Revisar el metodo (create) de la ruta "usuarios"`,
-                error: error,
-            });
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (create) de la ruta "usuarios"`,
+                    error: `${error}`,
+                });
+            }
         }
     }
     async findAll() {
         try {
-            const usuarios = await this.usuarioRepository.find({ relations: ['role', 'sucursal', 'cargo'] });
+            const usuarios = await this.usuarioRepository.find({ relations: ['roles', 'sucursal', 'cargo'] });
             if (!usuarios || usuarios.length === 0) {
-                throw new common_1.BadRequestException({
-                    statusCode: 404,
+                throw new common_1.NotFoundException({
                     message: `No se encontraron Usuarios`,
                 });
             }
@@ -90,14 +106,13 @@ let UsuariosService = class UsuariosService {
             return usuarios;
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "usuarios"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -106,11 +121,10 @@ let UsuariosService = class UsuariosService {
         try {
             const usuario = await this.usuarioRepository.findOne({
                 where: { id },
-                relations: ['role', 'sucursal', 'cargo'],
+                relations: ['roles', 'sucursal', 'cargo'],
             });
             if (!usuario) {
-                throw new common_1.BadRequestException({
-                    statusCode: 404,
+                throw new common_1.NotFoundException({
                     message: `Usuario con ID: ${id} no fue encontrado`,
                 });
             }
@@ -118,14 +132,13 @@ let UsuariosService = class UsuariosService {
             return usuario;
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (findOne) de la ruta "usuarios"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -138,8 +151,7 @@ let UsuariosService = class UsuariosService {
                 .take(5)
                 .getMany();
             if (!usuarios || usuarios.length === 0) {
-                throw new common_1.BadRequestException({
-                    statusCode: 404,
+                throw new common_1.NotFoundException({
                     message: `Usuarios con CI: ${ci} no fue encontrado`,
                 });
             }
@@ -147,14 +159,13 @@ let UsuariosService = class UsuariosService {
             return usuarios;
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (findOneCi) de la ruta "usuarios"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -163,24 +174,23 @@ let UsuariosService = class UsuariosService {
         try {
             const usuario = await this.usuarioRepository.findOne({
                 where: { ci },
+                relations: ['roles']
             });
             if (!usuario) {
-                throw new common_1.BadRequestException({
-                    statusCode: 404,
+                throw new common_1.NotFoundException({
                     message: `Usuario con CI: ${ci} no fue encontrado`,
                 });
             }
             return usuario;
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (findOneByUserCi) de la ruta "usuarios"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -191,20 +201,19 @@ let UsuariosService = class UsuariosService {
             const buscarRoles = await this.rolesService.findByIds(updateUsuarioDto.roles);
             const buscarSucursal = await this.sucursalesService.findOne(updateUsuarioDto.sucursal_id);
             const buscarCargo = await this.cargosService.findOne(updateUsuarioDto.cargo_id);
-            const { roles: rolesIds, sucursal_id, ...usuariosDatos } = updateUsuarioDto;
-            const actualizarUsuario = {
-                ...usuariosDatos,
-                id,
-                buscarRoles,
-                buscarSucursal,
-                buscarCargo
-            };
-            const usuarioPreloaded = await this.usuarioRepository.preload(actualizarUsuario);
-            delete existeUsuario.contrasenia;
-            return await this.usuarioRepository.save(usuarioPreloaded);
+            existeUsuario.nombres = updateUsuarioDto.nombres;
+            existeUsuario.apellidos = updateUsuarioDto.apellidos;
+            existeUsuario.ci = updateUsuarioDto.ci;
+            existeUsuario.correo = updateUsuarioDto.correo;
+            existeUsuario.es_activo = updateUsuarioDto.es_activo;
+            existeUsuario.roles = buscarRoles;
+            existeUsuario.sucursal = buscarSucursal;
+            existeUsuario.cargo = buscarCargo;
+            const usuarioActualizado = await this.usuarioRepository.save(existeUsuario);
+            return usuarioActualizado;
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
@@ -221,13 +230,13 @@ let UsuariosService = class UsuariosService {
             const existeUsuario = await this.findOne(id);
             const contraseniaCorrecta = await bcrypt.compare(contraseniaAntigua, existeUsuario.contrasenia);
             if (!contraseniaCorrecta) {
-                throw new common_1.BadRequestException({
+                throw new common_1.NotFoundException({
                     statusCode: 400,
                     message: 'La contraseña anterior no es correcta',
                 });
             }
             if (!updateUsuarioDto.contrasenia) {
-                throw new common_1.BadRequestException({
+                throw new common_1.NotFoundException({
                     statusCode: 400,
                     message: 'La nueva contraseña no puede estar vacía',
                 });
@@ -240,14 +249,13 @@ let UsuariosService = class UsuariosService {
             return actualizarUsuario;
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (updateContrasenia) de la ruta "usuarios"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -259,14 +267,13 @@ let UsuariosService = class UsuariosService {
             return { success: true, message: `Se eliminó el usuario con ID: ${id}` };
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (remove) de la ruta "usuarios"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }

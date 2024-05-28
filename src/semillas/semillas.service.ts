@@ -198,43 +198,4 @@ export class SemillasService {
     }
     return usuarios[0];
   }
-  /* async crearSucursal(): Promise<Sucursal[]> {
-    const sucursales = [];
-    for (const sucursalData of SEMILLA_SUCURSAL) {
-      const departamento = await this.departamentoRepository.findOneOrFail({
-        where: { id: sucursalData.departamento }, // Corrección aquí
-      });
-      const nuevaSucursal = await this.sucursalesService.create({
-        sucursal: sucursalData.sucursal,
-        ubicacion: sucursalData.ubicacion,
-        departamento_id: departamento.id, // Corrección aquí
-      });
-      sucursales.push(nuevaSucursal);
-    }
-    return sucursales;
-  }
-
-  async crearUsuario(): Promise<Usuario[]> {
-    const usuarios = [];
-
-    for (const userData of SEMILLA_USUARIOS) {
-      const roles = await this.roleRepository.findByIds(userData.roles);
-      const nuevoUsuario = await this.usuarioService.createSemilla({
-        nombres: userData.nombres,
-        apellidos: userData.apellidos,
-        ci: userData.ci,
-        complemento: userData.complemento,
-        correo: userData.correo,
-        es_activo: userData.es_activo,
-        se_cambiado_cntr: userData.se_cambiado_cntr,
-        roles: roles.map((role) => role.id),
-        sucursal_id: userData.sucursal,
-        contrasenia: userData.contrasenia,
-        cargo_id: userData.cargo,
-      });
-      usuarios.push(nuevoUsuario);
-    }
-
-    return usuarios;
-  } */
 }

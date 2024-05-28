@@ -28,9 +28,8 @@ let DepartamentosService = class DepartamentosService {
         }
         catch (error) {
             throw new common_1.InternalServerErrorException({
-                statusCode: 500,
                 mensaje: `Error del Servidor. Revisar el metodo (create) de la ruta "departamentos"`,
-                error: error,
+                error: `${error}`,
             });
         }
     }
@@ -38,22 +37,20 @@ let DepartamentosService = class DepartamentosService {
         try {
             const departamentos = await this.departamentoRepository.find();
             if (!departamentos || departamentos.length === 0) {
-                throw new common_1.BadRequestException({
-                    statusCode: 404,
+                throw new common_1.NotFoundException({
                     message: `No se encontraron Departamentos`,
                 });
             }
             return departamentos;
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "departamentos"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -62,22 +59,20 @@ let DepartamentosService = class DepartamentosService {
         try {
             const departamento = await this.departamentoRepository.findOneBy({ id });
             if (!departamento) {
-                throw new common_1.BadRequestException({
-                    statusCode: 404,
+                throw new common_1.NotFoundException({
                     message: `Departamento con ID: ${id} no fue encontrada`,
                 });
             }
             return departamento;
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (findOne) de la ruta "departamentos"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -88,14 +83,13 @@ let DepartamentosService = class DepartamentosService {
             return await this.departamentoRepository.save(updateDepartamentoDto);
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
-                    error: `Error del Servidor en (update): ${error}`,
-                    message: `Error del Servidor en (update): ${error}`,
+                    message: `Error del Servidor. Revisar el metodo (update) de la ruta "departamentos"`,
+                    error: `${error}`,
                 });
             }
         }
@@ -110,14 +104,13 @@ let DepartamentosService = class DepartamentosService {
             };
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
-                    error: `Error del Servidor en (remove): ${error}`,
-                    message: `Error del Servidor en (remove): ${error}`,
+                    message: `Error del Servidor. Revisar el metodo (remove) de la ruta "departamentos"`,
+                    error: `${error}`,
                 });
             }
         }

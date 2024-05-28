@@ -17,12 +17,10 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const direccione_entity_1 = require("./entities/direccione.entity");
-const empresa_entity_1 = require("../empresas/entities/empresa.entity");
 const empresas_service_1 = require("../empresas/empresas.service");
 let DireccionesService = class DireccionesService {
-    constructor(direccioneRepository, empresaRepository, empresasService) {
+    constructor(direccioneRepository, empresasService) {
         this.direccioneRepository = direccioneRepository;
-        this.empresaRepository = empresaRepository;
         this.empresasService = empresasService;
     }
     async create(createDireccioneDto) {
@@ -36,14 +34,13 @@ let DireccionesService = class DireccionesService {
             return await this.direccioneRepository.save(nuevaDieccion);
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (create) de la ruta "direcciones"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -52,22 +49,20 @@ let DireccionesService = class DireccionesService {
         try {
             const direcciones = await this.direccioneRepository.find({ relations: ['empresa'] });
             if (!direcciones || direcciones.length === 0) {
-                throw new common_1.BadRequestException({
-                    statusCode: 404,
+                throw new common_1.NotFoundException({
                     message: `No se encontraron Direcciones`,
                 });
             }
             return direcciones;
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "direcciones"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -79,22 +74,20 @@ let DireccionesService = class DireccionesService {
                 relations: ['empresa'],
             });
             if (!direccion) {
-                throw new common_1.BadRequestException({
-                    statusCode: 404,
+                throw new common_1.NotFoundException({
                     message: `Direccion con ID: ${id} no fue encontrada`,
                 });
             }
             return direccion;
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (findOne) de la ruta "direcciones"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -111,14 +104,13 @@ let DireccionesService = class DireccionesService {
             return await this.direccioneRepository.save(actualizarDireccion);
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (update) de la ruta "direcciones"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -133,14 +125,13 @@ let DireccionesService = class DireccionesService {
             };
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (remove) de la ruta "direcciones"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -150,9 +141,7 @@ exports.DireccionesService = DireccionesService;
 exports.DireccionesService = DireccionesService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(direccione_entity_1.Direccion)),
-    __param(1, (0, typeorm_1.InjectRepository)(empresa_entity_1.Empresa)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
-        typeorm_2.Repository,
         empresas_service_1.EmpresasService])
 ], DireccionesService);
 //# sourceMappingURL=direcciones.service.js.map

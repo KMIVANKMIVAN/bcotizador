@@ -1,14 +1,13 @@
 import {
-  BadRequestException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateDireccioneDto } from './dto/create-direccione.dto';
 import { UpdateDireccioneDto } from './dto/update-direccione.dto';
 import { Direccion } from './entities/direccione.entity';
-import { Empresa } from '../empresas/entities/empresa.entity';
 
 import { EmpresasService } from '../empresas/empresas.service';
 
@@ -17,22 +16,12 @@ export class DireccionesService {
   constructor(
     @InjectRepository(Direccion)
     private readonly direccioneRepository: Repository<Direccion>,
-    @InjectRepository(Empresa)
-    private readonly empresaRepository: Repository<Empresa>,
 
     private readonly empresasService: EmpresasService, // Inyectar EmpresasService
   ) { }
 
   async create(createDireccioneDto: CreateDireccioneDto): Promise<Direccion> {
     try {
-      // Verificar si la empresa asociada existe
-      /* const buscarEmpresa = await this.empresaRepository.findOneBy({ id: createDireccioneDto.empresa_id });
-      if (!buscarEmpresa) {
-        throw new BadRequestException({
-          statusCode: 404,
-          message: `Empresa con ID: ${createDireccioneDto.empresa_id} no fue encontrada`,
-        });
-      } */
       const buscarEmpresa = await this.empresasService.findOne(createDireccioneDto.empresa_id)
 
       const { empresa_id, ...direccionDatos } = createDireccioneDto; // propagar los datos de direccion
@@ -44,13 +33,13 @@ export class DireccionesService {
 
       return await this.direccioneRepository.save(nuevaDieccion);
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          statusCode: 500,
+          
           message: `Error del Servidor. Revisar el metodo (create) de la ruta "direcciones"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }
@@ -60,20 +49,20 @@ export class DireccionesService {
     try {
       const direcciones = await this.direccioneRepository.find({ relations: ['empresa'] });
       if (!direcciones || direcciones.length === 0) {
-        throw new BadRequestException({
-          statusCode: 404,
+        throw new NotFoundException({
+
           message: `No se encontraron Direcciones`,
         });
       }
       return direcciones;
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          statusCode: 500,
+          
           message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "direcciones"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }
@@ -86,20 +75,20 @@ export class DireccionesService {
         relations: ['empresa'],
       });
       if (!direccion) {
-        throw new BadRequestException({
-          statusCode: 404,
+        throw new NotFoundException({
+
           message: `Direccion con ID: ${id} no fue encontrada`,
         });
       }
       return direccion;
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          statusCode: 500,
+          
           message: `Error del Servidor. Revisar el metodo (findOne) de la ruta "direcciones"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }
@@ -110,13 +99,6 @@ export class DireccionesService {
     try {
       const existeDireccion = await this.findOne(id);
 
-      /* const buscarEmpresa = await this.empresaRepository.findOneBy({ id: updateDireccioneDto.empresa_id });
-      if (!buscarEmpresa) {
-        throw new BadRequestException({
-          statusCode: 404,
-          message: `Empresa con ID: ${updateDireccioneDto.empresa_id} no fue encontrada`,
-        });
-      } */
       const buscarEmpresa = await this.empresasService.findOne(updateDireccioneDto.empresa_id);
 
       const actualizarDireccion = await this.direccioneRepository.preload({
@@ -127,13 +109,13 @@ export class DireccionesService {
 
       return await this.direccioneRepository.save(actualizarDireccion);
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          statusCode: 500,
+          
           message: `Error del Servidor. Revisar el metodo (update) de la ruta "direcciones"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }
@@ -148,13 +130,13 @@ export class DireccionesService {
         message: `Se eliminó el Direccion con ID: ${id}`,
       };
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          statusCode: 500,
+          
           message: `Error del Servidor. Revisar el metodo (remove) de la ruta "direcciones"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }

@@ -27,38 +27,30 @@ let RolesService = class RolesService {
             return await this.rolRepository.save(nuevoRol);
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
-                throw error;
-            }
-            else {
-                throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
-                    mensaje: `Error del Servidor. Revisar el metodo (create) de la ruta "roles"`,
-                    error: error,
-                });
-            }
+            throw new common_1.InternalServerErrorException({
+                mensaje: `Error del Servidor. Revisar el metodo (create) de la ruta "roles"`,
+                error: `${error}`,
+            });
         }
     }
     async findAll() {
         try {
             const roles = await this.rolRepository.find();
             if (!roles || roles.length === 0) {
-                throw new common_1.BadRequestException({
-                    statusCode: 404,
+                throw new common_1.NotFoundException({
                     message: `No se encontraron Empresas`,
                 });
             }
             return roles;
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "roles"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -67,46 +59,47 @@ let RolesService = class RolesService {
         try {
             const rol = await this.rolRepository.findOneBy({ id });
             if (!rol) {
-                throw new common_1.BadRequestException({
-                    statusCode: 404,
+                throw new common_1.NotFoundException({
                     message: `Rol con ID: ${id} no fue encontrada`,
                 });
             }
             return rol;
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (findOne) de la ruta "roles"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
     }
     async findByIds(ids) {
         try {
-            const role = await this.rolRepository.findByIds(ids);
-            if (!role) {
-                throw new common_1.BadRequestException({
-                    statusCode: 404,
+            const roles = await this.rolRepository.findByIds(ids);
+            if (!roles) {
+                throw new common_1.NotFoundException({
                     message: `Roles con IDs ${ids} no fueron encontrados`
                 });
             }
-            return role;
+            if (roles.length === 0) {
+                throw new common_1.NotFoundException({
+                    message: `Roles con IDs ${ids} no fueron encontrados`
+                });
+            }
+            return roles;
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (findByIds) de la ruta "roles"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -117,14 +110,13 @@ let RolesService = class RolesService {
             return await this.rolRepository.save(updateRoleDto);
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (update) de la ruta "roles"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -139,14 +131,13 @@ let RolesService = class RolesService {
             };
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (remove) de la ruta "roles"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }

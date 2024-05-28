@@ -1,7 +1,7 @@
 import {
-  BadRequestException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -26,9 +26,9 @@ export class EmpresasService {
     } catch (error) {
 
       throw new InternalServerErrorException({
-        statusCode: 500,
+
         mensaje: `Error del Servidor. Revisar el metodo (create) de la ruta "empresas"`,
-        error: error,
+        error: `${error}`,
       });
     }
   }
@@ -37,20 +37,20 @@ export class EmpresasService {
     try {
       const empresas = await this.empresaRepository.find();
       if (!empresas || empresas.length === 0) {
-        throw new BadRequestException({
-          statusCode: 404,
+        throw new NotFoundException({
+
           message: `No se encontraron Empresas`,
         });
       }
       return empresas;
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          statusCode: 500,
+
           message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "empresas"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }
@@ -60,20 +60,20 @@ export class EmpresasService {
     try {
       const empresa = await this.empresaRepository.findOneBy({ id });
       if (!empresa) {
-        throw new BadRequestException({
-          statusCode: 404,
+        throw new NotFoundException({
+
           message: `Empresa con ID: ${id} no fue encontrada`,
         });
       }
       return empresa;
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          statusCode: 500,
+
           message: `Error del Servidor. Revisar el metodo (findOne) de la ruta "empresas"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }
@@ -82,16 +82,18 @@ export class EmpresasService {
   async update(id: number, updateEmpresaDto: UpdateEmpresaDto) {
     try {
       const existeEmpresa = await this.findOne(id);
-
-      return await this.empresaRepository.save(updateEmpresaDto);
+      // Fusionar los cambios del DTO de actualización con el objeto existente
+      const actualizarEmpresa = this.empresaRepository.merge(existeEmpresa, updateEmpresaDto);
+      // Guardar la empresa actualizada en la base de datos
+      return await this.empresaRepository.save(actualizarEmpresa);
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          statusCode: 500,
+
           message: `Error del Servidor. Revisar el metodo (update) de la ruta "empresas"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }
@@ -106,13 +108,13 @@ export class EmpresasService {
         message: `Se eliminó la Empresa con ID: ${id}`,
       };
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          statusCode: 500,
+
           message: `Error del Servidor. Revisar el metodo (remove) de la ruta "empresas"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }

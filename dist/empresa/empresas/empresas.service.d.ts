@@ -8,7 +8,7 @@ export declare class EmpresasService {
     create(createEmpresaDto: CreateEmpresaDto): Promise<Empresa>;
     findAll(): Promise<Empresa[]>;
     findOne(id: number): Promise<Empresa>;
-    update(id: number, updateEmpresaDto: UpdateEmpresaDto): Promise<UpdateEmpresaDto & Empresa>;
+    update(id: number, updateEmpresaDto: UpdateEmpresaDto): Promise<Empresa>;
     remove(id: number): Promise<{
         success: boolean;
         message: string;

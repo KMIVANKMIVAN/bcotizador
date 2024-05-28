@@ -33,6 +33,9 @@ let UsuariosController = class UsuariosController {
     findOneCi(nomci) {
         return this.usuariosService.findOneCi(nomci);
     }
+    findOneByUserCi(ci) {
+        return this.usuariosService.findOneByUserCi(ci);
+    }
     update(id, updateUsuarioDto) {
         return this.usuariosService.update(+id, updateUsuarioDto);
     }
@@ -65,12 +68,19 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UsuariosController.prototype, "findOne", null);
 __decorate([
-    (0, common_1.Get)('buscarci/:nomci'),
+    (0, common_1.Get)('buscarnomci/:nomci'),
     __param(0, (0, common_1.Param)('nomci')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], UsuariosController.prototype, "findOneCi", null);
+__decorate([
+    (0, common_1.Get)('buscarci/:ci'),
+    __param(0, (0, common_1.Param)('ci')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], UsuariosController.prototype, "findOneByUserCi", null);
 __decorate([
     (0, common_1.Patch)(':id'),
     __param(0, (0, common_1.Param)('id')),

@@ -1,7 +1,7 @@
 import {
-  BadRequestException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -25,9 +25,9 @@ export class DepartamentosService {
     } catch (error) {
 
       throw new InternalServerErrorException({
-        statusCode: 500,
+
         mensaje: `Error del Servidor. Revisar el metodo (create) de la ruta "departamentos"`,
-        error: error,
+        error: `${error}`,
       });
     }
   }
@@ -36,20 +36,20 @@ export class DepartamentosService {
     try {
       const departamentos = await this.departamentoRepository.find();
       if (!departamentos || departamentos.length === 0) {
-        throw new BadRequestException({
-          statusCode: 404,
+        throw new NotFoundException({
+
           message: `No se encontraron Departamentos`,
         });
       }
       return departamentos;
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          statusCode: 500,
+
           message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "departamentos"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }
@@ -59,20 +59,20 @@ export class DepartamentosService {
     try {
       const departamento = await this.departamentoRepository.findOneBy({ id });
       if (!departamento) {
-        throw new BadRequestException({
-          statusCode: 404,
+        throw new NotFoundException({
+
           message: `Departamento con ID: ${id} no fue encontrada`,
         });
       }
       return departamento;
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          statusCode: 500,
+
           message: `Error del Servidor. Revisar el metodo (findOne) de la ruta "departamentos"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }
@@ -85,13 +85,13 @@ export class DepartamentosService {
       return await this.departamentoRepository.save(updateDepartamentoDto);
 
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          statusCode: 500,
-          error: `Error del Servidor en (update): ${error}`,
-          message: `Error del Servidor en (update): ${error}`,
+
+          message: `Error del Servidor. Revisar el metodo (update) de la ruta "departamentos"`,
+          error: `${error}`,
         });
       }
     }
@@ -106,13 +106,13 @@ export class DepartamentosService {
         message: `Se eliminó el Departamento con ID: ${id}`,
       };
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          statusCode: 500,
-          error: `Error del Servidor en (remove): ${error}`,
-          message: `Error del Servidor en (remove): ${error}`,
+
+          message: `Error del Servidor. Revisar el metodo (remove) de la ruta "departamentos"`,
+          error: `${error}`,
         });
       }
     }

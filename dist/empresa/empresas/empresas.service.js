@@ -28,9 +28,8 @@ let EmpresasService = class EmpresasService {
         }
         catch (error) {
             throw new common_1.InternalServerErrorException({
-                statusCode: 500,
                 mensaje: `Error del Servidor. Revisar el metodo (create) de la ruta "empresas"`,
-                error: error,
+                error: `${error}`,
             });
         }
     }
@@ -38,22 +37,20 @@ let EmpresasService = class EmpresasService {
         try {
             const empresas = await this.empresaRepository.find();
             if (!empresas || empresas.length === 0) {
-                throw new common_1.BadRequestException({
-                    statusCode: 404,
+                throw new common_1.NotFoundException({
                     message: `No se encontraron Empresas`,
                 });
             }
             return empresas;
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "empresas"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -62,22 +59,20 @@ let EmpresasService = class EmpresasService {
         try {
             const empresa = await this.empresaRepository.findOneBy({ id });
             if (!empresa) {
-                throw new common_1.BadRequestException({
-                    statusCode: 404,
+                throw new common_1.NotFoundException({
                     message: `Empresa con ID: ${id} no fue encontrada`,
                 });
             }
             return empresa;
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (findOne) de la ruta "empresas"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -85,17 +80,17 @@ let EmpresasService = class EmpresasService {
     async update(id, updateEmpresaDto) {
         try {
             const existeEmpresa = await this.findOne(id);
-            return await this.empresaRepository.save(updateEmpresaDto);
+            const actualizarEmpresa = this.empresaRepository.merge(existeEmpresa, updateEmpresaDto);
+            return await this.empresaRepository.save(actualizarEmpresa);
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (update) de la ruta "empresas"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -110,14 +105,13 @@ let EmpresasService = class EmpresasService {
             };
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (remove) de la ruta "empresas"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }

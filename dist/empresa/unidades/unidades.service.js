@@ -34,14 +34,13 @@ let UnidadesService = class UnidadesService {
             return await this.unidadRepository.save(nuevaUnidad);
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (create) de la ruta "unidades"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -50,22 +49,20 @@ let UnidadesService = class UnidadesService {
         try {
             const unidades = await this.unidadRepository.find({ relations: ['direccion'] });
             if (!unidades || unidades.length === 0) {
-                throw new common_1.BadRequestException({
-                    statusCode: 404,
+                throw new common_1.NotFoundException({
                     message: `No se encontraron Unidades`,
                 });
             }
             return unidades;
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "unidades"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -77,22 +74,20 @@ let UnidadesService = class UnidadesService {
                 relations: ['direccion'],
             });
             if (!unidad) {
-                throw new common_1.BadRequestException({
-                    statusCode: 404,
+                throw new common_1.NotFoundException({
                     message: `Unidad con ID: ${id} no fue encontrada`,
                 });
             }
             return unidad;
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (findOne) de la ruta "unidades"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -109,14 +104,13 @@ let UnidadesService = class UnidadesService {
             return await this.unidadRepository.save(actualizarUnidad);
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (update) de la ruta "unidades"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -131,14 +125,13 @@ let UnidadesService = class UnidadesService {
             };
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (remove) de la ruta "unidades"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }

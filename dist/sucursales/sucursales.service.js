@@ -34,14 +34,13 @@ let SucursalesService = class SucursalesService {
             return await this.sucursaleRepository.save(nuevaUnidad);
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (create) de la ruta "sucursales"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -50,22 +49,20 @@ let SucursalesService = class SucursalesService {
         try {
             const sucursales = await this.sucursaleRepository.find({ relations: ['departamento'] });
             if (!sucursales || sucursales.length === 0) {
-                throw new common_1.BadRequestException({
-                    statusCode: 404,
+                throw new common_1.NotFoundException({
                     message: `No se encontraron Sucursales`,
                 });
             }
             return sucursales;
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "sucursales"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -76,75 +73,61 @@ let SucursalesService = class SucursalesService {
                 where: { id },
             });
             if (!sucursale) {
-                throw new common_1.BadRequestException({
-                    statusCode: 400,
-                    error: `La sucursal con ID ${id} NO Existe`,
+                throw new common_1.NotFoundException({
                     message: `Sucursal con ID ${id} no fue encontrada`,
                 });
             }
             return sucursale;
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
-                    error: `Error del Servidor en (findOne): ${error}`,
-                    message: `Error del Servidor en (findOne): ${error}`,
+                    message: `Error del Servidor. Revisar el metodo (findOne) de la ruta "sucursales"`,
+                    error: `${error}`,
                 });
             }
         }
     }
     async update(id, updateSucursaleDto) {
         try {
-            const existingSucursale = await this.findOne(id);
-            if (!existingSucursale) {
-                throw new common_1.BadRequestException({
-                    statusCode: 400,
-                    error: `Sucursal con ID ${id} NO Existe`,
-                    message: `Sucursal con ID ${id} no fue encontrada`,
-                });
-            }
-            const updatedSucursale = Object.assign(existingSucursale, updateSucursaleDto);
-            return await this.sucursaleRepository.save(updatedSucursale);
+            const existeSucursal = await this.findOne(id);
+            const buscarDepartamento = await this.departamentosService.findOne(updateSucursaleDto.departamento_id);
+            const actualizarSucursal = await this.sucursaleRepository.preload({
+                id,
+                ...updateSucursaleDto
+            });
+            actualizarSucursal.departamento = buscarDepartamento;
+            return await this.sucursaleRepository.save(actualizarSucursal);
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
-                    error: `Error del Servidor en (update): ${error}`,
-                    message: `Error del Servidor en (update): ${error}`,
+                    message: `Error del Servidor. Revisar el metodo (update) de la ruta "sucursales"`,
+                    error: `${error}`,
                 });
             }
         }
     }
     async remove(id) {
         try {
-            const sucursale = await this.findOne(id);
-            if (!sucursale) {
-                throw new common_1.BadRequestException({
-                    statusCode: 400,
-                    error: `Sucursal con ID ${id} NO Existe`,
-                    message: `Sucursal con ID ${id} no fue encontrada`,
-                });
-            }
+            const sucursal = await this.findOne(id);
             await this.sucursaleRepository.delete(id);
             return { success: true, message: `Se eliminó la Sucursal con ID: ${id}` };
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
-                    error: `Error del Servidor en (remove): ${error}`,
-                    message: `Error del Servidor en (remove): ${error}`,
+                    message: `Error del Servidor. Revisar el metodo (remove) de la ruta "sucursales"`,
+                    error: `${error}`,
                 });
             }
         }

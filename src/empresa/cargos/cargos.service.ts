@@ -1,5 +1,5 @@
 import {
-  BadRequestException,
+  NotFoundException,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -33,13 +33,13 @@ export class CargosService {
 
       return await this.cargoRepository.save(nuevoCargo);
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
           statusCode: 500,
           message: `Error del Servidor. Revisar el metodo (create) de la ruta "cargos"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }
@@ -49,20 +49,20 @@ export class CargosService {
     try {
       const cargos = await this.cargoRepository.find({ relations: ['unidad'] });
       if (!cargos || cargos.length === 0) {
-        throw new BadRequestException({
-          statusCode: 404,
+        throw new NotFoundException({
+          
           message: `No se encontraron Cargos`,
         });
       }
       return cargos;
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
           statusCode: 500,
           message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "cargos"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }
@@ -75,20 +75,20 @@ export class CargosService {
         relations: ['unidad'],
       });
       if (!cargo) {
-        throw new BadRequestException({
-          statusCode: 404,
+        throw new NotFoundException({
+          
           message: `Cargo con ID: ${id} no fue encontrada`,
         });
       }
       return cargo;
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
           statusCode: 500,
           message: `Error del Servidor. Revisar el metodo (findOne) de la ruta "cargos"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }
@@ -97,6 +97,8 @@ export class CargosService {
   async update(id: number, updateCargoDto: UpdateCargoDto)
     : Promise<Cargo> {
     try {
+      console.log(updateCargoDto);
+      
       const existeCargo = await this.findOne(id);
 
       const buscarUnidad = await this.unidadesService.findOne(updateCargoDto.unidad_id);
@@ -109,13 +111,13 @@ export class CargosService {
 
       return await this.cargoRepository.save(actualizarCargo);
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
           statusCode: 500,
           message: `Error del Servidor. Revisar el metodo (update) de la ruta "cargos"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }
@@ -130,13 +132,13 @@ export class CargosService {
         message: `Se eliminó el Cargo con ID: ${id}`,
       };
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
           statusCode: 500,
           message: `Error del Servidor. Revisar el metodo (remove) de la ruta "cargos"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }

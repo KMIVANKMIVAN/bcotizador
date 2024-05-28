@@ -7,7 +7,7 @@ export declare class EmpresasController {
     create(createEmpresaDto: CreateEmpresaDto): Promise<import("./entities/empresa.entity").Empresa>;
     findAll(): Promise<import("./entities/empresa.entity").Empresa[]>;
     findOne(id: number): Promise<import("./entities/empresa.entity").Empresa>;
-    update(id: number, updateEmpresaDto: UpdateEmpresaDto): Promise<UpdateEmpresaDto & import("./entities/empresa.entity").Empresa>;
+    update(id: number, updateEmpresaDto: UpdateEmpresaDto): Promise<import("./entities/empresa.entity").Empresa>;
     remove(id: number): Promise<{
         success: boolean;
         message: string;

@@ -1,6 +1,6 @@
 import {
   Injectable,
-  BadRequestException,
+  NotFoundException,
   InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,7 +14,8 @@ import { Usuario } from './entities/usuario.entity';
 import { SucursalesService } from 'src/sucursales/sucursales.service';
 import { RolesService } from 'src/roles/roles.service';
 import { CargosService } from 'src/empresa/cargos/cargos.service';
-
+import { log } from 'console';
+import { validate } from 'class-validator';
 @Injectable()
 export class UsuariosService {
   constructor(
@@ -48,67 +49,81 @@ export class UsuariosService {
 
       return this.usuarioRepository.save(usuario);
     } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
 
-      throw new InternalServerErrorException({
-        statusCode: 500,
-        message: `Error del Servidor. Revisar el metodo (createSemilla) de la ruta "usuarios"`,
-        error: error,
-      });
-
+          message: `Error del Servidor. Revisar el metodo (createSemilla) de la ruta "usuarios"`,
+          error: `${error}`,
+        });
+      }
     }
   }
 
   async create(createUsuarioDto: CreateUsuarioDto): Promise<Usuario> {
     try {
-      const { roles, sucursal_id, ...userData } = createUsuarioDto;
-
+      const errors = await validate(createUsuarioDto);
+      if (errors.length > 0) {
+        throw new InternalServerErrorException({
+          message: 'Error de validación en los datos proporcionados',
+          errors: errors.map(error => Object.values(error.constraints)),
+        });
+      }
       const existeRoles = await this.rolesService.findByIds(createUsuarioDto.roles);
       const existeSucursal = await this.sucursalesService.findOne(createUsuarioDto.sucursal_id);
       const existeCargo = await this.cargosService.findOne(createUsuarioDto.cargo_id);
 
-      const hashedPassword = await bcrypt.hash(userData.contrasenia, 10);
+      const hashedPassword = createUsuarioDto.contrasenia === null || createUsuarioDto.contrasenia === undefined ?
+        createUsuarioDto.ci : createUsuarioDto.contrasenia;
 
+      const { roles, sucursal_id, ...userData } = createUsuarioDto;
+
+      const hashedPasswordHashed = await bcrypt.hash(hashedPassword, 10);
       const nuevoUsuario = this.usuarioRepository.create({
         ...userData,
-        contrasenia: hashedPassword,
+        contrasenia: hashedPasswordHashed,
         roles: existeRoles,
         sucursal: existeSucursal,
         cargo: existeCargo
       });
 
-      delete nuevoUsuario.contrasenia; // Eliminar el campo de contraseña del usuario
+      // delete nuevoUsuario.contrasenia; // Eliminar el campo de contraseña del usuario
 
       return this.usuarioRepository.save(nuevoUsuario);
     } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
 
-      throw new InternalServerErrorException({
-        statusCode: 500,
-        message: `Error del Servidor. Revisar el metodo (create) de la ruta "usuarios"`,
-        error: error,
-      });
+        throw new InternalServerErrorException({
 
+          message: `Error del Servidor. Revisar el metodo (create) de la ruta "usuarios"`,
+          error: `${error}`,
+        });
+      }
     }
   }
 
   async findAll(): Promise<Usuario[]> {
     try {
-      const usuarios = await this.usuarioRepository.find({ relations: ['role', 'sucursal', 'cargo'] });
+      const usuarios = await this.usuarioRepository.find({ relations: ['roles', 'sucursal', 'cargo'] });
       if (!usuarios || usuarios.length === 0) {
-        throw new BadRequestException({
-          statusCode: 404,
+        throw new NotFoundException({
+
           message: `No se encontraron Usuarios`,
         });
       }
       usuarios.forEach((user) => delete user.contrasenia);
       return usuarios;
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          statusCode: 500,
+
           message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "usuarios"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }
@@ -118,24 +133,24 @@ export class UsuariosService {
     try {
       const usuario = await this.usuarioRepository.findOne({
         where: { id },
-        relations: ['role', 'sucursal', 'cargo'],
+        relations: ['roles', 'sucursal', 'cargo'],
       });
       if (!usuario) {
-        throw new BadRequestException({
-          statusCode: 404,
+        throw new NotFoundException({
+
           message: `Usuario con ID: ${id} no fue encontrado`,
         });
       }
       delete usuario.contrasenia; // Eliminar el campo de contraseña del usuario
       return usuario;
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          statusCode: 500,
+
           message: `Error del Servidor. Revisar el metodo (findOne) de la ruta "usuarios"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }
@@ -149,21 +164,21 @@ export class UsuariosService {
         .take(5)
         .getMany();
       if (!usuarios || usuarios.length === 0) {
-        throw new BadRequestException({
-          statusCode: 404,
+        throw new NotFoundException({
+
           message: `Usuarios con CI: ${ci} no fue encontrado`,
         });
       }
       usuarios.forEach((user) => delete user.contrasenia);
       return usuarios;
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          statusCode: 500,
+
           message: `Error del Servidor. Revisar el metodo (findOneCi) de la ruta "usuarios"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }
@@ -173,23 +188,23 @@ export class UsuariosService {
     try {
       const usuario = await this.usuarioRepository.findOne({
         where: { ci },
-        // relations: ['role']
+        relations: ['roles']
       });
       if (!usuario) {
-        throw new BadRequestException({
-          statusCode: 404,
+        throw new NotFoundException({
+          // 
           message: `Usuario con CI: ${ci} no fue encontrado`,
         });
       }
       return usuario;
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          statusCode: 500,
+
           message: `Error del Servidor. Revisar el metodo (findOneByUserCi) de la ruta "usuarios"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }
@@ -207,25 +222,22 @@ export class UsuariosService {
       const buscarSucursal = await this.sucursalesService.findOne(updateUsuarioDto.sucursal_id);
 
       const buscarCargo = await this.cargosService.findOne(updateUsuarioDto.cargo_id);
+      
+      existeUsuario.nombres = updateUsuarioDto.nombres;
+      existeUsuario.apellidos = updateUsuarioDto.apellidos;
+      existeUsuario.ci = updateUsuarioDto.ci;
+      existeUsuario.correo = updateUsuarioDto.correo;
+      existeUsuario.es_activo = updateUsuarioDto.es_activo;
+      existeUsuario.roles = buscarRoles;
+      existeUsuario.sucursal = buscarSucursal;
+      existeUsuario.cargo = buscarCargo;
 
-      // Construir el objeto actualizado del usuario
-      const { roles: rolesIds, sucursal_id, ...usuariosDatos } = updateUsuarioDto;
+      // Guardar los cambios en la base de datos
+      const usuarioActualizado = await this.usuarioRepository.save(existeUsuario);
 
-      const actualizarUsuario = {
-        ...usuariosDatos,
-        id,
-        buscarRoles,
-        buscarSucursal,
-        buscarCargo
-      };
-
-      const usuarioPreloaded = await this.usuarioRepository.preload(actualizarUsuario);
-
-      delete existeUsuario.contrasenia;
-
-      return await this.usuarioRepository.save(usuarioPreloaded);
+      return usuarioActualizado;
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
@@ -252,7 +264,7 @@ export class UsuariosService {
       );
 
       if (!contraseniaCorrecta) {
-        throw new BadRequestException({
+        throw new NotFoundException({
           statusCode: 400,
           message: 'La contraseña anterior no es correcta',
         });
@@ -260,7 +272,7 @@ export class UsuariosService {
 
       // Verificar si la nueva contraseña está presente
       if (!updateUsuarioDto.contrasenia) {
-        throw new BadRequestException({
+        throw new NotFoundException({
           statusCode: 400,
           message: 'La nueva contraseña no puede estar vacía',
         });
@@ -283,13 +295,13 @@ export class UsuariosService {
 
       return actualizarUsuario; // Devuelve todos los datos excepto la contraseña
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          statusCode: 500,
+
           message: `Error del Servidor. Revisar el metodo (updateContrasenia) de la ruta "usuarios"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }
@@ -301,13 +313,13 @@ export class UsuariosService {
       await this.usuarioRepository.delete(id);
       return { success: true, message: `Se eliminó el usuario con ID: ${id}` };
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          statusCode: 500,
+
           message: `Error del Servidor. Revisar el metodo (remove) de la ruta "usuarios"`,
-          error: error,
+          error: `${error}`,
         });
       }
     }

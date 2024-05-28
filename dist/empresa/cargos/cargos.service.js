@@ -34,14 +34,14 @@ let CargosService = class CargosService {
             return await this.cargoRepository.save(nuevoCargo);
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
                     statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (create) de la ruta "cargos"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -50,22 +50,21 @@ let CargosService = class CargosService {
         try {
             const cargos = await this.cargoRepository.find({ relations: ['unidad'] });
             if (!cargos || cargos.length === 0) {
-                throw new common_1.BadRequestException({
-                    statusCode: 404,
+                throw new common_1.NotFoundException({
                     message: `No se encontraron Cargos`,
                 });
             }
             return cargos;
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
                     statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "cargos"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -77,28 +76,28 @@ let CargosService = class CargosService {
                 relations: ['unidad'],
             });
             if (!cargo) {
-                throw new common_1.BadRequestException({
-                    statusCode: 404,
+                throw new common_1.NotFoundException({
                     message: `Cargo con ID: ${id} no fue encontrada`,
                 });
             }
             return cargo;
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
                     statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (findOne) de la ruta "cargos"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
     }
     async update(id, updateCargoDto) {
         try {
+            console.log(updateCargoDto);
             const existeCargo = await this.findOne(id);
             const buscarUnidad = await this.unidadesService.findOne(updateCargoDto.unidad_id);
             const actualizarCargo = await this.cargoRepository.preload({
@@ -109,14 +108,14 @@ let CargosService = class CargosService {
             return await this.cargoRepository.save(actualizarCargo);
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
                     statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (update) de la ruta "cargos"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }
@@ -131,14 +130,14 @@ let CargosService = class CargosService {
             };
         }
         catch (error) {
-            if (error instanceof common_1.BadRequestException) {
+            if (error instanceof common_1.NotFoundException) {
                 throw error;
             }
             else {
                 throw new common_1.InternalServerErrorException({
                     statusCode: 500,
                     message: `Error del Servidor. Revisar el metodo (remove) de la ruta "cargos"`,
-                    error: error,
+                    error: `${error}`,
                 });
             }
         }

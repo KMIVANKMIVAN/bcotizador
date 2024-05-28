@@ -8,6 +8,7 @@ export declare class UsuariosController {
     findAll(): Promise<import("./entities/usuario.entity").Usuario[]>;
     findOne(id: number): Promise<import("./entities/usuario.entity").Usuario>;
     findOneCi(nomci: string): Promise<import("./entities/usuario.entity").Usuario[]>;
+    findOneByUserCi(ci: string): Promise<import("./entities/usuario.entity").Usuario>;
     update(id: number, updateUsuarioDto: UpdateUsuarioDto): Promise<import("./entities/usuario.entity").Usuario>;
     updateContrasenia(id: number, contraseniaAntigua: string, updateUsuarioDto: UpdateUsuarioDto): Promise<Partial<import("./entities/usuario.entity").Usuario>>;
     remove(id: number): Promise<any>;
