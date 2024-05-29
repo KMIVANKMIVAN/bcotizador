@@ -93,6 +93,7 @@ let SucursalesService = class SucursalesService {
     }
     async update(id, updateSucursaleDto) {
         try {
+            console.log("updateSucursaleDto", updateSucursaleDto);
             const existeSucursal = await this.findOne(id);
             const buscarDepartamento = await this.departamentosService.findOne(updateSucursaleDto.departamento_id);
             const actualizarSucursal = await this.sucursaleRepository.preload({

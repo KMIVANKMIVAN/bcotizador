@@ -29,6 +29,7 @@ let AuthService = class AuthService {
                     id: user.id,
                     ci: user.ci,
                     camb_contra: user.se_cambiado_cntr,
+                    es_activo: user.es_activo,
                     roles: roles,
                 };
                 return {

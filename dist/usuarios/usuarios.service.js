@@ -21,7 +21,6 @@ const usuario_entity_1 = require("./entities/usuario.entity");
 const sucursales_service_1 = require("../sucursales/sucursales.service");
 const roles_service_1 = require("../roles/roles.service");
 const cargos_service_1 = require("../empresa/cargos/cargos.service");
-const class_validator_1 = require("class-validator");
 let UsuariosService = class UsuariosService {
     constructor(usuarioRepository, rolesService, sucursalesService, cargosService) {
         this.usuarioRepository = usuarioRepository;
@@ -31,13 +30,12 @@ let UsuariosService = class UsuariosService {
     }
     async createSemilla(createUsuarioDto) {
         try {
-            const { roles, sucursal_id, ...userData } = createUsuarioDto;
             const existeRoles = await this.rolesService.findByIds(createUsuarioDto.roles);
             const existeSucursal = await this.sucursalesService.findOne(createUsuarioDto.sucursal_id);
             const existeCargo = await this.cargosService.findOne(createUsuarioDto.cargo_id);
-            const hashedPassword = await bcrypt.hash(userData.contrasenia, 10);
+            const hashedPassword = await bcrypt.hash(createUsuarioDto.contrasenia, 10);
             const usuario = this.usuarioRepository.create({
-                ...userData,
+                ...createUsuarioDto,
                 contrasenia: hashedPassword,
                 roles: existeRoles,
                 sucursal: existeSucursal,
@@ -59,28 +57,23 @@ let UsuariosService = class UsuariosService {
     }
     async create(createUsuarioDto) {
         try {
-            const errors = await (0, class_validator_1.validate)(createUsuarioDto);
-            if (errors.length > 0) {
-                throw new common_1.InternalServerErrorException({
-                    message: 'Error de validación en los datos proporcionados',
-                    errors: errors.map(error => Object.values(error.constraints)),
-                });
-            }
+            console.log("createUsuarioDto", createUsuarioDto);
             const existeRoles = await this.rolesService.findByIds(createUsuarioDto.roles);
+            console.log("existeRoles", existeRoles);
             const existeSucursal = await this.sucursalesService.findOne(createUsuarioDto.sucursal_id);
+            console.log("existeSucursal", existeSucursal);
             const existeCargo = await this.cargosService.findOne(createUsuarioDto.cargo_id);
-            const hashedPassword = createUsuarioDto.contrasenia === null || createUsuarioDto.contrasenia === undefined ?
-                createUsuarioDto.ci : createUsuarioDto.contrasenia;
-            const { roles, sucursal_id, ...userData } = createUsuarioDto;
-            const hashedPasswordHashed = await bcrypt.hash(hashedPassword, 10);
-            const nuevoUsuario = this.usuarioRepository.create({
-                ...userData,
-                contrasenia: hashedPasswordHashed,
+            console.log("existeCargo", existeCargo);
+            const hashedPassword = await bcrypt.hash(createUsuarioDto.contrasenia, 10);
+            const usuario = this.usuarioRepository.create({
+                ...createUsuarioDto,
+                contrasenia: hashedPassword,
                 roles: existeRoles,
                 sucursal: existeSucursal,
                 cargo: existeCargo
             });
-            return this.usuarioRepository.save(nuevoUsuario);
+            console.log("usuario", usuario);
+            return this.usuarioRepository.save(usuario);
         }
         catch (error) {
             if (error instanceof common_1.NotFoundException) {
@@ -129,6 +122,28 @@ let UsuariosService = class UsuariosService {
                 });
             }
             delete usuario.contrasenia;
+            return usuario;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (findOne) de la ruta "usuarios"`,
+                    error: `${error}`,
+                });
+            }
+        }
+    }
+    async findOneUsuarioPW(id) {
+        try {
+            const usuario = await this.usuarioRepository.findOneBy({ id });
+            if (!usuario) {
+                throw new common_1.NotFoundException({
+                    message: `Usuario con ID: ${id} no fue encontrado`,
+                });
+            }
             return usuario;
         }
         catch (error) {
@@ -197,20 +212,32 @@ let UsuariosService = class UsuariosService {
     }
     async update(id, updateUsuarioDto) {
         try {
-            const existeUsuario = await this.findOne(id);
-            const buscarRoles = await this.rolesService.findByIds(updateUsuarioDto.roles);
-            const buscarSucursal = await this.sucursalesService.findOne(updateUsuarioDto.sucursal_id);
-            const buscarCargo = await this.cargosService.findOne(updateUsuarioDto.cargo_id);
-            existeUsuario.nombres = updateUsuarioDto.nombres;
-            existeUsuario.apellidos = updateUsuarioDto.apellidos;
-            existeUsuario.ci = updateUsuarioDto.ci;
-            existeUsuario.correo = updateUsuarioDto.correo;
-            existeUsuario.es_activo = updateUsuarioDto.es_activo;
-            existeUsuario.roles = buscarRoles;
-            existeUsuario.sucursal = buscarSucursal;
-            existeUsuario.cargo = buscarCargo;
-            const usuarioActualizado = await this.usuarioRepository.save(existeUsuario);
-            return usuarioActualizado;
+            console.log("updateUsuarioDto", updateUsuarioDto);
+            const existingUsuario = await this.usuarioRepository.findOne({ where: { id } });
+            if (!existingUsuario) {
+                throw new common_1.NotFoundException(`Usuario with ID ${id} not found`);
+            }
+            const existeRoles = updateUsuarioDto.roles
+                ? await this.rolesService.findByIds(updateUsuarioDto.roles)
+                : existingUsuario.roles;
+            console.log("existeRoles", existeRoles);
+            const existeSucursal = updateUsuarioDto.sucursal_id
+                ? await this.sucursalesService.findOne(updateUsuarioDto.sucursal_id)
+                : existingUsuario.sucursal;
+            console.log("existeSucursal", existeSucursal);
+            const existeCargo = updateUsuarioDto.cargo_id
+                ? await this.cargosService.findOne(updateUsuarioDto.cargo_id)
+                : existingUsuario.cargo;
+            console.log("existeCargo", existeCargo);
+            const usuarioToUpdate = {
+                ...existingUsuario,
+                ...updateUsuarioDto,
+                roles: existeRoles,
+                sucursal: existeSucursal,
+                cargo: existeCargo,
+            };
+            console.log("usuarioToUpdate", usuarioToUpdate);
+            return this.usuarioRepository.save(usuarioToUpdate);
         }
         catch (error) {
             if (error instanceof common_1.NotFoundException) {
@@ -218,17 +245,17 @@ let UsuariosService = class UsuariosService {
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    statusCode: 500,
-                    error: `Error del Servidor en (update): ${error}`,
-                    message: `Error del Servidor en (update): ${error}`,
+                    message: `Error del Servidor. Revisar el metodo (update) de la ruta "usuarios"`,
+                    error: `${error}`,
                 });
             }
         }
     }
     async updateContrasenia(id, contraseniaAntigua, updateUsuarioDto) {
         try {
-            const existeUsuario = await this.findOne(id);
+            const existeUsuario = await this.findOneUsuarioPW(id);
             const contraseniaCorrecta = await bcrypt.compare(contraseniaAntigua, existeUsuario.contrasenia);
+            console.log("contraseniaCorrecta", contraseniaCorrecta);
             if (!contraseniaCorrecta) {
                 throw new common_1.NotFoundException({
                     statusCode: 400,

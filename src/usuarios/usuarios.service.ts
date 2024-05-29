@@ -4,7 +4,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, DeepPartial } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
@@ -14,7 +14,6 @@ import { Usuario } from './entities/usuario.entity';
 import { SucursalesService } from 'src/sucursales/sucursales.service';
 import { RolesService } from 'src/roles/roles.service';
 import { CargosService } from 'src/empresa/cargos/cargos.service';
-import { log } from 'console';
 import { validate } from 'class-validator';
 @Injectable()
 export class UsuariosService {
@@ -29,18 +28,16 @@ export class UsuariosService {
 
   async createSemilla(createUsuarioDto: CreateUsuarioDto): Promise<Usuario> {
     try {
-      const { roles, sucursal_id, ...userData } = createUsuarioDto;
-
       const existeRoles = await this.rolesService.findByIds(createUsuarioDto.roles);
 
       const existeSucursal = await this.sucursalesService.findOne(createUsuarioDto.sucursal_id);
 
       const existeCargo = await this.cargosService.findOne(createUsuarioDto.cargo_id);
 
-      const hashedPassword = await bcrypt.hash(userData.contrasenia, 10);
+      const hashedPassword = await bcrypt.hash(createUsuarioDto.contrasenia, 10);
 
       const usuario = this.usuarioRepository.create({
-        ...userData,
+        ...createUsuarioDto,
         contrasenia: hashedPassword,
         roles: existeRoles,
         sucursal: existeSucursal,
@@ -63,39 +60,33 @@ export class UsuariosService {
 
   async create(createUsuarioDto: CreateUsuarioDto): Promise<Usuario> {
     try {
-      const errors = await validate(createUsuarioDto);
-      if (errors.length > 0) {
-        throw new InternalServerErrorException({
-          message: 'Error de validación en los datos proporcionados',
-          errors: errors.map(error => Object.values(error.constraints)),
-        });
-      }
+      console.log("createUsuarioDto", createUsuarioDto);
+
       const existeRoles = await this.rolesService.findByIds(createUsuarioDto.roles);
+      console.log("existeRoles", existeRoles);
+
       const existeSucursal = await this.sucursalesService.findOne(createUsuarioDto.sucursal_id);
+      console.log("existeSucursal", existeSucursal);
+
       const existeCargo = await this.cargosService.findOne(createUsuarioDto.cargo_id);
+      console.log("existeCargo", existeCargo);
 
-      const hashedPassword = createUsuarioDto.contrasenia === null || createUsuarioDto.contrasenia === undefined ?
-        createUsuarioDto.ci : createUsuarioDto.contrasenia;
+      const hashedPassword = await bcrypt.hash(createUsuarioDto.contrasenia, 10);
 
-      const { roles, sucursal_id, ...userData } = createUsuarioDto;
-
-      const hashedPasswordHashed = await bcrypt.hash(hashedPassword, 10);
-      const nuevoUsuario = this.usuarioRepository.create({
-        ...userData,
-        contrasenia: hashedPasswordHashed,
+      const usuario = this.usuarioRepository.create({
+        ...createUsuarioDto,
+        contrasenia: hashedPassword,
         roles: existeRoles,
         sucursal: existeSucursal,
         cargo: existeCargo
       });
+      console.log("usuario", usuario);
 
-      // delete nuevoUsuario.contrasenia; // Eliminar el campo de contraseña del usuario
-
-      return this.usuarioRepository.save(nuevoUsuario);
+      return this.usuarioRepository.save(usuario);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw error;
       } else {
-
         throw new InternalServerErrorException({
 
           message: `Error del Servidor. Revisar el metodo (create) de la ruta "usuarios"`,
@@ -142,6 +133,28 @@ export class UsuariosService {
         });
       }
       delete usuario.contrasenia; // Eliminar el campo de contraseña del usuario
+      return usuario;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+
+          message: `Error del Servidor. Revisar el metodo (findOne) de la ruta "usuarios"`,
+          error: `${error}`,
+        });
+      }
+    }
+  }
+  async findOneUsuarioPW(id: number): Promise<Usuario> {
+    try {
+      const usuario = await this.usuarioRepository.findOneBy({ id });
+      if (!usuario) {
+        throw new NotFoundException({
+
+          message: `Usuario con ID: ${id} no fue encontrado`,
+        });
+      }
       return usuario;
     } catch (error) {
       if (error instanceof NotFoundException) {
@@ -209,45 +222,161 @@ export class UsuariosService {
       }
     }
   }
-
-  async update(
-    id: number,
-    updateUsuarioDto: UpdateUsuarioDto,
-  ): Promise<Usuario> {
+  async update(id: number, updateUsuarioDto: UpdateUsuarioDto): Promise<Usuario> {
     try {
-      const existeUsuario = await this.findOne(id);
+      console.log("updateUsuarioDto", updateUsuarioDto);
 
-      const buscarRoles = await this.rolesService.findByIds(updateUsuarioDto.roles);
+      const existingUsuario = await this.usuarioRepository.findOne({ where: { id } });
+      if (!existingUsuario) {
+        throw new NotFoundException(`Usuario with ID ${id} not found`);
+      }
 
-      const buscarSucursal = await this.sucursalesService.findOne(updateUsuarioDto.sucursal_id);
+      const existeRoles = updateUsuarioDto.roles
+        ? await this.rolesService.findByIds(updateUsuarioDto.roles)
+        : existingUsuario.roles;
+      console.log("existeRoles", existeRoles);
 
-      const buscarCargo = await this.cargosService.findOne(updateUsuarioDto.cargo_id);
-      
-      existeUsuario.nombres = updateUsuarioDto.nombres;
-      existeUsuario.apellidos = updateUsuarioDto.apellidos;
-      existeUsuario.ci = updateUsuarioDto.ci;
-      existeUsuario.correo = updateUsuarioDto.correo;
-      existeUsuario.es_activo = updateUsuarioDto.es_activo;
-      existeUsuario.roles = buscarRoles;
-      existeUsuario.sucursal = buscarSucursal;
-      existeUsuario.cargo = buscarCargo;
+      const existeSucursal = updateUsuarioDto.sucursal_id
+        ? await this.sucursalesService.findOne(updateUsuarioDto.sucursal_id)
+        : existingUsuario.sucursal;
+      console.log("existeSucursal", existeSucursal);
 
-      // Guardar los cambios en la base de datos
-      const usuarioActualizado = await this.usuarioRepository.save(existeUsuario);
+      const existeCargo = updateUsuarioDto.cargo_id
+        ? await this.cargosService.findOne(updateUsuarioDto.cargo_id)
+        : existingUsuario.cargo;
+      console.log("existeCargo", existeCargo);
 
-      return usuarioActualizado;
+      const usuarioToUpdate = {
+        ...existingUsuario,
+        ...updateUsuarioDto,
+        roles: existeRoles,
+        sucursal: existeSucursal,
+        cargo: existeCargo,
+      };
+      console.log("usuarioToUpdate", usuarioToUpdate);
+
+      return this.usuarioRepository.save(usuarioToUpdate);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          statusCode: 500,
-          error: `Error del Servidor en (update): ${error}`,
-          message: `Error del Servidor en (update): ${error}`,
+          message: `Error del Servidor. Revisar el metodo (update) de la ruta "usuarios"`,
+          error: `${error}`,
         });
       }
     }
   }
+
+  /* async update(id: number, updateUsuarioDto: UpdateUsuarioDto): Promise<Usuario> {
+    try {
+      console.log("updateUsuarioDto", updateUsuarioDto);
+      const existeUsuario = await this.findOne(id)
+
+      const existeRoles = await this.rolesService.findByIds(updateUsuarioDto.roles);
+      console.log("existeRoles", existeRoles);
+
+      const existeSucursal = await this.sucursalesService.findOne(updateUsuarioDto.sucursal_id);
+      console.log("existeSucursal", existeSucursal);
+
+      const existeCargo = await this.cargosService.findOne(updateUsuarioDto.cargo_id);
+      console.log("existeCargo", existeCargo);
+
+      const usuario = await this.usuarioRepository.preload({
+        id,
+        ...updateUsuarioDto,
+        roles: existeRoles,
+        sucursal: existeSucursal,
+        cargo: existeCargo
+      });
+      console.log("usuario", usuario);
+
+      return this.usuarioRepository.save(usuario);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          message: `Error del Servidor. Revisar el metodo (update) de la ruta "usuarios"`,
+          error: `${error}`,
+        });
+      }
+    }
+  } */
+  /* async update(id: number, updateUsuarioDto: UpdateUsuarioDto): Promise<Usuario> {
+    try {
+      console.log("updateUsuarioDto", updateUsuarioDto);
+
+      const existeRoles = await this.rolesService.findByIds(updateUsuarioDto.roles);
+      console.log("existeRoles", existeRoles);
+
+      const existeSucursal = await this.sucursalesService.findOne(updateUsuarioDto.sucursal_id);
+      console.log("existeSucursal", existeSucursal);
+
+      const existeCargo = await this.cargosService.findOne(updateUsuarioDto.cargo_id);
+      console.log("existeCargo", existeCargo);
+
+      const usuario = await this.usuarioRepository.preload({
+        id,
+        ...updateUsuarioDto,
+        roles: existeRoles,
+        sucursal: existeSucursal,
+        cargo: existeCargo
+      });
+      console.log("usuario", usuario);
+
+      return this.usuarioRepository.save(usuario);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          message: `Error del Servidor. Revisar el metodo (update) de la ruta "usuarios"`,
+          error: `${error}`,
+        });
+      }
+    }
+  } */
+  /* async update(id: number, updateUsuarioDto: UpdateUsuarioDto): Promise<Usuario> {
+    console.log("updateUsuarioDto", updateUsuarioDto);
+    try {
+      const usuario = await this.findOne(id);
+
+      if (updateUsuarioDto.roles) {
+        const roles = await this.rolesService.findByIds(updateUsuarioDto.roles);
+        console.log("roles", roles);
+        usuario.roles = roles;
+
+      }
+
+      if (updateUsuarioDto.sucursal_id) {
+        const sucursal = await this.sucursalesService.findOne(updateUsuarioDto.sucursal_id);
+        if (sucursal) {
+          usuario.sucursal = sucursal;
+        }
+      }
+
+      if (updateUsuarioDto.cargo_id) {
+        const cargo = await this.cargosService.findOne(updateUsuarioDto.cargo_id);
+        if (cargo) {
+          usuario.cargo = cargo;
+        }
+      }
+      console.log("usuario", usuario);
+
+      Object.assign(usuario, updateUsuarioDto);
+      return this.usuarioRepository.save(usuario);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          message: `Error del Servidor. Revisar el metodo (update) de la ruta "usuarios"`,
+          error: `${error}`,
+        });
+      }
+    }
+  } */
 
   async updateContrasenia(
     id: number,
@@ -255,13 +384,15 @@ export class UsuariosService {
     updateUsuarioDto: UpdateUsuarioDto,
   ): Promise<Partial<Usuario>> {
     try {
-      const existeUsuario = await this.findOne(id);
+      const existeUsuario = await this.findOneUsuarioPW(id);
 
-      // Verificar si la contraseña anterior coincide
       const contraseniaCorrecta = await bcrypt.compare(
         contraseniaAntigua,
         existeUsuario.contrasenia,
       );
+      console.log("contraseniaCorrecta", contraseniaCorrecta);
+      // console.log("",);
+
 
       if (!contraseniaCorrecta) {
         throw new NotFoundException({

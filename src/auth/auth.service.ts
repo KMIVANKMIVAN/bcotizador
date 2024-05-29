@@ -1,5 +1,5 @@
 import {
-  
+
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -28,6 +28,7 @@ export class AuthService {
           id: user.id,
           ci: user.ci,
           camb_contra: user.se_cambiado_cntr,
+          es_activo: user.es_activo,
           roles: roles,
         };
         return {
@@ -44,7 +45,7 @@ export class AuthService {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          
+
           message: `Error del Servidor en (signIn)`,
           error: `${error}`,
         });

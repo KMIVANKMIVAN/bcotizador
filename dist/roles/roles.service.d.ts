@@ -9,7 +9,7 @@ export declare class RolesService {
     findAll(): Promise<Rol[]>;
     findOne(id: number): Promise<Rol>;
     findByIds(ids: number[]): Promise<Rol[]>;
-    update(id: number, updateRoleDto: UpdateRoleDto): Promise<UpdateRoleDto & Rol>;
+    update(id: number, updateRoleDto: UpdateRoleDto): Promise<Rol>;
     remove(id: number): Promise<{
         success: boolean;
         message: string;

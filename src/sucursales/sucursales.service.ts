@@ -39,7 +39,7 @@ export class SucursalesService {
         throw error;
       } else {
         throw new InternalServerErrorException({
-         
+
           message: `Error del Servidor. Revisar el metodo (create) de la ruta "sucursales"`,
           error: `${error}`,
         });
@@ -52,7 +52,7 @@ export class SucursalesService {
       const sucursales = await this.sucursaleRepository.find({ relations: ['departamento'] });
       if (!sucursales || sucursales.length === 0) {
         throw new NotFoundException({
-          
+
           message: `No se encontraron Sucursales`,
         });
       }
@@ -62,7 +62,7 @@ export class SucursalesService {
         throw error;
       } else {
         throw new InternalServerErrorException({
-         
+
           message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "sucursales"`,
           error: `${error}`,
         });
@@ -78,7 +78,7 @@ export class SucursalesService {
       });
       if (!sucursale) {
         throw new NotFoundException({
-          
+
           message: `Sucursal con ID ${id} no fue encontrada`,
         });
       }
@@ -88,7 +88,7 @@ export class SucursalesService {
         throw error;
       } else {
         throw new InternalServerErrorException({
-         
+
           message: `Error del Servidor. Revisar el metodo (findOne) de la ruta "sucursales"`,
           error: `${error}`,
         });
@@ -98,6 +98,8 @@ export class SucursalesService {
 
   async update(id: number, updateSucursaleDto: UpdateSucursaleDto): Promise<Sucursal> {
     try {
+      console.log("updateSucursaleDto", updateSucursaleDto);
+
       const existeSucursal = await this.findOne(id);
 
       const buscarDepartamento = await this.departamentosService.findOne(updateSucursaleDto.departamento_id)
@@ -115,7 +117,7 @@ export class SucursalesService {
         throw error;
       } else {
         throw new InternalServerErrorException({
-         
+
           message: `Error del Servidor. Revisar el metodo (update) de la ruta "sucursales"`,
           error: `${error}`,
         });
@@ -134,7 +136,7 @@ export class SucursalesService {
         throw error;
       } else {
         throw new InternalServerErrorException({
-         
+
           message: `Error del Servidor. Revisar el metodo (remove) de la ruta "sucursales"`,
           error: `${error}`,
         });

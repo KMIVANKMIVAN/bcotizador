@@ -106,8 +106,9 @@ let RolesService = class RolesService {
     }
     async update(id, updateRoleDto) {
         try {
-            const existeRole = await this.findOne(id);
-            return await this.rolRepository.save(updateRoleDto);
+            const existeRol = await this.findOne(id);
+            const actualizarRol = this.rolRepository.merge(existeRol, updateRoleDto);
+            return await this.rolRepository.save(actualizarRol);
         }
         catch (error) {
             if (error instanceof common_1.NotFoundException) {
