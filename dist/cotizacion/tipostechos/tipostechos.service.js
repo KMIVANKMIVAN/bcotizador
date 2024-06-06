@@ -17,12 +17,14 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const tipotecho_entity_1 = require("./entities/tipotecho.entity");
+const capitalizeTextos_1 = require("../../utils/capitalizeTextos");
 let TipostechosService = class TipostechosService {
     constructor(tipotechoRepository) {
         this.tipotechoRepository = tipotechoRepository;
     }
     async createSemilla(createTipotechoDto) {
         try {
+            createTipotechoDto.tipotecho = (0, capitalizeTextos_1.capitalizeTextos)(createTipotechoDto.tipotecho);
             const nuevoTipotecho = this.tipotechoRepository.create(createTipotechoDto);
             return await this.tipotechoRepository.save(nuevoTipotecho);
         }
@@ -36,6 +38,7 @@ let TipostechosService = class TipostechosService {
     async create(createTipotechoDto) {
         try {
             createTipotechoDto.valor = Number(createTipotechoDto.valor) * 1 / 100;
+            createTipotechoDto.tipotecho = (0, capitalizeTextos_1.capitalizeTextos)(createTipotechoDto.tipotecho);
             const nuevoTipotecho = this.tipotechoRepository.create(createTipotechoDto);
             return await this.tipotechoRepository.save(nuevoTipotecho);
         }
@@ -54,6 +57,29 @@ let TipostechosService = class TipostechosService {
                     message: `No se encontraron tipostechos`,
                 });
             }
+            return tipostechos;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "tipostechos"`,
+                    error: `${error}`,
+                });
+            }
+        }
+    }
+    async findAllClear() {
+        try {
+            const tipostechos = await this.tipotechoRepository.find();
+            if (!tipostechos || tipostechos.length === 0) {
+                throw new common_1.NotFoundException({
+                    message: `No se encontraron tipostechos`,
+                });
+            }
+            tipostechos.forEach((tipotecho) => delete tipotecho.valor);
             return tipostechos;
         }
         catch (error) {
@@ -93,6 +119,7 @@ let TipostechosService = class TipostechosService {
     async update(id, updateTipotechoDto) {
         try {
             const existeTipotecho = await this.findOne(id);
+            updateTipotechoDto.tipotecho = (0, capitalizeTextos_1.capitalizeTextos)(updateTipotechoDto.tipotecho);
             const actualizarTipotecho = this.tipotechoRepository.merge(existeTipotecho, updateTipotechoDto);
             return await this.tipotechoRepository.save(actualizarTipotecho);
         }

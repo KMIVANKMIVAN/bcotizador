@@ -20,8 +20,9 @@ const tiposparedes_service_1 = require("../cotizacion/tiposparedes/tiposparedes.
 const tipossuelos_service_1 = require("../cotizacion/tipossuelos/tipossuelos.service");
 const tipostechos_service_1 = require("../cotizacion/tipostechos/tipostechos.service");
 const tiposvidrios_service_1 = require("../cotizacion/tiposvidrios/tiposvidrios.service");
+const tiposcotizaciones_service_1 = require("../cotizacion/tiposcotizaciones/tiposcotizaciones.service");
 let SemillacotizacionService = class SemillacotizacionService {
-    constructor(configService, ciudadeszonasService, nivelespisosService, orientacionesService, tiposparedesService, tipossuelosService, tipostechosService, tiposvidriosService) {
+    constructor(configService, ciudadeszonasService, nivelespisosService, orientacionesService, tiposparedesService, tipossuelosService, tipostechosService, tiposvidriosService, tiposcotizacionesService) {
         this.configService = configService;
         this.ciudadeszonasService = ciudadeszonasService;
         this.nivelespisosService = nivelespisosService;
@@ -30,6 +31,7 @@ let SemillacotizacionService = class SemillacotizacionService {
         this.tipossuelosService = tipossuelosService;
         this.tipostechosService = tipostechosService;
         this.tiposvidriosService = tiposvidriosService;
+        this.tiposcotizacionesService = tiposcotizacionesService;
         this.isProd = configService.get('STATE') === 'prod';
     }
     async ejecutarSemillacotizacion() {
@@ -47,6 +49,7 @@ let SemillacotizacionService = class SemillacotizacionService {
             await this.crearTipostechos();
             await this.crearTiposvidrios();
             await this.crearCiudadeszonas();
+            await this.crearTiposcotizaciones();
             return true;
         }
         catch (error) {
@@ -98,6 +101,13 @@ let SemillacotizacionService = class SemillacotizacionService {
         }
         return tiposvidrios[0];
     }
+    async crearTiposcotizaciones() {
+        const tiposcotizaciones = [];
+        for (const tipocotizacion of semillacotizacion_datos_1.SEMILLA_TIPOCOTIZACION) {
+            tiposcotizaciones.push(await this.tiposcotizacionesService.createSemilla(tipocotizacion));
+        }
+        return tiposcotizaciones[0];
+    }
     async crearCiudadeszonas() {
         const ciudadeszonas = [];
         for (const ciudadzona of semillacotizacion_datos_1.SEMILLA_CIUDADZONA) {
@@ -116,6 +126,7 @@ exports.SemillacotizacionService = SemillacotizacionService = __decorate([
         tiposparedes_service_1.TiposparedesService,
         tipossuelos_service_1.TipossuelosService,
         tipostechos_service_1.TipostechosService,
-        tiposvidrios_service_1.TiposvidriosService])
+        tiposvidrios_service_1.TiposvidriosService,
+        tiposcotizaciones_service_1.TiposcotizacionesService])
 ], SemillacotizacionService);
 //# sourceMappingURL=semillacotizacion.service.js.map

@@ -8,7 +8,7 @@ import { Repository } from 'typeorm';
 import { CreateTipotechoDto } from './dto/create-tipotecho.dto';
 import { UpdateTipotechoDto } from './dto/update-tipotecho.dto';
 import { Tipotecho } from './entities/tipotecho.entity';
-
+import { capitalizeTextos } from 'src/utils/capitalizeTextos';
 @Injectable()
 export class TipostechosService {
   constructor(
@@ -18,6 +18,7 @@ export class TipostechosService {
 
   async createSemilla(createTipotechoDto: CreateTipotechoDto): Promise<Tipotecho> {
     try {
+      createTipotechoDto.tipotecho = capitalizeTextos(createTipotechoDto.tipotecho);
       const nuevoTipotecho = this.tipotechoRepository.create(
         createTipotechoDto,
       );
@@ -33,7 +34,8 @@ export class TipostechosService {
   }
   async create(createTipotechoDto: CreateTipotechoDto): Promise<Tipotecho> {
     try {
-      createTipotechoDto.valor = Number(createTipotechoDto.valor) * 1/100;
+      createTipotechoDto.valor = Number(createTipotechoDto.valor) * 1 / 100;
+      createTipotechoDto.tipotecho = capitalizeTextos(createTipotechoDto.tipotecho);
       const nuevoTipotecho = this.tipotechoRepository.create(
         createTipotechoDto,
       );
@@ -71,6 +73,28 @@ export class TipostechosService {
     }
   }
 
+  async findAllClear(): Promise<Tipotecho[]> {
+    try {
+      const tipostechos = await this.tipotechoRepository.find();
+      if (!tipostechos || tipostechos.length === 0) {
+        throw new NotFoundException({
+          message: `No se encontraron tipostechos`,
+        });
+      }
+      tipostechos.forEach((tipotecho) => delete tipotecho.valor);
+      return tipostechos;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "tipostechos"`,
+          error: `${error}`,
+        });
+      }
+    }
+  }
+
   async findOne(id: number): Promise<Tipotecho> {
     try {
       const tipotecho = await this.tipotechoRepository.findOneBy({ id });
@@ -97,8 +121,8 @@ export class TipostechosService {
   async update(id: number, updateTipotechoDto: UpdateTipotechoDto): Promise<Tipotecho> {
     try {
       const existeTipotecho = await this.findOne(id);
+      updateTipotechoDto.tipotecho = capitalizeTextos(updateTipotechoDto.tipotecho);
       const actualizarTipotecho = this.tipotechoRepository.merge(existeTipotecho, updateTipotechoDto);
-
       return await this.tipotechoRepository.save(actualizarTipotecho);
 
     } catch (error) {

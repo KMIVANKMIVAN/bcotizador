@@ -10,6 +10,7 @@ export declare class CiudadeszonasService {
     createSemilla(createCiudadzonaDto: CreateCiudadzonaDto): Promise<Ciudadzona>;
     create(createCiudadzonaDto: CreateCiudadzonaDto): Promise<Ciudadzona>;
     findAll(): Promise<Ciudadzona[]>;
+    findAllClear(): Promise<Ciudadzona[]>;
     findOne(id: number): Promise<Ciudadzona>;
     update(id: number, updateCiudadzonaDto: UpdateCiudadzonaDto): Promise<Ciudadzona>;
     remove(id: number): Promise<any>;

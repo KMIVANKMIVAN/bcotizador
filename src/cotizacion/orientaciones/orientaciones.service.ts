@@ -8,7 +8,7 @@ import { Repository } from 'typeorm';
 import { CreateOrientacionDto } from './dto/create-orientacion.dto';
 import { UpdateOrientacionDto } from './dto/update-orientacion.dto';
 import { Orientacion } from './entities/orientacion.entity';
-
+import { capitalizeTextos } from 'src/utils/capitalizeTextos';
 @Injectable()
 export class OrientacionesService {
   constructor(
@@ -18,6 +18,7 @@ export class OrientacionesService {
 
   async createSemilla(createOrientacionDto: CreateOrientacionDto): Promise<Orientacion> {
     try {
+      createOrientacionDto.orientacion = capitalizeTextos(createOrientacionDto.orientacion);
       const nuevaOrientacion = this.orientacionRepository.create(
         createOrientacionDto,
       );
@@ -33,7 +34,8 @@ export class OrientacionesService {
   }
   async create(createOrientacionDto: CreateOrientacionDto): Promise<Orientacion> {
     try {
-      createOrientacionDto.valor = Number(createOrientacionDto.valor) * 1/100;
+      createOrientacionDto.valor = Number(createOrientacionDto.valor) * 1 / 100;
+      createOrientacionDto.orientacion = capitalizeTextos(createOrientacionDto.orientacion);
       const nuevaOrientacion = this.orientacionRepository.create(
         createOrientacionDto,
       );
@@ -57,6 +59,29 @@ export class OrientacionesService {
           message: `No se encontraron orientaciones`,
         });
       }
+      return orientaciones;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+
+          message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "orientaciones"`,
+          error: `${error}`,
+        });
+      }
+    }
+  }
+
+  async findAllClear(): Promise<Orientacion[]> {
+    try {
+      const orientaciones = await this.orientacionRepository.find();
+      if (!orientaciones || orientaciones.length === 0) {
+        throw new NotFoundException({
+          message: `No se encontraron orientaciones`,
+        });
+      }
+      orientaciones.forEach((orientacion) => delete orientacion.valor);
       return orientaciones;
     } catch (error) {
       if (error instanceof NotFoundException) {
@@ -97,8 +122,8 @@ export class OrientacionesService {
   async update(id: number, updateOrientacionDto: UpdateOrientacionDto): Promise<Orientacion> {
     try {
       const existeOrientacion = await this.findOne(id);
+      updateOrientacionDto.orientacion = capitalizeTextos(updateOrientacionDto.orientacion);
       const actualizarOrientacion = this.orientacionRepository.merge(existeOrientacion, updateOrientacionDto);
-
       return await this.orientacionRepository.save(actualizarOrientacion);
 
     } catch (error) {

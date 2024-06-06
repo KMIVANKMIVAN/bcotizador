@@ -8,7 +8,7 @@ import { Repository } from 'typeorm';
 import { CreateNivelpisoDto } from './dto/create-nivelpiso.dto';
 import { UpdateNivelpisoDto } from './dto/update-nivelpiso.dto';
 import { Nivelpiso } from './entities/nivelpiso.entity';
-
+import { capitalizeTextos } from 'src/utils/capitalizeTextos';
 @Injectable()
 export class NivelespisosService {
   constructor(
@@ -18,6 +18,7 @@ export class NivelespisosService {
 
   async createSemilla(createNivelpisoDto: CreateNivelpisoDto): Promise<Nivelpiso> {
     try {
+      createNivelpisoDto.nivelpiso = capitalizeTextos(createNivelpisoDto.nivelpiso);
       const nuevoNivelpiso = this.nivelpisoRepository.create(
         createNivelpisoDto,
       );
@@ -34,6 +35,7 @@ export class NivelespisosService {
   async create(createNivelpisoDto: CreateNivelpisoDto): Promise<Nivelpiso> {
     try {
       createNivelpisoDto.valor = Number(createNivelpisoDto.valor) * 1 / 100;
+      createNivelpisoDto.nivelpiso = capitalizeTextos(createNivelpisoDto.nivelpiso);
       const nuevoNivelpiso = this.nivelpisoRepository.create(
         createNivelpisoDto,
       );
@@ -57,6 +59,29 @@ export class NivelespisosService {
           message: `No se encontraron nivelespisos`,
         });
       }
+      return nivelespisos;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+
+          message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "nivelespisos"`,
+          error: `${error}`,
+        });
+      }
+    }
+  }
+
+  async findAllClear(): Promise<Nivelpiso[]> {
+    try {
+      const nivelespisos = await this.nivelpisoRepository.find();
+      if (!nivelespisos || nivelespisos.length === 0) {
+        throw new NotFoundException({
+          message: `No se encontraron nivelespisos`,
+        });
+      }
+      nivelespisos.forEach((nivelpiso) => delete nivelpiso.valor);
       return nivelespisos;
     } catch (error) {
       if (error instanceof NotFoundException) {
@@ -97,8 +122,8 @@ export class NivelespisosService {
   async update(id: number, updateNivelpisoDto: UpdateNivelpisoDto): Promise<Nivelpiso> {
     try {
       const existeNivelpiso = await this.findOne(id);
+      updateNivelpisoDto.nivelpiso = capitalizeTextos(updateNivelpisoDto.nivelpiso);
       const actualizarNivelpiso = this.nivelpisoRepository.merge(existeNivelpiso, updateNivelpisoDto);
-
       return await this.nivelpisoRepository.save(actualizarNivelpiso);
 
     } catch (error) {

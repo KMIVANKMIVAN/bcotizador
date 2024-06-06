@@ -17,6 +17,11 @@ export class TiposparedesController {
     return this.tiposparedesService.findAll();
   }
 
+  @Get('svc')
+  findAllClear() {
+    return this.tiposparedesService.findAllClear();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.tiposparedesService.findOne(+id);

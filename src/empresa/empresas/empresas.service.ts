@@ -10,6 +10,7 @@ import { UpdateEmpresaDto } from './dto/update-empresa.dto';
 
 import { Empresa } from './entities/empresa.entity';
 
+import { capitalizeTextos } from 'src/utils/capitalizeTextos';
 @Injectable()
 export class EmpresasService {
   constructor(
@@ -19,6 +20,11 @@ export class EmpresasService {
 
   async create(createEmpresaDto: CreateEmpresaDto): Promise<Empresa> {
     try {
+      createEmpresaDto.razon_social = capitalizeTextos(createEmpresaDto.razon_social);
+      createEmpresaDto.ubicacion = capitalizeTextos(createEmpresaDto.ubicacion);
+      createEmpresaDto.correo = createEmpresaDto.correo.toLowerCase();
+      createEmpresaDto.nit = createEmpresaDto.nit.toString().toUpperCase();
+
       const nuevaEmpresa = this.empresaRepository.create(
         createEmpresaDto,
       );
@@ -82,6 +88,10 @@ export class EmpresasService {
   async update(id: number, updateEmpresaDto: UpdateEmpresaDto): Promise<Empresa> {
     try {
       const existeEmpresa = await this.findOne(id);
+      updateEmpresaDto.razon_social = capitalizeTextos(updateEmpresaDto.razon_social);
+      updateEmpresaDto.ubicacion = capitalizeTextos(updateEmpresaDto.ubicacion);
+      updateEmpresaDto.correo = updateEmpresaDto.correo.toLowerCase();
+      updateEmpresaDto.nit = updateEmpresaDto.nit.toString().toUpperCase();
       // Fusionar los cambios del DTO de actualización con el objeto existente
       const actualizarEmpresa = this.empresaRepository.merge(existeEmpresa, updateEmpresaDto);
       // Guardar la empresa actualizada en la base de datos

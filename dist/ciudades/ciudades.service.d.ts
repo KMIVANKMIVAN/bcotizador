@@ -8,6 +8,7 @@ export declare class CiudadesService {
     createSemilla(createCiudadDto: CreateCiudadDto): Promise<Ciudad>;
     create(createCiudadDto: CreateCiudadDto): Promise<Ciudad>;
     findAll(): Promise<Ciudad[]>;
+    findAllClear(): Promise<Ciudad[]>;
     findOne(id: number): Promise<Ciudad>;
     update(id: number, updateCiudadDto: UpdateCiudadDto): Promise<Ciudad>;
     remove(id: number): Promise<any>;

@@ -17,13 +17,14 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const tipovidrio_entity_1 = require("./entities/tipovidrio.entity");
-tipovidrio_entity_1.Tipovidrio;
+const capitalizeTextos_1 = require("../../utils/capitalizeTextos");
 let TiposvidriosService = class TiposvidriosService {
     constructor(tipovidrioRepository) {
         this.tipovidrioRepository = tipovidrioRepository;
     }
     async createSemilla(createTipovidrioDto) {
         try {
+            createTipovidrioDto.tipovidrio = (0, capitalizeTextos_1.capitalizeTextos)(createTipovidrioDto.tipovidrio);
             const nuevoTipovidrio = this.tipovidrioRepository.create(createTipovidrioDto);
             return await this.tipovidrioRepository.save(nuevoTipovidrio);
         }
@@ -37,6 +38,7 @@ let TiposvidriosService = class TiposvidriosService {
     async create(createTipovidrioDto) {
         try {
             createTipovidrioDto.valor = Number(createTipovidrioDto.valor) * 1 / 100;
+            createTipovidrioDto.tipovidrio = (0, capitalizeTextos_1.capitalizeTextos)(createTipovidrioDto.tipovidrio);
             const nuevoTipovidrio = this.tipovidrioRepository.create(createTipovidrioDto);
             return await this.tipovidrioRepository.save(nuevoTipovidrio);
         }
@@ -55,6 +57,29 @@ let TiposvidriosService = class TiposvidriosService {
                     message: `No se encontraron tiposvidrios`,
                 });
             }
+            return tiposvidrios;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "tiposvidrios"`,
+                    error: `${error}`,
+                });
+            }
+        }
+    }
+    async findAllClear() {
+        try {
+            const tiposvidrios = await this.tipovidrioRepository.find();
+            if (!tiposvidrios || tiposvidrios.length === 0) {
+                throw new common_1.NotFoundException({
+                    message: `No se encontraron tiposvidrios`,
+                });
+            }
+            tiposvidrios.forEach((tipovidrio) => delete tipovidrio.valor);
             return tiposvidrios;
         }
         catch (error) {
@@ -94,6 +119,7 @@ let TiposvidriosService = class TiposvidriosService {
     async update(id, updateTipovidrioDto) {
         try {
             const existeTipovidrio = await this.findOne(id);
+            updateTipovidrioDto.tipovidrio = (0, capitalizeTextos_1.capitalizeTextos)(updateTipovidrioDto.tipovidrio);
             const actualizarTipovidrio = this.tipovidrioRepository.merge(existeTipovidrio, updateTipovidrioDto);
             return await this.tipovidrioRepository.save(actualizarTipovidrio);
         }

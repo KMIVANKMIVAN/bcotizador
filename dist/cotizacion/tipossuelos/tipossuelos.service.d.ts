@@ -8,6 +8,7 @@ export declare class TipossuelosService {
     createSemilla(createTiposueloDto: CreateTiposueloDto): Promise<Tiposuelo>;
     create(createTiposueloDto: CreateTiposueloDto): Promise<Tiposuelo>;
     findAll(): Promise<Tiposuelo[]>;
+    findAllClear(): Promise<Tiposuelo[]>;
     findOne(id: number): Promise<Tiposuelo>;
     update(id: number, updateTiposueloDto: UpdateTiposueloDto): Promise<Tiposuelo>;
     remove(id: number): Promise<any>;

@@ -10,7 +10,7 @@ import { UpdateCargoDto } from './dto/update-cargo.dto';
 
 import { Cargo } from './entities/cargo.entity';
 import { UnidadesService } from '../unidades/unidades.service';
-
+import { capitalizeTextos } from 'src/utils/capitalizeTextos';
 @Injectable()
 export class CargosService {
   constructor(
@@ -23,7 +23,8 @@ export class CargosService {
   async create(createCargoDto: CreateCargoDto): Promise<Cargo> {
     try {
       const buscarUnidades = await this.unidadesService.findOne(createCargoDto.unidad_id)
-
+      createCargoDto.cargo = capitalizeTextos(createCargoDto.cargo);
+      createCargoDto.descripcion = capitalizeTextos(createCargoDto.descripcion);
       const { unidad_id, ...cargoDatos } = createCargoDto;
 
       const nuevoCargo = this.cargoRepository.create({
@@ -50,7 +51,7 @@ export class CargosService {
       const cargos = await this.cargoRepository.find({ relations: ['unidad'] });
       if (!cargos || cargos.length === 0) {
         throw new NotFoundException({
-          
+
           message: `No se encontraron Cargos`,
         });
       }
@@ -76,7 +77,7 @@ export class CargosService {
       });
       if (!cargo) {
         throw new NotFoundException({
-          
+
           message: `Cargo con ID: ${id} no fue encontrada`,
         });
       }
@@ -97,10 +98,9 @@ export class CargosService {
   async update(id: number, updateCargoDto: UpdateCargoDto)
     : Promise<Cargo> {
     try {
-      console.log(updateCargoDto);
-      
       const existeCargo = await this.findOne(id);
-
+      updateCargoDto.cargo = capitalizeTextos(updateCargoDto.cargo);
+      updateCargoDto.descripcion = capitalizeTextos(updateCargoDto.descripcion);
       const buscarUnidad = await this.unidadesService.findOne(updateCargoDto.unidad_id);
 
       const actualizarCargo = await this.cargoRepository.preload({

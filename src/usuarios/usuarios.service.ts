@@ -15,7 +15,8 @@ import { Usuario } from './entities/usuario.entity';
 import { SucursalesService } from 'src/sucursales/sucursales.service';
 import { RolesService } from 'src/roles/roles.service';
 import { CargosService } from 'src/empresa/cargos/cargos.service';
-import { validate } from 'class-validator';
+
+import { capitalizeTextos } from 'src/utils/capitalizeTextos';
 @Injectable()
 export class UsuariosService {
   constructor(
@@ -34,6 +35,14 @@ export class UsuariosService {
       const existeSucursal = await this.sucursalesService.findOne(createUsuarioDto.sucursal_id);
 
       const existeCargo = await this.cargosService.findOne(createUsuarioDto.cargo_id);
+
+      createUsuarioDto.apellidos = capitalizeTextos(createUsuarioDto.apellidos);
+      if (createUsuarioDto.complemento) {
+        createUsuarioDto.complemento = createUsuarioDto.complemento.toUpperCase();
+      }
+      createUsuarioDto.nombres = capitalizeTextos(createUsuarioDto.nombres);
+      createUsuarioDto.ci = createUsuarioDto.ci.toString().toUpperCase();
+      createUsuarioDto.correo = createUsuarioDto.correo.toLowerCase();
 
       const hashedPassword = await bcrypt.hash(createUsuarioDto.contrasenia, 10);
 
@@ -61,6 +70,13 @@ export class UsuariosService {
 
   async create(createUsuarioDto: CreateUsuarioDto): Promise<Usuario> {
     try {
+      createUsuarioDto.apellidos = capitalizeTextos(createUsuarioDto.apellidos);
+      if (createUsuarioDto.complemento) {
+        createUsuarioDto.complemento = createUsuarioDto.complemento.toUpperCase();
+      }
+      createUsuarioDto.nombres = capitalizeTextos(createUsuarioDto.nombres);
+      createUsuarioDto.ci = createUsuarioDto.ci.toString().toUpperCase();
+      createUsuarioDto.correo = createUsuarioDto.correo.toLowerCase();
       // Verificar si el CI ya existe
       const existeCi = await this.usuarioRepository.findOne({ where: { ci: createUsuarioDto.ci } });
       if (existeCi) {
@@ -81,7 +97,7 @@ export class UsuariosService {
 
       const existeCargo = await this.cargosService.findOne(createUsuarioDto.cargo_id);
 
-      const hashedPassword = await bcrypt.hash(createUsuarioDto.contrasenia, 10);
+      const hashedPassword = await bcrypt.hash(createUsuarioDto.ci, 10);
 
       const usuario = this.usuarioRepository.create({
         ...createUsuarioDto,
@@ -99,6 +115,7 @@ export class UsuariosService {
         throw new InternalServerErrorException({
 
           message: `Error del Servidor. Revisar el metodo (create) de la ruta "usuarios"`,
+          // error: error,
           error: `${error}`,
         });
       }
@@ -232,28 +249,23 @@ export class UsuariosService {
   }
   async update(id: number, updateUsuarioDto: UpdateUsuarioDto): Promise<Usuario> {
     try {
-      console.log("updateUsuarioDto", updateUsuarioDto);
-
-      const existeUsuario = await this.usuarioRepository.findOne({ where: { id } });
-      if (!existeUsuario) {
-        throw new NotFoundException(`Usuario with ID ${id} not found`);
+      updateUsuarioDto.apellidos = capitalizeTextos(updateUsuarioDto.apellidos);
+      if (updateUsuarioDto.complemento) {
+        updateUsuarioDto.complemento = updateUsuarioDto.complemento.toUpperCase();
       }
-
+      updateUsuarioDto.nombres = capitalizeTextos(updateUsuarioDto.nombres);
+      updateUsuarioDto.ci = updateUsuarioDto.ci.toString().toUpperCase();
+      updateUsuarioDto.correo = updateUsuarioDto.correo.toLowerCase();
+      const existeUsuario = await this.findOne(id);
       const existeRoles = updateUsuarioDto.roles
         ? await this.rolesService.findByIds(updateUsuarioDto.roles)
         : existeUsuario.roles;
-      console.log("existeRoles", existeRoles);
-
       const existeSucursal = updateUsuarioDto.sucursal_id
         ? await this.sucursalesService.findOne(updateUsuarioDto.sucursal_id)
         : existeUsuario.sucursal;
-      console.log("existeSucursal", existeSucursal);
-
       const existeCargo = updateUsuarioDto.cargo_id
         ? await this.cargosService.findOne(updateUsuarioDto.cargo_id)
         : existeUsuario.cargo;
-      console.log("existeCargo", existeCargo);
-
       const usuarioToUpdate = {
         ...existeUsuario,
         ...updateUsuarioDto,
@@ -261,8 +273,6 @@ export class UsuariosService {
         sucursal: existeSucursal,
         cargo: existeCargo,
       };
-      console.log("usuarioToUpdate", usuarioToUpdate);
-
       return this.usuarioRepository.save(usuarioToUpdate);
     } catch (error) {
       if (error instanceof NotFoundException) {
@@ -275,116 +285,6 @@ export class UsuariosService {
       }
     }
   }
-
-  /* async update(id: number, updateUsuarioDto: UpdateUsuarioDto): Promise<Usuario> {
-    try {
-      console.log("updateUsuarioDto", updateUsuarioDto);
-      const existeUsuario = await this.findOne(id)
-
-      const existeRoles = await this.rolesService.findByIds(updateUsuarioDto.roles);
-      console.log("existeRoles", existeRoles);
-
-      const existeSucursal = await this.sucursalesService.findOne(updateUsuarioDto.sucursal_id);
-      console.log("existeSucursal", existeSucursal);
-
-      const existeCargo = await this.cargosService.findOne(updateUsuarioDto.cargo_id);
-      console.log("existeCargo", existeCargo);
-
-      const usuario = await this.usuarioRepository.preload({
-        id,
-        ...updateUsuarioDto,
-        roles: existeRoles,
-        sucursal: existeSucursal,
-        cargo: existeCargo
-      });
-      console.log("usuario", usuario);
-
-      return this.usuarioRepository.save(usuario);
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      } else {
-        throw new InternalServerErrorException({
-          message: `Error del Servidor. Revisar el metodo (update) de la ruta "usuarios"`,
-          error: `${error}`,
-        });
-      }
-    }
-  } */
-  /* async update(id: number, updateUsuarioDto: UpdateUsuarioDto): Promise<Usuario> {
-    try {
-      console.log("updateUsuarioDto", updateUsuarioDto);
-
-      const existeRoles = await this.rolesService.findByIds(updateUsuarioDto.roles);
-      console.log("existeRoles", existeRoles);
-
-      const existeSucursal = await this.sucursalesService.findOne(updateUsuarioDto.sucursal_id);
-      console.log("existeSucursal", existeSucursal);
-
-      const existeCargo = await this.cargosService.findOne(updateUsuarioDto.cargo_id);
-      console.log("existeCargo", existeCargo);
-
-      const usuario = await this.usuarioRepository.preload({
-        id,
-        ...updateUsuarioDto,
-        roles: existeRoles,
-        sucursal: existeSucursal,
-        cargo: existeCargo
-      });
-      console.log("usuario", usuario);
-
-      return this.usuarioRepository.save(usuario);
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      } else {
-        throw new InternalServerErrorException({
-          message: `Error del Servidor. Revisar el metodo (update) de la ruta "usuarios"`,
-          error: `${error}`,
-        });
-      }
-    }
-  } */
-  /* async update(id: number, updateUsuarioDto: UpdateUsuarioDto): Promise<Usuario> {
-    console.log("updateUsuarioDto", updateUsuarioDto);
-    try {
-      const usuario = await this.findOne(id);
-
-      if (updateUsuarioDto.roles) {
-        const roles = await this.rolesService.findByIds(updateUsuarioDto.roles);
-        console.log("roles", roles);
-        usuario.roles = roles;
-
-      }
-
-      if (updateUsuarioDto.sucursal_id) {
-        const sucursal = await this.sucursalesService.findOne(updateUsuarioDto.sucursal_id);
-        if (sucursal) {
-          usuario.sucursal = sucursal;
-        }
-      }
-
-      if (updateUsuarioDto.cargo_id) {
-        const cargo = await this.cargosService.findOne(updateUsuarioDto.cargo_id);
-        if (cargo) {
-          usuario.cargo = cargo;
-        }
-      }
-      console.log("usuario", usuario);
-
-      Object.assign(usuario, updateUsuarioDto);
-      return this.usuarioRepository.save(usuario);
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      } else {
-        throw new InternalServerErrorException({
-          message: `Error del Servidor. Revisar el metodo (update) de la ruta "usuarios"`,
-          error: `${error}`,
-        });
-      }
-    }
-  } */
 
   async updateContrasenia(
     id: number,

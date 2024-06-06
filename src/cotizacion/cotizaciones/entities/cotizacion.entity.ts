@@ -13,6 +13,7 @@ import { Tiposuelo } from 'src/cotizacion/tipossuelos/entities/tiposuelo.entity'
 import { Tipotecho } from 'src/cotizacion/tipostechos/entities/tipotecho.entity';
 import { Tipovidrio } from 'src/cotizacion/tiposvidrios/entities/tipovidrio.entity';
 import { Ciudadzona } from 'src/cotizacion/ciudadeszonas/entities/ciudadzona.entity';
+import { Tipocotizacion } from 'src/cotizacion/tiposcotizaciones/entities/tipocotizacion.entity';
 
 @Entity('cotizaciones')
 export class Cotizacion {
@@ -53,6 +54,9 @@ export class Cotizacion {
   @JoinColumn({ name: 'tipovidrio_id' })
   tipovidrio: Tipovidrio;
 
+  @ManyToOne(() => Tipocotizacion, (tipocotizacion) => tipocotizacion.cotizaciones)
+  @JoinColumn({ name: 'tipocotizacion_id' })
+  tipocotizacion: Tipocotizacion;
   /* @ManyToOne(() => , () => .cotizaciones)
   @JoinColumn({ name: '_id' })
   : ; */

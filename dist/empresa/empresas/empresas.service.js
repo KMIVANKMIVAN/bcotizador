@@ -17,12 +17,17 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const empresa_entity_1 = require("./entities/empresa.entity");
+const capitalizeTextos_1 = require("../../utils/capitalizeTextos");
 let EmpresasService = class EmpresasService {
     constructor(empresaRepository) {
         this.empresaRepository = empresaRepository;
     }
     async create(createEmpresaDto) {
         try {
+            createEmpresaDto.razon_social = (0, capitalizeTextos_1.capitalizeTextos)(createEmpresaDto.razon_social);
+            createEmpresaDto.ubicacion = (0, capitalizeTextos_1.capitalizeTextos)(createEmpresaDto.ubicacion);
+            createEmpresaDto.correo = createEmpresaDto.correo.toLowerCase();
+            createEmpresaDto.nit = createEmpresaDto.nit.toString().toUpperCase();
             const nuevaEmpresa = this.empresaRepository.create(createEmpresaDto);
             return await this.empresaRepository.save(nuevaEmpresa);
         }
@@ -80,6 +85,10 @@ let EmpresasService = class EmpresasService {
     async update(id, updateEmpresaDto) {
         try {
             const existeEmpresa = await this.findOne(id);
+            updateEmpresaDto.razon_social = (0, capitalizeTextos_1.capitalizeTextos)(updateEmpresaDto.razon_social);
+            updateEmpresaDto.ubicacion = (0, capitalizeTextos_1.capitalizeTextos)(updateEmpresaDto.ubicacion);
+            updateEmpresaDto.correo = updateEmpresaDto.correo.toLowerCase();
+            updateEmpresaDto.nit = updateEmpresaDto.nit.toString().toUpperCase();
             const actualizarEmpresa = this.empresaRepository.merge(existeEmpresa, updateEmpresaDto);
             return await this.empresaRepository.save(actualizarEmpresa);
         }

@@ -10,7 +10,7 @@ import { UpdateDireccioneDto } from './dto/update-direccion.dto';
 import { Direccion } from './entities/direccion.entity';
 
 import { EmpresasService } from '../empresas/empresas.service';
-
+import { capitalizeTextos } from 'src/utils/capitalizeTextos';
 @Injectable()
 export class DireccionesService {
   constructor(
@@ -23,7 +23,8 @@ export class DireccionesService {
   async create(createDireccioneDto: CreateDireccioneDto): Promise<Direccion> {
     try {
       const buscarEmpresa = await this.empresasService.findOne(createDireccioneDto.empresa_id)
-
+      createDireccioneDto.direccion = capitalizeTextos(createDireccioneDto.direccion);
+      createDireccioneDto.descripcion = capitalizeTextos(createDireccioneDto.descripcion);
       const { empresa_id, ...direccionDatos } = createDireccioneDto; // propagar los datos de direccion
 
       const nuevaDieccion = this.direccioneRepository.create({
@@ -98,7 +99,8 @@ export class DireccionesService {
     : Promise<Direccion> {
     try {
       const existeDireccion = await this.findOne(id);
-
+      updateDireccioneDto.direccion = capitalizeTextos(updateDireccioneDto.direccion);
+      updateDireccioneDto.descripcion = capitalizeTextos(updateDireccioneDto.descripcion);
       const buscarEmpresa = await this.empresasService.findOne(updateDireccioneDto.empresa_id);
 
       const actualizarDireccion = await this.direccioneRepository.preload({

@@ -9,6 +9,7 @@ import { CreateCiudadDto } from './dto/create-ciudad.dto';
 import { UpdateCiudadDto } from './dto/update-ciudad.dto';
 import { Ciudad } from './entities/ciudad.entity';
 
+import { capitalizeTextos } from 'src/utils/capitalizeTextos';
 @Injectable()
 export class CiudadesService {
   constructor(
@@ -18,8 +19,7 @@ export class CiudadesService {
 
   async createSemilla(createCiudadDto: CreateCiudadDto): Promise<Ciudad> {
     try {
-      // console.log("createCiudadDto", createCiudadDto);
-
+      createCiudadDto.ciudad = capitalizeTextos(createCiudadDto.ciudad);
       const nuevaCiudad = this.ciudadRepository.create(createCiudadDto);
       return await this.ciudadRepository.save(nuevaCiudad);
     } catch (error) {
@@ -33,12 +33,10 @@ export class CiudadesService {
   }
   async create(createCiudadDto: CreateCiudadDto): Promise<Ciudad> {
     try {
-      console.log("createCiudadDto", createCiudadDto);
-
       // Convierte el valor a número y realiza el cálculo
       createCiudadDto.valor = Number(createCiudadDto.valor) * 1 / 100;
 
-      console.log("createCiudadDto.valor", createCiudadDto.valor);
+      createCiudadDto.ciudad = capitalizeTextos(createCiudadDto.ciudad);
 
       // Crea la entidad Ciudad
       const nuevaCiudad = this.ciudadRepository.create(createCiudadDto);
@@ -64,6 +62,29 @@ export class CiudadesService {
           message: `No se encontraron ciudades`,
         });
       }
+      return ciudades;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+
+          message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "ciudades"`,
+          error: `${error}`,
+        });
+      }
+    }
+  }
+
+  async findAllClear(): Promise<Ciudad[]> {
+    try {
+      const ciudades = await this.ciudadRepository.find();
+      if (!ciudades || ciudades.length === 0) {
+        throw new NotFoundException({
+          message: `No se encontraron ciudades`,
+        });
+      }
+      ciudades.forEach((ciudad) => delete ciudad.valor);
       return ciudades;
     } catch (error) {
       if (error instanceof NotFoundException) {
@@ -104,9 +125,10 @@ export class CiudadesService {
   async update(id: number, updateCiudadDto: UpdateCiudadDto): Promise<Ciudad> {
     try {
       const existeCiudad = await this.findOne(id);
-
-      return await this.ciudadRepository.save(updateCiudadDto);
-
+      // Aplica la función capitalizeTextos antes de hacer el merge
+      updateCiudadDto.ciudad = capitalizeTextos(updateCiudadDto.ciudad);
+      const actualizarCiudad = this.ciudadRepository.merge(existeCiudad, updateCiudadDto);
+      return await this.ciudadRepository.save(actualizarCiudad);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw error;

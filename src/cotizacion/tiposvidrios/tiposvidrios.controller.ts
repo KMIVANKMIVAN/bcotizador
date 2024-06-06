@@ -17,6 +17,11 @@ export class TiposvidriosController {
     return this.tiposvidriosService.findAll();
   }
 
+  @Get('svc')
+  findAllClear() {
+    return this.tiposvidriosService.findAllClear();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.tiposvidriosService.findOne(+id);

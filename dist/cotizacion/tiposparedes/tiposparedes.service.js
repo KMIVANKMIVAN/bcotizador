@@ -17,12 +17,14 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const tipopared_entity_1 = require("./entities/tipopared.entity");
+const capitalizeTextos_1 = require("../../utils/capitalizeTextos");
 let TiposparedesService = class TiposparedesService {
     constructor(nivelpisoRepository) {
         this.nivelpisoRepository = nivelpisoRepository;
     }
     async createSemilla(createTipoparedDto) {
         try {
+            createTipoparedDto.tipopared = (0, capitalizeTextos_1.capitalizeTextos)(createTipoparedDto.tipopared);
             const nuevoTipopared = this.nivelpisoRepository.create(createTipoparedDto);
             return await this.nivelpisoRepository.save(nuevoTipopared);
         }
@@ -36,6 +38,7 @@ let TiposparedesService = class TiposparedesService {
     async create(createTipoparedDto) {
         try {
             createTipoparedDto.valor = Number(createTipoparedDto.valor) * 1 / 100;
+            createTipoparedDto.tipopared = (0, capitalizeTextos_1.capitalizeTextos)(createTipoparedDto.tipopared);
             const nuevoTipopared = this.nivelpisoRepository.create(createTipoparedDto);
             return await this.nivelpisoRepository.save(nuevoTipopared);
         }
@@ -54,6 +57,29 @@ let TiposparedesService = class TiposparedesService {
                     message: `No se encontraron tiposparedes`,
                 });
             }
+            return tiposparedes;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "tiposparedes"`,
+                    error: `${error}`,
+                });
+            }
+        }
+    }
+    async findAllClear() {
+        try {
+            const tiposparedes = await this.nivelpisoRepository.find();
+            if (!tiposparedes || tiposparedes.length === 0) {
+                throw new common_1.NotFoundException({
+                    message: `No se encontraron tiposparedes`,
+                });
+            }
+            tiposparedes.forEach((tipopared) => delete tipopared.valor);
             return tiposparedes;
         }
         catch (error) {
@@ -93,6 +119,7 @@ let TiposparedesService = class TiposparedesService {
     async update(id, updateTipoparedDto) {
         try {
             const existeTipopared = await this.findOne(id);
+            updateTipoparedDto.tipopared = (0, capitalizeTextos_1.capitalizeTextos)(updateTipoparedDto.tipopared);
             const actualizarTipopared = this.nivelpisoRepository.merge(existeTipopared, updateTipoparedDto);
             return await this.nivelpisoRepository.save(actualizarTipopared);
         }

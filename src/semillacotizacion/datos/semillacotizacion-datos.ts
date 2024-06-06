@@ -170,6 +170,20 @@ export const SEMILLA_TIPOVIDRIO = [
     valor: 0.2,
   }, */
 ];
+export const SEMILLA_TIPOCOTIZACION = [
+  {
+    tipocotizacion: 'Radiadores',
+  },
+  {
+    tipocotizacion: 'Piso Radiante',
+  },
+  {
+    tipocotizacion: 'Fancoil',
+  },
+  /* {
+    tipocotizacion: '',
+  }, */
+];
 /* export const SEMILLA_ = [
   {
     : '',

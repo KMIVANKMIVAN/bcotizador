@@ -11,7 +11,7 @@ import { UpdateUnidadeDto } from './dto/update-unidade.dto';
 import { Unidad } from './entities/unidade.entity';
 
 import { DireccionesService } from '../direcciones/direcciones.service';
-
+import { capitalizeTextos } from 'src/utils/capitalizeTextos';
 @Injectable()
 export class UnidadesService {
   constructor(
@@ -24,6 +24,8 @@ export class UnidadesService {
   async create(createUnidadeDto: CreateUnidadeDto): Promise<Unidad> {
     try {
       const buscarDireccion = await this.direccionesService.findOne(createUnidadeDto.direccion_id)
+      createUnidadeDto.unidad = capitalizeTextos(createUnidadeDto.unidad);
+      createUnidadeDto.descripcion = capitalizeTextos(createUnidadeDto.descripcion);
 
       const { direccion_id, ...unidadDatos } = createUnidadeDto; // propagar los datos de direccion
 
@@ -38,7 +40,7 @@ export class UnidadesService {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          
+
           message: `Error del Servidor. Revisar el metodo (create) de la ruta "unidades"`,
           error: `${error}`,
         });
@@ -51,7 +53,7 @@ export class UnidadesService {
       const unidades = await this.unidadRepository.find({ relations: ['direccion'] });
       if (!unidades || unidades.length === 0) {
         throw new NotFoundException({
-          
+
           message: `No se encontraron Unidades`,
         });
       }
@@ -61,7 +63,7 @@ export class UnidadesService {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          
+
           message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "unidades"`,
           error: `${error}`,
         });
@@ -77,7 +79,7 @@ export class UnidadesService {
       });
       if (!unidad) {
         throw new NotFoundException({
-          
+
           message: `Unidad con ID: ${id} no fue encontrada`,
         });
       }
@@ -87,7 +89,7 @@ export class UnidadesService {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          
+
           message: `Error del Servidor. Revisar el metodo (findOne) de la ruta "unidades"`,
           error: `${error}`,
         });
@@ -99,7 +101,8 @@ export class UnidadesService {
     : Promise<Unidad> {
     try {
       const existeUnidad = await this.findOne(id);
-
+      updateUnidadeDto.unidad = capitalizeTextos(updateUnidadeDto.unidad);
+      updateUnidadeDto.descripcion = capitalizeTextos(updateUnidadeDto.descripcion);
       const buscarDireccion = await this.direccionesService.findOne(updateUnidadeDto.direccion_id);
 
       const actualizarUnidad = await this.unidadRepository.preload({
@@ -114,7 +117,7 @@ export class UnidadesService {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          
+
           message: `Error del Servidor. Revisar el metodo (update) de la ruta "unidades"`,
           error: `${error}`,
         });
@@ -135,7 +138,7 @@ export class UnidadesService {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          
+
           message: `Error del Servidor. Revisar el metodo (remove) de la ruta "unidades"`,
           error: `${error}`,
         });

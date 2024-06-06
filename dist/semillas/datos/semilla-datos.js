@@ -57,13 +57,13 @@ exports.SEMILLA_SUCURSAL = [
 ];
 exports.SEMILLA_ROLES = [
     {
-        rol: 'ADMINISTRADOR',
+        rol: 'Administrador',
     },
     {
-        rol: 'SUB ADMINISTRADOR',
+        rol: 'Sub Administrador',
     },
     {
-        rol: 'USUARIO',
+        rol: 'Usuario',
     },
 ];
 exports.SEMILLA_USUARIOS = [

@@ -8,7 +8,7 @@ import { Repository } from 'typeorm';
 import { CreateTiposueloDto } from './dto/create-tiposuelo.dto';
 import { UpdateTiposueloDto } from './dto/update-tiposuelo.dto';
 import { Tiposuelo } from './entities/tiposuelo.entity';
-
+import { capitalizeTextos } from 'src/utils/capitalizeTextos';
 @Injectable()
 export class TipossuelosService {
   constructor(
@@ -18,6 +18,7 @@ export class TipossuelosService {
 
   async createSemilla(createTiposueloDto: CreateTiposueloDto): Promise<Tiposuelo> {
     try {
+      createTiposueloDto.tiposuelo = capitalizeTextos(createTiposueloDto.tiposuelo);
       const nuevoTiposuelo = this.tiposueloRepository.create(
         createTiposueloDto,
       );
@@ -33,7 +34,8 @@ export class TipossuelosService {
   }
   async create(createTiposueloDto: CreateTiposueloDto): Promise<Tiposuelo> {
     try {
-      createTiposueloDto.valor = Number(createTiposueloDto.valor) * 1/100;
+      createTiposueloDto.valor = Number(createTiposueloDto.valor) * 1 / 100;
+      createTiposueloDto.tiposuelo = capitalizeTextos(createTiposueloDto.tiposuelo);
       const nuevoTiposuelo = this.tiposueloRepository.create(
         createTiposueloDto,
       );
@@ -57,6 +59,29 @@ export class TipossuelosService {
           message: `No se encontraron tipossuelos`,
         });
       }
+      return tipossuelos;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+
+          message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "tipossuelos"`,
+          error: `${error}`,
+        });
+      }
+    }
+  }
+
+  async findAllClear(): Promise<Tiposuelo[]> {
+    try {
+      const tipossuelos = await this.tiposueloRepository.find();
+      if (!tipossuelos || tipossuelos.length === 0) {
+        throw new NotFoundException({
+          message: `No se encontraron tipossuelos`,
+        });
+      }
+      tipossuelos.forEach((tiposuelo) => delete tiposuelo.valor);
       return tipossuelos;
     } catch (error) {
       if (error instanceof NotFoundException) {
@@ -97,16 +122,14 @@ export class TipossuelosService {
   async update(id: number, updateTiposueloDto: UpdateTiposueloDto): Promise<Tiposuelo> {
     try {
       const existeTiposuelo = await this.findOne(id);
+      updateTiposueloDto.tiposuelo = capitalizeTextos(updateTiposueloDto.tiposuelo);
       const actualizarTiposuelo = this.tiposueloRepository.merge(existeTiposuelo, updateTiposueloDto);
-
       return await this.tiposueloRepository.save(actualizarTiposuelo);
-
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
-
           message: `Error del Servidor. Revisar el metodo (update) de la ruta "tipossuelos"`,
           error: `${error}`,
         });

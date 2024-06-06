@@ -18,6 +18,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const sucursal_entity_1 = require("./entities/sucursal.entity");
 const ciudades_service_1 = require("../ciudades/ciudades.service");
+const capitalizeTextos_1 = require("../utils/capitalizeTextos");
 let SucursalesService = class SucursalesService {
     constructor(sucursaleRepository, ciudadesService) {
         this.sucursaleRepository = sucursaleRepository;
@@ -25,8 +26,9 @@ let SucursalesService = class SucursalesService {
     }
     async create(createSucursaleDto) {
         try {
-            console.log("createSucursaleDto", createSucursaleDto);
             const buscarCiudad = await this.ciudadesService.findOne(createSucursaleDto.ciudad_id);
+            createSucursaleDto.sucursal = (0, capitalizeTextos_1.capitalizeTextos)(createSucursaleDto.sucursal);
+            createSucursaleDto.ubicacion = (0, capitalizeTextos_1.capitalizeTextos)(createSucursaleDto.ubicacion);
             const { ciudad_id, ...sucursalDatos } = createSucursaleDto;
             const nuevaUnidad = this.sucursaleRepository.create({
                 ...sucursalDatos,
@@ -94,8 +96,9 @@ let SucursalesService = class SucursalesService {
     }
     async update(id, updateSucursaleDto) {
         try {
-            console.log("updateSucursaleDto", updateSucursaleDto);
             const existeSucursal = await this.findOne(id);
+            updateSucursaleDto.sucursal = (0, capitalizeTextos_1.capitalizeTextos)(updateSucursaleDto.sucursal);
+            updateSucursaleDto.ubicacion = (0, capitalizeTextos_1.capitalizeTextos)(updateSucursaleDto.ubicacion);
             const buscarCiudad = await this.ciudadesService.findOne(updateSucursaleDto.ciudad_id);
             const actualizarSucursal = await this.sucursaleRepository.preload({
                 id,

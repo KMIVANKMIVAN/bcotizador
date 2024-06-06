@@ -18,6 +18,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const cargo_entity_1 = require("./entities/cargo.entity");
 const unidades_service_1 = require("../unidades/unidades.service");
+const capitalizeTextos_1 = require("../../utils/capitalizeTextos");
 let CargosService = class CargosService {
     constructor(cargoRepository, unidadesService) {
         this.cargoRepository = cargoRepository;
@@ -26,6 +27,8 @@ let CargosService = class CargosService {
     async create(createCargoDto) {
         try {
             const buscarUnidades = await this.unidadesService.findOne(createCargoDto.unidad_id);
+            createCargoDto.cargo = (0, capitalizeTextos_1.capitalizeTextos)(createCargoDto.cargo);
+            createCargoDto.descripcion = (0, capitalizeTextos_1.capitalizeTextos)(createCargoDto.descripcion);
             const { unidad_id, ...cargoDatos } = createCargoDto;
             const nuevoCargo = this.cargoRepository.create({
                 ...cargoDatos,
@@ -97,8 +100,9 @@ let CargosService = class CargosService {
     }
     async update(id, updateCargoDto) {
         try {
-            console.log(updateCargoDto);
             const existeCargo = await this.findOne(id);
+            updateCargoDto.cargo = (0, capitalizeTextos_1.capitalizeTextos)(updateCargoDto.cargo);
+            updateCargoDto.descripcion = (0, capitalizeTextos_1.capitalizeTextos)(updateCargoDto.descripcion);
             const buscarUnidad = await this.unidadesService.findOne(updateCargoDto.unidad_id);
             const actualizarCargo = await this.cargoRepository.preload({
                 id,

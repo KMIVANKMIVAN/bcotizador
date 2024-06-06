@@ -27,6 +27,9 @@ let TipostechosController = class TipostechosController {
     findAll() {
         return this.tipostechosService.findAll();
     }
+    findAllClear() {
+        return this.tipostechosService.findAllClear();
+    }
     findOne(id) {
         return this.tipostechosService.findOne(+id);
     }
@@ -51,6 +54,12 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], TipostechosController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('svc'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], TipostechosController.prototype, "findAllClear", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),

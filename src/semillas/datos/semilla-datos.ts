@@ -55,13 +55,13 @@ export const SEMILLA_SUCURSAL = [
 ];
 export const SEMILLA_ROLES = [
   {
-    rol: 'ADMINISTRADOR',
+    rol: 'Administrador',
   },
   {
-    rol: 'SUB ADMINISTRADOR',
+    rol: 'Sub Administrador',
   },
   {
-    rol: 'USUARIO',
+    rol: 'Usuario',
   },
 ];
 export const SEMILLA_USUARIOS = [

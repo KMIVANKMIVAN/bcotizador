@@ -17,12 +17,14 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const orientacion_entity_1 = require("./entities/orientacion.entity");
+const capitalizeTextos_1 = require("../../utils/capitalizeTextos");
 let OrientacionesService = class OrientacionesService {
     constructor(orientacionRepository) {
         this.orientacionRepository = orientacionRepository;
     }
     async createSemilla(createOrientacionDto) {
         try {
+            createOrientacionDto.orientacion = (0, capitalizeTextos_1.capitalizeTextos)(createOrientacionDto.orientacion);
             const nuevaOrientacion = this.orientacionRepository.create(createOrientacionDto);
             return await this.orientacionRepository.save(nuevaOrientacion);
         }
@@ -36,6 +38,7 @@ let OrientacionesService = class OrientacionesService {
     async create(createOrientacionDto) {
         try {
             createOrientacionDto.valor = Number(createOrientacionDto.valor) * 1 / 100;
+            createOrientacionDto.orientacion = (0, capitalizeTextos_1.capitalizeTextos)(createOrientacionDto.orientacion);
             const nuevaOrientacion = this.orientacionRepository.create(createOrientacionDto);
             return await this.orientacionRepository.save(nuevaOrientacion);
         }
@@ -54,6 +57,29 @@ let OrientacionesService = class OrientacionesService {
                     message: `No se encontraron orientaciones`,
                 });
             }
+            return orientaciones;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "orientaciones"`,
+                    error: `${error}`,
+                });
+            }
+        }
+    }
+    async findAllClear() {
+        try {
+            const orientaciones = await this.orientacionRepository.find();
+            if (!orientaciones || orientaciones.length === 0) {
+                throw new common_1.NotFoundException({
+                    message: `No se encontraron orientaciones`,
+                });
+            }
+            orientaciones.forEach((orientacion) => delete orientacion.valor);
             return orientaciones;
         }
         catch (error) {
@@ -93,6 +119,7 @@ let OrientacionesService = class OrientacionesService {
     async update(id, updateOrientacionDto) {
         try {
             const existeOrientacion = await this.findOne(id);
+            updateOrientacionDto.orientacion = (0, capitalizeTextos_1.capitalizeTextos)(updateOrientacionDto.orientacion);
             const actualizarOrientacion = this.orientacionRepository.merge(existeOrientacion, updateOrientacionDto);
             return await this.orientacionRepository.save(actualizarOrientacion);
         }

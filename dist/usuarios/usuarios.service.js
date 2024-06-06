@@ -21,6 +21,7 @@ const usuario_entity_1 = require("./entities/usuario.entity");
 const sucursales_service_1 = require("../sucursales/sucursales.service");
 const roles_service_1 = require("../roles/roles.service");
 const cargos_service_1 = require("../empresa/cargos/cargos.service");
+const capitalizeTextos_1 = require("../utils/capitalizeTextos");
 let UsuariosService = class UsuariosService {
     constructor(usuarioRepository, rolesService, sucursalesService, cargosService) {
         this.usuarioRepository = usuarioRepository;
@@ -33,6 +34,13 @@ let UsuariosService = class UsuariosService {
             const existeRoles = await this.rolesService.findByIds(createUsuarioDto.roles);
             const existeSucursal = await this.sucursalesService.findOne(createUsuarioDto.sucursal_id);
             const existeCargo = await this.cargosService.findOne(createUsuarioDto.cargo_id);
+            createUsuarioDto.apellidos = (0, capitalizeTextos_1.capitalizeTextos)(createUsuarioDto.apellidos);
+            if (createUsuarioDto.complemento) {
+                createUsuarioDto.complemento = createUsuarioDto.complemento.toUpperCase();
+            }
+            createUsuarioDto.nombres = (0, capitalizeTextos_1.capitalizeTextos)(createUsuarioDto.nombres);
+            createUsuarioDto.ci = createUsuarioDto.ci.toString().toUpperCase();
+            createUsuarioDto.correo = createUsuarioDto.correo.toLowerCase();
             const hashedPassword = await bcrypt.hash(createUsuarioDto.contrasenia, 10);
             const usuario = this.usuarioRepository.create({
                 ...createUsuarioDto,
@@ -57,6 +65,13 @@ let UsuariosService = class UsuariosService {
     }
     async create(createUsuarioDto) {
         try {
+            createUsuarioDto.apellidos = (0, capitalizeTextos_1.capitalizeTextos)(createUsuarioDto.apellidos);
+            if (createUsuarioDto.complemento) {
+                createUsuarioDto.complemento = createUsuarioDto.complemento.toUpperCase();
+            }
+            createUsuarioDto.nombres = (0, capitalizeTextos_1.capitalizeTextos)(createUsuarioDto.nombres);
+            createUsuarioDto.ci = createUsuarioDto.ci.toString().toUpperCase();
+            createUsuarioDto.correo = createUsuarioDto.correo.toLowerCase();
             const existeCi = await this.usuarioRepository.findOne({ where: { ci: createUsuarioDto.ci } });
             if (existeCi) {
                 throw new common_1.BadRequestException({
@@ -72,7 +87,7 @@ let UsuariosService = class UsuariosService {
             const existeRoles = await this.rolesService.findByIds(createUsuarioDto.roles);
             const existeSucursal = await this.sucursalesService.findOne(createUsuarioDto.sucursal_id);
             const existeCargo = await this.cargosService.findOne(createUsuarioDto.cargo_id);
-            const hashedPassword = await bcrypt.hash(createUsuarioDto.contrasenia, 10);
+            const hashedPassword = await bcrypt.hash(createUsuarioDto.ci, 10);
             const usuario = this.usuarioRepository.create({
                 ...createUsuarioDto,
                 contrasenia: hashedPassword,
@@ -219,23 +234,23 @@ let UsuariosService = class UsuariosService {
     }
     async update(id, updateUsuarioDto) {
         try {
-            console.log("updateUsuarioDto", updateUsuarioDto);
-            const existeUsuario = await this.usuarioRepository.findOne({ where: { id } });
-            if (!existeUsuario) {
-                throw new common_1.NotFoundException(`Usuario with ID ${id} not found`);
+            updateUsuarioDto.apellidos = (0, capitalizeTextos_1.capitalizeTextos)(updateUsuarioDto.apellidos);
+            if (updateUsuarioDto.complemento) {
+                updateUsuarioDto.complemento = updateUsuarioDto.complemento.toUpperCase();
             }
+            updateUsuarioDto.nombres = (0, capitalizeTextos_1.capitalizeTextos)(updateUsuarioDto.nombres);
+            updateUsuarioDto.ci = updateUsuarioDto.ci.toString().toUpperCase();
+            updateUsuarioDto.correo = updateUsuarioDto.correo.toLowerCase();
+            const existeUsuario = await this.findOne(id);
             const existeRoles = updateUsuarioDto.roles
                 ? await this.rolesService.findByIds(updateUsuarioDto.roles)
                 : existeUsuario.roles;
-            console.log("existeRoles", existeRoles);
             const existeSucursal = updateUsuarioDto.sucursal_id
                 ? await this.sucursalesService.findOne(updateUsuarioDto.sucursal_id)
                 : existeUsuario.sucursal;
-            console.log("existeSucursal", existeSucursal);
             const existeCargo = updateUsuarioDto.cargo_id
                 ? await this.cargosService.findOne(updateUsuarioDto.cargo_id)
                 : existeUsuario.cargo;
-            console.log("existeCargo", existeCargo);
             const usuarioToUpdate = {
                 ...existeUsuario,
                 ...updateUsuarioDto,
@@ -243,7 +258,6 @@ let UsuariosService = class UsuariosService {
                 sucursal: existeSucursal,
                 cargo: existeCargo,
             };
-            console.log("usuarioToUpdate", usuarioToUpdate);
             return this.usuarioRepository.save(usuarioToUpdate);
         }
         catch (error) {

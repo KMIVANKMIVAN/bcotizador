@@ -17,6 +17,11 @@ export class CiudadesController {
     return this.ciudadesService.findAll();
   }
 
+  @Get('svc')
+  findAllClear() {
+    return this.ciudadesService.findAllClear();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.ciudadesService.findOne(+id);

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SEMILLA_TIPOVIDRIO = exports.SEMILLA_TIPOTECHO = exports.SEMILLA_TIPOSUELO = exports.SEMILLA_TIPOPARED = exports.SEMILLA_ORIENTACION = exports.SEMILLA_NIVELPISO = exports.SEMILLA_CIUDADZONA = void 0;
+exports.SEMILLA_TIPOCOTIZACION = exports.SEMILLA_TIPOVIDRIO = exports.SEMILLA_TIPOTECHO = exports.SEMILLA_TIPOSUELO = exports.SEMILLA_TIPOPARED = exports.SEMILLA_ORIENTACION = exports.SEMILLA_NIVELPISO = exports.SEMILLA_CIUDADZONA = void 0;
 exports.SEMILLA_CIUDADZONA = [
     {
         ciudadzona: 'calacoto',
@@ -150,6 +150,17 @@ exports.SEMILLA_TIPOVIDRIO = [
     {
         tipovidrio: 'vidrio pvc',
         valor: 0.2,
+    },
+];
+exports.SEMILLA_TIPOCOTIZACION = [
+    {
+        tipocotizacion: 'Radiadores',
+    },
+    {
+        tipocotizacion: 'Piso Radiante',
+    },
+    {
+        tipocotizacion: 'Fancoil',
     },
 ];
 //# sourceMappingURL=semillacotizacion-datos.js.map

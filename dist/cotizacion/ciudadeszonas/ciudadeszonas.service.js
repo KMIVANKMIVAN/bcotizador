@@ -18,6 +18,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const ciudadzona_entity_1 = require("./entities/ciudadzona.entity");
 const ciudades_service_1 = require("../../ciudades/ciudades.service");
+const capitalizeTextos_1 = require("../../utils/capitalizeTextos");
 let CiudadeszonasService = class CiudadeszonasService {
     constructor(ciudadzonaRepository, ciudadesService) {
         this.ciudadzonaRepository = ciudadzonaRepository;
@@ -25,8 +26,8 @@ let CiudadeszonasService = class CiudadeszonasService {
     }
     async createSemilla(createCiudadzonaDto) {
         try {
-            console.log("createCiudadzonaDto", createCiudadzonaDto);
             const buscarCiudad = await this.ciudadesService.findOne(createCiudadzonaDto.ciudad_id);
+            createCiudadzonaDto.ciudadzona = (0, capitalizeTextos_1.capitalizeTextos)(createCiudadzonaDto.ciudadzona);
             const { ciudad_id, ...ciudadzonaDatos } = createCiudadzonaDto;
             const nuevaCiudadzona = this.ciudadzonaRepository.create({
                 ...ciudadzonaDatos,
@@ -43,8 +44,14 @@ let CiudadeszonasService = class CiudadeszonasService {
     }
     async create(createCiudadzonaDto) {
         try {
+            const buscarCiudad = await this.ciudadesService.findOne(createCiudadzonaDto.ciudad_id);
             createCiudadzonaDto.valor = Number(createCiudadzonaDto.valor) * 1 / 100;
-            const nuevaCiudadzona = this.ciudadzonaRepository.create(createCiudadzonaDto);
+            createCiudadzonaDto.ciudadzona = (0, capitalizeTextos_1.capitalizeTextos)(createCiudadzonaDto.ciudadzona);
+            const { ciudad_id, ...ciudadzonaDatos } = createCiudadzonaDto;
+            const nuevaCiudadzona = this.ciudadzonaRepository.create({
+                ...ciudadzonaDatos,
+                ciudad: buscarCiudad,
+            });
             return await this.ciudadzonaRepository.save(nuevaCiudadzona);
         }
         catch (error) {
@@ -62,6 +69,29 @@ let CiudadeszonasService = class CiudadeszonasService {
                     message: `No se encontraron ciudadeszonas`,
                 });
             }
+            return ciudadeszonas;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "ciudadeszonas"`,
+                    error: `${error}`,
+                });
+            }
+        }
+    }
+    async findAllClear() {
+        try {
+            const ciudadeszonas = await this.ciudadzonaRepository.find();
+            if (!ciudadeszonas || ciudadeszonas.length === 0) {
+                throw new common_1.NotFoundException({
+                    message: `No se encontraron ciudadeszonas`,
+                });
+            }
+            ciudadeszonas.forEach((coiudadzona) => delete coiudadzona.valor);
             return ciudadeszonas;
         }
         catch (error) {
@@ -100,12 +130,12 @@ let CiudadeszonasService = class CiudadeszonasService {
     }
     async update(id, updateCiudadzonaDto) {
         try {
-            console.log("updateCiudadzonaDto", updateCiudadzonaDto);
             const existeCiudadzona = await this.findOne(id);
             const buscarCiudad = await this.ciudadesService.findOne(updateCiudadzonaDto.ciudad_id);
+            updateCiudadzonaDto.ciudadzona = (0, capitalizeTextos_1.capitalizeTextos)(updateCiudadzonaDto.ciudadzona);
             const actualizarCiudadzona = await this.ciudadzonaRepository.preload({
                 id,
-                ...updateCiudadzonaDto
+                ...updateCiudadzonaDto,
             });
             actualizarCiudadzona.ciudad = buscarCiudad;
             return await this.ciudadzonaRepository.save(actualizarCiudadzona);

@@ -17,6 +17,11 @@ export class TipostechosController {
     return this.tipostechosService.findAll();
   }
 
+  @Get('svc')
+  findAllClear() {
+    return this.tipostechosService.findAllClear();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.tipostechosService.findOne(+id);

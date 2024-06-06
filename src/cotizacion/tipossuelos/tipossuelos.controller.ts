@@ -17,6 +17,11 @@ export class TipossuelosController {
     return this.tipossuelosService.findAll();
   }
 
+  @Get('svc')
+  findAllClear() {
+    return this.tipossuelosService.findAllClear();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.tipossuelosService.findOne(+id);

@@ -18,6 +18,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const direccion_entity_1 = require("./entities/direccion.entity");
 const empresas_service_1 = require("../empresas/empresas.service");
+const capitalizeTextos_1 = require("../../utils/capitalizeTextos");
 let DireccionesService = class DireccionesService {
     constructor(direccioneRepository, empresasService) {
         this.direccioneRepository = direccioneRepository;
@@ -26,6 +27,8 @@ let DireccionesService = class DireccionesService {
     async create(createDireccioneDto) {
         try {
             const buscarEmpresa = await this.empresasService.findOne(createDireccioneDto.empresa_id);
+            createDireccioneDto.direccion = (0, capitalizeTextos_1.capitalizeTextos)(createDireccioneDto.direccion);
+            createDireccioneDto.descripcion = (0, capitalizeTextos_1.capitalizeTextos)(createDireccioneDto.descripcion);
             const { empresa_id, ...direccionDatos } = createDireccioneDto;
             const nuevaDieccion = this.direccioneRepository.create({
                 ...direccionDatos,
@@ -95,6 +98,8 @@ let DireccionesService = class DireccionesService {
     async update(id, updateDireccioneDto) {
         try {
             const existeDireccion = await this.findOne(id);
+            updateDireccioneDto.direccion = (0, capitalizeTextos_1.capitalizeTextos)(updateDireccioneDto.direccion);
+            updateDireccioneDto.descripcion = (0, capitalizeTextos_1.capitalizeTextos)(updateDireccioneDto.descripcion);
             const buscarEmpresa = await this.empresasService.findOne(updateDireccioneDto.empresa_id);
             const actualizarDireccion = await this.direccioneRepository.preload({
                 id,

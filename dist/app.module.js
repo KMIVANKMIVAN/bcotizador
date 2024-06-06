@@ -30,6 +30,7 @@ const tiposuelo_entity_1 = require("./cotizacion/tipossuelos/entities/tiposuelo.
 const tipotecho_entity_1 = require("./cotizacion/tipostechos/entities/tipotecho.entity");
 const orientacion_entity_1 = require("./cotizacion/orientaciones/entities/orientacion.entity");
 const tipovidrio_entity_1 = require("./cotizacion/tiposvidrios/entities/tipovidrio.entity");
+const tipocotizacion_entity_1 = require("./cotizacion/tiposcotizaciones/entities/tipocotizacion.entity");
 const auth_module_1 = require("./auth/auth.module");
 const empresas_module_1 = require("./empresa/empresas/empresas.module");
 const direcciones_module_1 = require("./empresa/direcciones/direcciones.module");
@@ -49,6 +50,8 @@ const tipostechos_module_1 = require("./cotizacion/tipostechos/tipostechos.modul
 const tipossuelos_module_1 = require("./cotizacion/tipossuelos/tipossuelos.module");
 const cotizaciones_module_1 = require("./cotizacion/cotizaciones/cotizaciones.module");
 const semillacotizacion_module_1 = require("./semillacotizacion/semillacotizacion.module");
+const tiposcotizaciones_module_1 = require("./cotizacion/tiposcotizaciones/tiposcotizaciones.module");
+const pdfs_module_1 = require("./pdfs/pdfs.module");
 const bdType = 'postgres';
 let AppModule = class AppModule {
 };
@@ -74,7 +77,7 @@ exports.AppModule = AppModule = __decorate([
                     username: configService.get('BDUSERNAME'),
                     password: configService.get('BDPASSWORD'),
                     database: configService.get('BDDATABASE'),
-                    entities: [usuario_entity_1.Usuario, rol_entity_1.Rol, ciudad_entity_1.Ciudad, sucursal_entity_1.Sucursal, empresa_entity_1.Empresa, unidade_entity_1.Unidad, cargo_entity_1.Cargo, direccion_entity_1.Direccion, ciudadzona_entity_1.Ciudadzona, cotizacion_entity_1.Cotizacion, nivelpiso_entity_1.Nivelpiso, tipopared_entity_1.Tipopared, tiposuelo_entity_1.Tiposuelo, tipotecho_entity_1.Tipotecho, orientacion_entity_1.Orientacion, tipovidrio_entity_1.Tipovidrio],
+                    entities: [usuario_entity_1.Usuario, rol_entity_1.Rol, ciudad_entity_1.Ciudad, sucursal_entity_1.Sucursal, empresa_entity_1.Empresa, unidade_entity_1.Unidad, cargo_entity_1.Cargo, direccion_entity_1.Direccion, ciudadzona_entity_1.Ciudadzona, cotizacion_entity_1.Cotizacion, nivelpiso_entity_1.Nivelpiso, tipopared_entity_1.Tipopared, tiposuelo_entity_1.Tiposuelo, tipotecho_entity_1.Tipotecho, orientacion_entity_1.Orientacion, tipovidrio_entity_1.Tipovidrio, tipocotizacion_entity_1.Tipocotizacion],
                     synchronize: true,
                 }),
                 inject: [config_1.ConfigService],
@@ -95,6 +98,8 @@ exports.AppModule = AppModule = __decorate([
             tipossuelos_module_1.TipossuelosModule,
             cotizaciones_module_1.CotizacionesModule,
             semillacotizacion_module_1.SemillacotizacionModule,
+            tiposcotizaciones_module_1.TiposcotizacionesModule,
+            pdfs_module_1.PdfsModule,
         ],
         providers: [app_service_1.AppService, {
                 provide: core_1.APP_GUARD,

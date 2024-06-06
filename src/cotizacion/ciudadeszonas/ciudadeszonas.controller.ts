@@ -16,6 +16,10 @@ export class CiudadeszonasController {
   findAll() {
     return this.ciudadeszonasService.findAll();
   }
+  @Get('svc')
+  findAllClear() {
+    return this.ciudadeszonasService.findAllClear();
+  }
 
   @Get(':id')
   findOne(@Param('id') id: number) {

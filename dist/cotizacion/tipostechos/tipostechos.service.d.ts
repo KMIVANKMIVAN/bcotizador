@@ -8,6 +8,7 @@ export declare class TipostechosService {
     createSemilla(createTipotechoDto: CreateTipotechoDto): Promise<Tipotecho>;
     create(createTipotechoDto: CreateTipotechoDto): Promise<Tipotecho>;
     findAll(): Promise<Tipotecho[]>;
+    findAllClear(): Promise<Tipotecho[]>;
     findOne(id: number): Promise<Tipotecho>;
     update(id: number, updateTipotechoDto: UpdateTipotechoDto): Promise<Tipotecho>;
     remove(id: number): Promise<any>;

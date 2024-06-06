@@ -8,6 +8,7 @@ export declare class NivelespisosService {
     createSemilla(createNivelpisoDto: CreateNivelpisoDto): Promise<Nivelpiso>;
     create(createNivelpisoDto: CreateNivelpisoDto): Promise<Nivelpiso>;
     findAll(): Promise<Nivelpiso[]>;
+    findAllClear(): Promise<Nivelpiso[]>;
     findOne(id: number): Promise<Nivelpiso>;
     update(id: number, updateNivelpisoDto: UpdateNivelpisoDto): Promise<Nivelpiso>;
     remove(id: number): Promise<any>;

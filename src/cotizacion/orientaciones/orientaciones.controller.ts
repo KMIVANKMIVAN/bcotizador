@@ -17,6 +17,11 @@ export class OrientacionesController {
     return this.orientacionesService.findAll();
   }
 
+  @Get('svc')
+  findAllClear() {
+    return this.orientacionesService.findAllClear();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.orientacionesService.findOne(+id);

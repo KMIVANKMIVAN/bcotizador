@@ -18,6 +18,7 @@ const tiposuelo_entity_1 = require("../../tipossuelos/entities/tiposuelo.entity"
 const tipotecho_entity_1 = require("../../tipostechos/entities/tipotecho.entity");
 const tipovidrio_entity_1 = require("../../tiposvidrios/entities/tipovidrio.entity");
 const ciudadzona_entity_1 = require("../../ciudadeszonas/entities/ciudadzona.entity");
+const tipocotizacion_entity_1 = require("../../tiposcotizaciones/entities/tipocotizacion.entity");
 let Cotizacion = class Cotizacion {
 };
 exports.Cotizacion = Cotizacion;
@@ -68,6 +69,11 @@ __decorate([
     (0, typeorm_1.JoinColumn)({ name: 'tipovidrio_id' }),
     __metadata("design:type", tipovidrio_entity_1.Tipovidrio)
 ], Cotizacion.prototype, "tipovidrio", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => tipocotizacion_entity_1.Tipocotizacion, (tipocotizacion) => tipocotizacion.cotizaciones),
+    (0, typeorm_1.JoinColumn)({ name: 'tipocotizacion_id' }),
+    __metadata("design:type", tipocotizacion_entity_1.Tipocotizacion)
+], Cotizacion.prototype, "tipocotizacion", void 0);
 exports.Cotizacion = Cotizacion = __decorate([
     (0, typeorm_1.Entity)('cotizaciones')
 ], Cotizacion);

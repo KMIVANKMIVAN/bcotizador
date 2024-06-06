@@ -17,6 +17,7 @@ const tiposparedes_module_1 = require("../cotizacion/tiposparedes/tiposparedes.m
 const tipossuelos_module_1 = require("../cotizacion/tipossuelos/tipossuelos.module");
 const tipostechos_module_1 = require("../cotizacion/tipostechos/tipostechos.module");
 const tiposvidrios_module_1 = require("../cotizacion/tiposvidrios/tiposvidrios.module");
+const tiposcotizaciones_module_1 = require("../cotizacion/tiposcotizaciones/tiposcotizaciones.module");
 let SemillacotizacionModule = class SemillacotizacionModule {
 };
 exports.SemillacotizacionModule = SemillacotizacionModule;
@@ -30,6 +31,7 @@ exports.SemillacotizacionModule = SemillacotizacionModule = __decorate([
             tipossuelos_module_1.TipossuelosModule,
             tipostechos_module_1.TipostechosModule,
             tiposvidrios_module_1.TiposvidriosModule,
+            tiposcotizaciones_module_1.TiposcotizacionesModule
         ],
         controllers: [semillacotizacion_controller_1.SemillacotizacionController],
         providers: [semillacotizacion_service_1.SemillacotizacionService],

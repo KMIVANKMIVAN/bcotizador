@@ -17,12 +17,14 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const rol_entity_1 = require("./entities/rol.entity");
+const capitalizeTextos_1 = require("../utils/capitalizeTextos");
 let RolesService = class RolesService {
     constructor(rolRepository) {
         this.rolRepository = rolRepository;
     }
     async create(createRoleDto) {
         try {
+            createRoleDto.rol = (0, capitalizeTextos_1.capitalizeTextos)(createRoleDto.rol);
             const nuevoRol = this.rolRepository.create(createRoleDto);
             return await this.rolRepository.save(nuevoRol);
         }
@@ -107,6 +109,7 @@ let RolesService = class RolesService {
     async update(id, updateRoleDto) {
         try {
             const existeRol = await this.findOne(id);
+            updateRoleDto.rol = (0, capitalizeTextos_1.capitalizeTextos)(updateRoleDto.rol);
             const actualizarRol = this.rolRepository.merge(existeRol, updateRoleDto);
             return await this.rolRepository.save(actualizarRol);
         }

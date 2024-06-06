@@ -8,6 +8,7 @@ export declare class OrientacionesService {
     createSemilla(createOrientacionDto: CreateOrientacionDto): Promise<Orientacion>;
     create(createOrientacionDto: CreateOrientacionDto): Promise<Orientacion>;
     findAll(): Promise<Orientacion[]>;
+    findAllClear(): Promise<Orientacion[]>;
     findOne(id: number): Promise<Orientacion>;
     update(id: number, updateOrientacionDto: UpdateOrientacionDto): Promise<Orientacion>;
     remove(id: number): Promise<any>;

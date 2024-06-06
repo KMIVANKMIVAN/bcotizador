@@ -8,6 +8,7 @@ export declare class TiposparedesService {
     createSemilla(createTipoparedDto: CreateTipoparedDto): Promise<Tipopared>;
     create(createTipoparedDto: CreateTipoparedDto): Promise<Tipopared>;
     findAll(): Promise<Tipopared[]>;
+    findAllClear(): Promise<Tipopared[]>;
     findOne(id: number): Promise<Tipopared>;
     update(id: number, updateTipoparedDto: UpdateTipoparedDto): Promise<Tipopared>;
     remove(id: number): Promise<any>;

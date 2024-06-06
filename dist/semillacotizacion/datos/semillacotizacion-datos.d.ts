@@ -27,3 +27,6 @@ export declare const SEMILLA_TIPOVIDRIO: {
     tipovidrio: string;
     valor: number;
 }[];
+export declare const SEMILLA_TIPOCOTIZACION: {
+    tipocotizacion: string;
+}[];

@@ -17,12 +17,14 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const tiposuelo_entity_1 = require("./entities/tiposuelo.entity");
+const capitalizeTextos_1 = require("../../utils/capitalizeTextos");
 let TipossuelosService = class TipossuelosService {
     constructor(tiposueloRepository) {
         this.tiposueloRepository = tiposueloRepository;
     }
     async createSemilla(createTiposueloDto) {
         try {
+            createTiposueloDto.tiposuelo = (0, capitalizeTextos_1.capitalizeTextos)(createTiposueloDto.tiposuelo);
             const nuevoTiposuelo = this.tiposueloRepository.create(createTiposueloDto);
             return await this.tiposueloRepository.save(nuevoTiposuelo);
         }
@@ -36,6 +38,7 @@ let TipossuelosService = class TipossuelosService {
     async create(createTiposueloDto) {
         try {
             createTiposueloDto.valor = Number(createTiposueloDto.valor) * 1 / 100;
+            createTiposueloDto.tiposuelo = (0, capitalizeTextos_1.capitalizeTextos)(createTiposueloDto.tiposuelo);
             const nuevoTiposuelo = this.tiposueloRepository.create(createTiposueloDto);
             return await this.tiposueloRepository.save(nuevoTiposuelo);
         }
@@ -54,6 +57,29 @@ let TipossuelosService = class TipossuelosService {
                     message: `No se encontraron tipossuelos`,
                 });
             }
+            return tipossuelos;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "tipossuelos"`,
+                    error: `${error}`,
+                });
+            }
+        }
+    }
+    async findAllClear() {
+        try {
+            const tipossuelos = await this.tiposueloRepository.find();
+            if (!tipossuelos || tipossuelos.length === 0) {
+                throw new common_1.NotFoundException({
+                    message: `No se encontraron tipossuelos`,
+                });
+            }
+            tipossuelos.forEach((tiposuelo) => delete tiposuelo.valor);
             return tipossuelos;
         }
         catch (error) {
@@ -93,6 +119,7 @@ let TipossuelosService = class TipossuelosService {
     async update(id, updateTiposueloDto) {
         try {
             const existeTiposuelo = await this.findOne(id);
+            updateTiposueloDto.tiposuelo = (0, capitalizeTextos_1.capitalizeTextos)(updateTiposueloDto.tiposuelo);
             const actualizarTiposuelo = this.tiposueloRepository.merge(existeTiposuelo, updateTiposueloDto);
             return await this.tiposueloRepository.save(actualizarTiposuelo);
         }

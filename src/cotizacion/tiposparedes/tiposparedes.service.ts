@@ -8,7 +8,7 @@ import { Repository } from 'typeorm';
 import { CreateTipoparedDto } from './dto/create-tipopared.dto';
 import { UpdateTipoparedDto } from './dto/update-tipopared.dto';
 import { Tipopared } from './entities/tipopared.entity';
-
+import { capitalizeTextos } from 'src/utils/capitalizeTextos';
 @Injectable()
 export class TiposparedesService {
   constructor(
@@ -18,6 +18,7 @@ export class TiposparedesService {
 
   async createSemilla(createTipoparedDto: CreateTipoparedDto): Promise<Tipopared> {
     try {
+      createTipoparedDto.tipopared = capitalizeTextos(createTipoparedDto.tipopared);
       const nuevoTipopared = this.nivelpisoRepository.create(
         createTipoparedDto,
       );
@@ -33,7 +34,8 @@ export class TiposparedesService {
   }
   async create(createTipoparedDto: CreateTipoparedDto): Promise<Tipopared> {
     try {
-      createTipoparedDto.valor = Number(createTipoparedDto.valor) * 1/100;
+      createTipoparedDto.valor = Number(createTipoparedDto.valor) * 1 / 100;
+      createTipoparedDto.tipopared = capitalizeTextos(createTipoparedDto.tipopared);
       const nuevoTipopared = this.nivelpisoRepository.create(
         createTipoparedDto,
       );
@@ -57,6 +59,30 @@ export class TiposparedesService {
           message: `No se encontraron tiposparedes`,
         });
       }
+      return tiposparedes;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+
+          message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "tiposparedes"`,
+          error: `${error}`,
+        });
+      }
+    }
+  }
+
+  async findAllClear(): Promise<Tipopared[]> {
+    try {
+      const tiposparedes = await this.nivelpisoRepository.find();
+      if (!tiposparedes || tiposparedes.length === 0) {
+        throw new NotFoundException({
+
+          message: `No se encontraron tiposparedes`,
+        });
+      }
+      tiposparedes.forEach((tipopared) => delete tipopared.valor);
       return tiposparedes;
     } catch (error) {
       if (error instanceof NotFoundException) {
@@ -97,8 +123,8 @@ export class TiposparedesService {
   async update(id: number, updateTipoparedDto: UpdateTipoparedDto): Promise<Tipopared> {
     try {
       const existeTipopared = await this.findOne(id);
+      updateTipoparedDto.tipopared = capitalizeTextos(updateTipoparedDto.tipopared);
       const actualizarTipopared = this.nivelpisoRepository.merge(existeTipopared, updateTipoparedDto);
-
       return await this.nivelpisoRepository.save(actualizarTipopared);
 
     } catch (error) {

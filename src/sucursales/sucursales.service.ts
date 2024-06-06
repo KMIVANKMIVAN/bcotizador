@@ -11,7 +11,7 @@ import { UpdateSucursaleDto } from './dto/update-sucursal.dto';
 import { Sucursal } from './entities/sucursal.entity';
 
 import { CiudadesService } from 'src/ciudades/ciudades.service';
-
+import { capitalizeTextos } from 'src/utils/capitalizeTextos';
 @Injectable()
 export class SucursalesService {
   constructor(
@@ -24,10 +24,9 @@ export class SucursalesService {
 
   async create(createSucursaleDto: CreateSucursaleDto): Promise<Sucursal> {
     try {
-      console.log("createSucursaleDto", createSucursaleDto);
-
       const buscarCiudad = await this.ciudadesService.findOne(createSucursaleDto.ciudad_id)
-
+      createSucursaleDto.sucursal = capitalizeTextos(createSucursaleDto.sucursal);
+      createSucursaleDto.ubicacion = capitalizeTextos(createSucursaleDto.ubicacion);
       const { ciudad_id, ...sucursalDatos } = createSucursaleDto;
 
       const nuevaUnidad = this.sucursaleRepository.create({
@@ -100,9 +99,9 @@ export class SucursalesService {
 
   async update(id: number, updateSucursaleDto: UpdateSucursaleDto): Promise<Sucursal> {
     try {
-      console.log("updateSucursaleDto", updateSucursaleDto);
-
       const existeSucursal = await this.findOne(id);
+      updateSucursaleDto.sucursal = capitalizeTextos(updateSucursaleDto.sucursal);
+      updateSucursaleDto.ubicacion = capitalizeTextos(updateSucursaleDto.ubicacion);
 
       const buscarCiudad = await this.ciudadesService.findOne(updateSucursaleDto.ciudad_id)
 

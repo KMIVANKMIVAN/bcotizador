@@ -9,6 +9,8 @@ import { TiposparedesModule } from 'src/cotizacion/tiposparedes/tiposparedes.mod
 import { TipossuelosModule } from 'src/cotizacion/tipossuelos/tipossuelos.module';
 import { TipostechosModule } from 'src/cotizacion/tipostechos/tipostechos.module';
 import { TiposvidriosModule } from 'src/cotizacion/tiposvidrios/tiposvidrios.module';
+import { TiposcotizacionesModule } from 'src/cotizacion/tiposcotizaciones/tiposcotizaciones.module';
+
 
 @Module({
   imports: [
@@ -19,6 +21,7 @@ import { TiposvidriosModule } from 'src/cotizacion/tiposvidrios/tiposvidrios.mod
     TipossuelosModule,
     TipostechosModule,
     TiposvidriosModule,
+    TiposcotizacionesModule
   ],
   controllers: [SemillacotizacionController],
   providers: [SemillacotizacionService],

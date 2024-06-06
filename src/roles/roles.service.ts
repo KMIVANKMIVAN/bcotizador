@@ -8,7 +8,7 @@ import { Repository } from 'typeorm';
 import { CreateRoleDto } from './dto/create-rol.dto';
 import { UpdateRoleDto } from './dto/update-rol.dto';
 import { Rol } from './entities/rol.entity';
-
+import { capitalizeTextos } from 'src/utils/capitalizeTextos';
 @Injectable()
 export class RolesService {
   constructor(
@@ -18,6 +18,7 @@ export class RolesService {
 
   async create(createRoleDto: CreateRoleDto): Promise<Rol> {
     try {
+      createRoleDto.rol = capitalizeTextos(createRoleDto.rol);
       const nuevoRol = this.rolRepository.create(createRoleDto);
       return await this.rolRepository.save(nuevoRol);
     } catch (error) {
@@ -107,6 +108,7 @@ export class RolesService {
   async update(id: number, updateRoleDto: UpdateRoleDto): Promise<Rol> {
     try {
       const existeRol = await this.findOne(id);
+      updateRoleDto.rol = capitalizeTextos(updateRoleDto.rol);
       const actualizarRol = this.rolRepository.merge(existeRol, updateRoleDto);
       return await this.rolRepository.save(actualizarRol);
     } catch (error) {

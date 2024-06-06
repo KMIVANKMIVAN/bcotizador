@@ -6,6 +6,7 @@ export declare class CiudadesController {
     constructor(ciudadesService: CiudadesService);
     create(createCiudadDto: CreateCiudadDto): Promise<import("./entities/ciudad.entity").Ciudad>;
     findAll(): Promise<import("./entities/ciudad.entity").Ciudad[]>;
+    findAllClear(): Promise<import("./entities/ciudad.entity").Ciudad[]>;
     findOne(id: number): Promise<import("./entities/ciudad.entity").Ciudad>;
     update(id: number, updateCiudadDto: UpdateCiudadDto): Promise<import("./entities/ciudad.entity").Ciudad>;
     remove(id: number): Promise<any>;

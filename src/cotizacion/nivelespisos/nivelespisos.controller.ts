@@ -17,6 +17,11 @@ export class NivelespisosController {
     return this.nivelespisosService.findAll();
   }
 
+  @Get('svc')
+  findAllClear() {
+    return this.nivelespisosService.findAllClear();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.nivelespisosService.findOne(+id);

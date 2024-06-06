@@ -17,12 +17,14 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const nivelpiso_entity_1 = require("./entities/nivelpiso.entity");
+const capitalizeTextos_1 = require("../../utils/capitalizeTextos");
 let NivelespisosService = class NivelespisosService {
     constructor(nivelpisoRepository) {
         this.nivelpisoRepository = nivelpisoRepository;
     }
     async createSemilla(createNivelpisoDto) {
         try {
+            createNivelpisoDto.nivelpiso = (0, capitalizeTextos_1.capitalizeTextos)(createNivelpisoDto.nivelpiso);
             const nuevoNivelpiso = this.nivelpisoRepository.create(createNivelpisoDto);
             return await this.nivelpisoRepository.save(nuevoNivelpiso);
         }
@@ -36,6 +38,7 @@ let NivelespisosService = class NivelespisosService {
     async create(createNivelpisoDto) {
         try {
             createNivelpisoDto.valor = Number(createNivelpisoDto.valor) * 1 / 100;
+            createNivelpisoDto.nivelpiso = (0, capitalizeTextos_1.capitalizeTextos)(createNivelpisoDto.nivelpiso);
             const nuevoNivelpiso = this.nivelpisoRepository.create(createNivelpisoDto);
             return await this.nivelpisoRepository.save(nuevoNivelpiso);
         }
@@ -54,6 +57,29 @@ let NivelespisosService = class NivelespisosService {
                     message: `No se encontraron nivelespisos`,
                 });
             }
+            return nivelespisos;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "nivelespisos"`,
+                    error: `${error}`,
+                });
+            }
+        }
+    }
+    async findAllClear() {
+        try {
+            const nivelespisos = await this.nivelpisoRepository.find();
+            if (!nivelespisos || nivelespisos.length === 0) {
+                throw new common_1.NotFoundException({
+                    message: `No se encontraron nivelespisos`,
+                });
+            }
+            nivelespisos.forEach((nivelpiso) => delete nivelpiso.valor);
             return nivelespisos;
         }
         catch (error) {
@@ -93,6 +119,7 @@ let NivelespisosService = class NivelespisosService {
     async update(id, updateNivelpisoDto) {
         try {
             const existeNivelpiso = await this.findOne(id);
+            updateNivelpisoDto.nivelpiso = (0, capitalizeTextos_1.capitalizeTextos)(updateNivelpisoDto.nivelpiso);
             const actualizarNivelpiso = this.nivelpisoRepository.merge(existeNivelpiso, updateNivelpisoDto);
             return await this.nivelpisoRepository.save(actualizarNivelpiso);
         }

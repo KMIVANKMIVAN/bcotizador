@@ -17,12 +17,14 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const ciudad_entity_1 = require("./entities/ciudad.entity");
+const capitalizeTextos_1 = require("../utils/capitalizeTextos");
 let CiudadesService = class CiudadesService {
     constructor(ciudadRepository) {
         this.ciudadRepository = ciudadRepository;
     }
     async createSemilla(createCiudadDto) {
         try {
+            createCiudadDto.ciudad = (0, capitalizeTextos_1.capitalizeTextos)(createCiudadDto.ciudad);
             const nuevaCiudad = this.ciudadRepository.create(createCiudadDto);
             return await this.ciudadRepository.save(nuevaCiudad);
         }
@@ -35,9 +37,8 @@ let CiudadesService = class CiudadesService {
     }
     async create(createCiudadDto) {
         try {
-            console.log("createCiudadDto", createCiudadDto);
             createCiudadDto.valor = Number(createCiudadDto.valor) * 1 / 100;
-            console.log("createCiudadDto.valor", createCiudadDto.valor);
+            createCiudadDto.ciudad = (0, capitalizeTextos_1.capitalizeTextos)(createCiudadDto.ciudad);
             const nuevaCiudad = this.ciudadRepository.create(createCiudadDto);
             return await this.ciudadRepository.save(nuevaCiudad);
         }
@@ -56,6 +57,29 @@ let CiudadesService = class CiudadesService {
                     message: `No se encontraron ciudades`,
                 });
             }
+            return ciudades;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "ciudades"`,
+                    error: `${error}`,
+                });
+            }
+        }
+    }
+    async findAllClear() {
+        try {
+            const ciudades = await this.ciudadRepository.find();
+            if (!ciudades || ciudades.length === 0) {
+                throw new common_1.NotFoundException({
+                    message: `No se encontraron ciudades`,
+                });
+            }
+            ciudades.forEach((ciudad) => delete ciudad.valor);
             return ciudades;
         }
         catch (error) {
@@ -95,7 +119,9 @@ let CiudadesService = class CiudadesService {
     async update(id, updateCiudadDto) {
         try {
             const existeCiudad = await this.findOne(id);
-            return await this.ciudadRepository.save(updateCiudadDto);
+            updateCiudadDto.ciudad = (0, capitalizeTextos_1.capitalizeTextos)(updateCiudadDto.ciudad);
+            const actualizarCiudad = this.ciudadRepository.merge(existeCiudad, updateCiudadDto);
+            return await this.ciudadRepository.save(actualizarCiudad);
         }
         catch (error) {
             if (error instanceof common_1.NotFoundException) {

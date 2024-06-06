@@ -24,6 +24,7 @@ import { Tiposuelo } from './cotizacion/tipossuelos/entities/tiposuelo.entity';
 import { Tipotecho } from './cotizacion/tipostechos/entities/tipotecho.entity';
 import { Orientacion } from './cotizacion/orientaciones/entities/orientacion.entity';
 import { Tipovidrio } from './cotizacion/tiposvidrios/entities/tipovidrio.entity';
+import { Tipocotizacion } from './cotizacion/tiposcotizaciones/entities/tipocotizacion.entity';
 
 import { AuthModule } from './auth/auth.module';
 import { EmpresasModule } from './empresa/empresas/empresas.module';
@@ -44,8 +45,8 @@ import { TipostechosModule } from './cotizacion/tipostechos/tipostechos.module';
 import { TipossuelosModule } from './cotizacion/tipossuelos/tipossuelos.module';
 import { CotizacionesModule } from './cotizacion/cotizaciones/cotizaciones.module';
 import { SemillacotizacionModule } from './semillacotizacion/semillacotizacion.module';
-
-
+import { TiposcotizacionesModule } from './cotizacion/tiposcotizaciones/tiposcotizaciones.module';
+import { PdfsModule } from './pdfs/pdfs.module';
 const bdType = 'postgres'
 // const bdType= 'mysql'
 
@@ -73,7 +74,7 @@ const bdType = 'postgres'
         username: configService.get<string>('BDUSERNAME'),
         password: configService.get<string>('BDPASSWORD'),
         database: configService.get<string>('BDDATABASE'),
-        entities: [Usuario, Rol, Ciudad, Sucursal, Empresa, Unidad, Cargo, Direccion, Ciudadzona, Cotizacion, Nivelpiso, Tipopared, Tiposuelo, Tipotecho, Orientacion, Tipovidrio],
+        entities: [Usuario, Rol, Ciudad, Sucursal, Empresa, Unidad, Cargo, Direccion, Ciudadzona, Cotizacion, Nivelpiso, Tipopared, Tiposuelo, Tipotecho, Orientacion, Tipovidrio, Tipocotizacion],
         synchronize: true, // Utilizar 'false' en producción
       }),
       inject: [ConfigService], // Correctamente ubicado dentro de TypeOrmModule.forRootAsync
@@ -94,6 +95,8 @@ const bdType = 'postgres'
     TipossuelosModule,
     CotizacionesModule,
     SemillacotizacionModule,
+    TiposcotizacionesModule,
+    PdfsModule,
   ],
   providers: [AppService, {
     provide: APP_GUARD,

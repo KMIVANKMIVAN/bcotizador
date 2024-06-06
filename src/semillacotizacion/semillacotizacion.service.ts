@@ -11,7 +11,8 @@ import {
   SEMILLA_TIPOPARED,
   SEMILLA_TIPOSUELO,
   SEMILLA_TIPOTECHO,
-  SEMILLA_TIPOVIDRIO
+  SEMILLA_TIPOVIDRIO,
+  SEMILLA_TIPOCOTIZACION
 } from "./datos/semillacotizacion-datos";
 
 import { InjectRepository } from '@nestjs/typeorm';
@@ -25,6 +26,7 @@ import { TiposparedesService } from 'src/cotizacion/tiposparedes/tiposparedes.se
 import { TipossuelosService } from 'src/cotizacion/tipossuelos/tipossuelos.service';
 import { TipostechosService } from 'src/cotizacion/tipostechos/tipostechos.service';
 import { TiposvidriosService } from 'src/cotizacion/tiposvidrios/tiposvidrios.service';
+import { TiposcotizacionesService } from 'src/cotizacion/tiposcotizaciones/tiposcotizaciones.service';
 
 import { Ciudadzona } from 'src/cotizacion/ciudadeszonas/entities/ciudadzona.entity';
 import { Nivelpiso } from 'src/cotizacion/nivelespisos/entities/nivelpiso.entity';
@@ -33,6 +35,7 @@ import { Tipopared } from 'src/cotizacion/tiposparedes/entities/tipopared.entity
 import { Tiposuelo } from 'src/cotizacion/tipossuelos/entities/tiposuelo.entity';
 import { Tipotecho } from 'src/cotizacion/tipostechos/entities/tipotecho.entity';
 import { Tipovidrio } from 'src/cotizacion/tiposvidrios/entities/tipovidrio.entity';
+import { Tipocotizacion } from 'src/cotizacion/tiposcotizaciones/entities/tipocotizacion.entity';
 
 @Injectable()
 export class SemillacotizacionService {
@@ -48,6 +51,7 @@ export class SemillacotizacionService {
     private readonly tipossuelosService: TipossuelosService,
     private readonly tipostechosService: TipostechosService,
     private readonly tiposvidriosService: TiposvidriosService,
+    private readonly tiposcotizacionesService: TiposcotizacionesService,
 
   ) {
     this.isProd = configService.get('STATE') === 'prod';
@@ -70,6 +74,7 @@ export class SemillacotizacionService {
       await this.crearTipostechos();
       await this.crearTiposvidrios();
       await this.crearCiudadeszonas();
+      await this.crearTiposcotizaciones();
 
       return true;
     } catch (error) {
@@ -124,6 +129,13 @@ export class SemillacotizacionService {
       tiposvidrios.push(await this.tiposvidriosService.createSemilla(tipovidrio));
     }
     return tiposvidrios[0];
+  }
+  async crearTiposcotizaciones(): Promise<Tipocotizacion> {
+    const tiposcotizaciones = [];
+    for (const tipocotizacion of SEMILLA_TIPOCOTIZACION) {
+      tiposcotizaciones.push(await this.tiposcotizacionesService.createSemilla(tipocotizacion));
+    }
+    return tiposcotizaciones[0];
   }
   //!CREAR DEPENDIENTES EN ORDEN
   async crearCiudadeszonas(): Promise<Ciudadzona> {

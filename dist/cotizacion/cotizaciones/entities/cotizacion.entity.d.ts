@@ -5,6 +5,7 @@ import { Tiposuelo } from 'src/cotizacion/tipossuelos/entities/tiposuelo.entity'
 import { Tipotecho } from 'src/cotizacion/tipostechos/entities/tipotecho.entity';
 import { Tipovidrio } from 'src/cotizacion/tiposvidrios/entities/tipovidrio.entity';
 import { Ciudadzona } from 'src/cotizacion/ciudadeszonas/entities/ciudadzona.entity';
+import { Tipocotizacion } from 'src/cotizacion/tiposcotizaciones/entities/tipocotizacion.entity';
 export declare class Cotizacion {
     id: number;
     volumen: number;
@@ -16,4 +17,5 @@ export declare class Cotizacion {
     tiposuelo: Tiposuelo;
     tipotecho: Tipotecho;
     tipovidrio: Tipovidrio;
+    tipocotizacion: Tipocotizacion;
 }
