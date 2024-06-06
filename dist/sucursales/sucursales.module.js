@@ -10,16 +10,16 @@ exports.SucursalesModule = void 0;
 const common_1 = require("@nestjs/common");
 const sucursales_service_1 = require("./sucursales.service");
 const sucursales_controller_1 = require("./sucursales.controller");
-const sucursale_entity_1 = require("./entities/sucursale.entity");
+const sucursal_entity_1 = require("./entities/sucursal.entity");
 const typeorm_1 = require("@nestjs/typeorm");
-const departamentos_module_1 = require("../departamentos/departamentos.module");
-const departamento_entity_1 = require("../departamentos/entities/departamento.entity");
+const ciudades_module_1 = require("../ciudades/ciudades.module");
+const ciudad_entity_1 = require("../ciudades/entities/ciudad.entity");
 let SucursalesModule = class SucursalesModule {
 };
 exports.SucursalesModule = SucursalesModule;
 exports.SucursalesModule = SucursalesModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([sucursale_entity_1.Sucursal, departamento_entity_1.Departamento]), departamentos_module_1.DepartamentosModule],
+        imports: [typeorm_1.TypeOrmModule.forFeature([sucursal_entity_1.Sucursal, ciudad_entity_1.Ciudad]), ciudades_module_1.CiudadesModule],
         controllers: [sucursales_controller_1.SucursalesController],
         providers: [sucursales_service_1.SucursalesService],
         exports: [typeorm_1.TypeOrmModule, sucursales_service_1.SucursalesService],

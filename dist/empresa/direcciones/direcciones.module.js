@@ -10,7 +10,7 @@ exports.DireccionesModule = void 0;
 const common_1 = require("@nestjs/common");
 const direcciones_service_1 = require("./direcciones.service");
 const direcciones_controller_1 = require("./direcciones.controller");
-const direccione_entity_1 = require("./entities/direccione.entity");
+const direccion_entity_1 = require("./entities/direccion.entity");
 const typeorm_1 = require("@nestjs/typeorm");
 const empresas_module_1 = require("../empresas/empresas.module");
 const empresa_entity_1 = require("../empresas/entities/empresa.entity");
@@ -19,7 +19,7 @@ let DireccionesModule = class DireccionesModule {
 exports.DireccionesModule = DireccionesModule;
 exports.DireccionesModule = DireccionesModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([direccione_entity_1.Direccion, empresa_entity_1.Empresa]), empresas_module_1.EmpresasModule,],
+        imports: [typeorm_1.TypeOrmModule.forFeature([direccion_entity_1.Direccion, empresa_entity_1.Empresa]), empresas_module_1.EmpresasModule,],
         controllers: [direcciones_controller_1.DireccionesController],
         providers: [direcciones_service_1.DireccionesService],
         exports: [typeorm_1.TypeOrmModule, direcciones_service_1.DireccionesService],

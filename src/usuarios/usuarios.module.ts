@@ -7,8 +7,8 @@ import { SucursalesModule } from '../sucursales/sucursales.module';
 import { RolesModule } from '../roles/roles.module';
 import { CargosModule } from 'src/empresa/cargos/cargos.module';
 
-import { Rol } from 'src/roles/entities/role.entity';
-import { Sucursal } from 'src/sucursales/entities/sucursale.entity';
+import { Rol } from 'src/roles/entities/rol.entity';
+import { Sucursal } from 'src/sucursales/entities/sucursal.entity';
 import { Cargo } from 'src/empresa/cargos/entities/cargo.entity';
 
 @Module({

@@ -1,45 +1,58 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SEMILLA_CARGO = exports.SEMILLA_UNIDAD = exports.SEMILLA_DIRECCION = exports.SEMILLA_EMPRESA = exports.SEMILLA_USUARIOS = exports.SEMILLA_ROLES = exports.SEMILLA_SUCURSAL = exports.SEMILLA_DEPARTAMENTOS = void 0;
-exports.SEMILLA_DEPARTAMENTOS = [
+exports.SEMILLA_CARGO = exports.SEMILLA_UNIDAD = exports.SEMILLA_DIRECCION = exports.SEMILLA_EMPRESA = exports.SEMILLA_USUARIOS = exports.SEMILLA_ROLES = exports.SEMILLA_SUCURSAL = exports.SEMILLA_CIUDADES = void 0;
+exports.SEMILLA_CIUDADES = [
     {
-        departamento: 'La Paz',
+        ciudad: 'La Paz',
+        valor: 0.5,
     },
     {
-        departamento: 'Beni',
+        ciudad: 'El Alto',
+        valor: 0.5,
     },
     {
-        departamento: 'Cochabamba',
+        ciudad: 'Beni',
+        valor: 0.2,
     },
     {
-        departamento: 'Chuquisaca',
+        ciudad: 'Cochabamba',
+        valor: 0.3,
     },
     {
-        departamento: 'Oruro',
+        ciudad: 'Chuquisaca',
+        valor: 0.2,
     },
     {
-        departamento: 'Pando',
+        ciudad: 'Oruro',
+        valor: 0.6,
     },
     {
-        departamento: 'Potosí',
+        ciudad: 'Pando',
+        valor: 0.2,
     },
     {
-        departamento: 'Tarija',
+        ciudad: 'Potosí',
+        valor: 0.5,
     },
     {
-        departamento: 'Santa Cruz',
+        ciudad: 'Tarija',
+        valor: 0.2,
+    },
+    {
+        ciudad: 'Santa Cruz',
+        valor: 0.2,
     },
 ];
 exports.SEMILLA_SUCURSAL = [
     {
         sucursal: 'Oficina Central',
         ubicacion: 'Calle Lisimaco Gutierrez Nro. 494 - Sopocachi.',
-        departamento_id: 1,
+        ciudad_id: 1,
     },
     {
         sucursal: 'Showroom',
         ubicacion: 'Avenida montenegro Nro. 911 - San Miguel.',
-        departamento_id: 1,
+        ciudad_id: 1,
     },
 ];
 exports.SEMILLA_ROLES = [

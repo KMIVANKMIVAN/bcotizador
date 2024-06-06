@@ -12,14 +12,14 @@ const unidades_service_1 = require("./unidades.service");
 const unidades_controller_1 = require("./unidades.controller");
 const unidade_entity_1 = require("./entities/unidade.entity");
 const typeorm_1 = require("@nestjs/typeorm");
-const direccione_entity_1 = require("../direcciones/entities/direccione.entity");
+const direccion_entity_1 = require("../direcciones/entities/direccion.entity");
 const direcciones_module_1 = require("../direcciones/direcciones.module");
 let UnidadesModule = class UnidadesModule {
 };
 exports.UnidadesModule = UnidadesModule;
 exports.UnidadesModule = UnidadesModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([unidade_entity_1.Unidad, direccione_entity_1.Direccion]), direcciones_module_1.DireccionesModule],
+        imports: [typeorm_1.TypeOrmModule.forFeature([unidade_entity_1.Unidad, direccion_entity_1.Direccion]), direcciones_module_1.DireccionesModule],
         controllers: [unidades_controller_1.UnidadesController],
         providers: [unidades_service_1.UnidadesService],
         exports: [typeorm_1.TypeOrmModule, unidades_service_1.UnidadesService],

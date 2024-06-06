@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm';
-import { CreateRoleDto } from './dto/create-role.dto';
-import { UpdateRoleDto } from './dto/update-role.dto';
-import { Rol } from './entities/role.entity';
+import { CreateRoleDto } from './dto/create-rol.dto';
+import { UpdateRoleDto } from './dto/update-rol.dto';
+import { Rol } from './entities/rol.entity';
 export declare class RolesService {
     private readonly rolRepository;
     constructor(rolRepository: Repository<Rol>);
@@ -10,8 +10,5 @@ export declare class RolesService {
     findOne(id: number): Promise<Rol>;
     findByIds(ids: number[]): Promise<Rol[]>;
     update(id: number, updateRoleDto: UpdateRoleDto): Promise<Rol>;
-    remove(id: number): Promise<{
-        success: boolean;
-        message: string;
-    }>;
+    remove(id: number): Promise<any>;
 }

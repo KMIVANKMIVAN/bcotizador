@@ -5,9 +5,9 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateDireccioneDto } from './dto/create-direccione.dto';
-import { UpdateDireccioneDto } from './dto/update-direccione.dto';
-import { Direccion } from './entities/direccione.entity';
+import { CreateDireccioneDto } from './dto/create-direccion.dto';
+import { UpdateDireccioneDto } from './dto/update-direccion.dto';
+import { Direccion } from './entities/direccion.entity';
 
 import { EmpresasService } from '../empresas/empresas.service';
 
@@ -37,7 +37,7 @@ export class DireccionesService {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          
+
           message: `Error del Servidor. Revisar el metodo (create) de la ruta "direcciones"`,
           error: `${error}`,
         });
@@ -60,7 +60,7 @@ export class DireccionesService {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          
+
           message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "direcciones"`,
           error: `${error}`,
         });
@@ -86,7 +86,7 @@ export class DireccionesService {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          
+
           message: `Error del Servidor. Revisar el metodo (findOne) de la ruta "direcciones"`,
           error: `${error}`,
         });
@@ -113,7 +113,7 @@ export class DireccionesService {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          
+
           message: `Error del Servidor. Revisar el metodo (update) de la ruta "direcciones"`,
           error: `${error}`,
         });
@@ -134,7 +134,7 @@ export class DireccionesService {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          
+
           message: `Error del Servidor. Revisar el metodo (remove) de la ruta "direcciones"`,
           error: `${error}`,
         });

@@ -1,5 +1,5 @@
-import { Rol } from '../../roles/entities/role.entity';
-import { Sucursal } from 'src/sucursales/entities/sucursale.entity';
+import { Rol } from '../../roles/entities/rol.entity';
+import { Sucursal } from 'src/sucursales/entities/sucursal.entity';
 import { Cargo } from 'src/empresa/cargos/entities/cargo.entity';
 export declare class Usuario {
     id: number;

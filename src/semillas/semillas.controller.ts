@@ -11,9 +11,5 @@ export class SemillasController {
   ejecutarSemilla() {
     return this.semillasService.ejecutarSemilla();
   }
-  // @HttpCode(HttpStatus.OK)
-  @Get('hola')
-  hola() {
-    return 'hola';
-  }
+
 }

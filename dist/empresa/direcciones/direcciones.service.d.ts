@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm';
-import { CreateDireccioneDto } from './dto/create-direccione.dto';
-import { UpdateDireccioneDto } from './dto/update-direccione.dto';
-import { Direccion } from './entities/direccione.entity';
+import { CreateDireccioneDto } from './dto/create-direccion.dto';
+import { UpdateDireccioneDto } from './dto/update-direccion.dto';
+import { Direccion } from './entities/direccion.entity';
 import { EmpresasService } from '../empresas/empresas.service';
 export declare class DireccionesService {
     private readonly direccioneRepository;

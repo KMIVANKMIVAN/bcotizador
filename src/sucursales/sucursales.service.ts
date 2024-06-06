@@ -5,12 +5,12 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateSucursaleDto } from './dto/create-sucursale.dto';
-import { UpdateSucursaleDto } from './dto/update-sucursale.dto';
+import { CreateSucursaleDto } from './dto/create-sucursal.dto';
+import { UpdateSucursaleDto } from './dto/update-sucursal.dto';
 
-import { Sucursal } from './entities/sucursale.entity';
+import { Sucursal } from './entities/sucursal.entity';
 
-import { DepartamentosService } from 'src/departamentos/departamentos.service';
+import { CiudadesService } from 'src/ciudades/ciudades.service';
 
 @Injectable()
 export class SucursalesService {
@@ -18,19 +18,21 @@ export class SucursalesService {
     @InjectRepository(Sucursal)
     private readonly sucursaleRepository: Repository<Sucursal>,
 
-    private readonly departamentosService: DepartamentosService,
+    private readonly ciudadesService: CiudadesService,
 
   ) { }
 
   async create(createSucursaleDto: CreateSucursaleDto): Promise<Sucursal> {
     try {
-      const buscarDepartamento = await this.departamentosService.findOne(createSucursaleDto.departamento_id)
+      console.log("createSucursaleDto", createSucursaleDto);
 
-      const { departamento_id, ...sucursalDatos } = createSucursaleDto;
+      const buscarCiudad = await this.ciudadesService.findOne(createSucursaleDto.ciudad_id)
+
+      const { ciudad_id, ...sucursalDatos } = createSucursaleDto;
 
       const nuevaUnidad = this.sucursaleRepository.create({
         ...sucursalDatos,
-        departamento: buscarDepartamento,
+        ciudad: buscarCiudad,
       });
 
       return await this.sucursaleRepository.save(nuevaUnidad);
@@ -49,7 +51,7 @@ export class SucursalesService {
 
   async findAll(): Promise<Sucursal[]> {
     try {
-      const sucursales = await this.sucursaleRepository.find({ relations: ['departamento'] });
+      const sucursales = await this.sucursaleRepository.find({ relations: ['ciudad'] });
       if (!sucursales || sucursales.length === 0) {
         throw new NotFoundException({
 
@@ -102,14 +104,14 @@ export class SucursalesService {
 
       const existeSucursal = await this.findOne(id);
 
-      const buscarDepartamento = await this.departamentosService.findOne(updateSucursaleDto.departamento_id)
+      const buscarCiudad = await this.ciudadesService.findOne(updateSucursaleDto.ciudad_id)
 
       const actualizarSucursal = await this.sucursaleRepository.preload({
         id,
         ...updateSucursaleDto
       })
 
-      actualizarSucursal.departamento = buscarDepartamento
+      actualizarSucursal.ciudad = buscarCiudad
 
       return await this.sucursaleRepository.save(actualizarSucursal);
     } catch (error) {

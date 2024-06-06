@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   InternalServerErrorException,
+  BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DeepPartial } from 'typeorm';
@@ -60,16 +61,25 @@ export class UsuariosService {
 
   async create(createUsuarioDto: CreateUsuarioDto): Promise<Usuario> {
     try {
-      console.log("createUsuarioDto", createUsuarioDto);
-
+      // Verificar si el CI ya existe
+      const existeCi = await this.usuarioRepository.findOne({ where: { ci: createUsuarioDto.ci } });
+      if (existeCi) {
+        throw new BadRequestException({
+          message: 'El CI ya fue registrado.',
+        });
+      }
+      // Verificar si el correo ya existe
+      const existeCorreo = await this.usuarioRepository.findOne({ where: { correo: createUsuarioDto.correo } });
+      if (existeCorreo) {
+        throw new BadRequestException({
+          message: 'El correo ya fue registrado.',
+        });
+      }
       const existeRoles = await this.rolesService.findByIds(createUsuarioDto.roles);
-      console.log("existeRoles", existeRoles);
 
       const existeSucursal = await this.sucursalesService.findOne(createUsuarioDto.sucursal_id);
-      console.log("existeSucursal", existeSucursal);
 
       const existeCargo = await this.cargosService.findOne(createUsuarioDto.cargo_id);
-      console.log("existeCargo", existeCargo);
 
       const hashedPassword = await bcrypt.hash(createUsuarioDto.contrasenia, 10);
 
@@ -80,11 +90,10 @@ export class UsuariosService {
         sucursal: existeSucursal,
         cargo: existeCargo
       });
-      console.log("usuario", usuario);
 
       return this.usuarioRepository.save(usuario);
     } catch (error) {
-      if (error instanceof NotFoundException) {
+      if (error instanceof NotFoundException || error instanceof BadRequestException) {
         throw error;
       } else {
         throw new InternalServerErrorException({
@@ -101,7 +110,6 @@ export class UsuariosService {
       const usuarios = await this.usuarioRepository.find({ relations: ['roles', 'sucursal', 'cargo'] });
       if (!usuarios || usuarios.length === 0) {
         throw new NotFoundException({
-
           message: `No se encontraron Usuarios`,
         });
       }
@@ -226,28 +234,28 @@ export class UsuariosService {
     try {
       console.log("updateUsuarioDto", updateUsuarioDto);
 
-      const existingUsuario = await this.usuarioRepository.findOne({ where: { id } });
-      if (!existingUsuario) {
+      const existeUsuario = await this.usuarioRepository.findOne({ where: { id } });
+      if (!existeUsuario) {
         throw new NotFoundException(`Usuario with ID ${id} not found`);
       }
 
       const existeRoles = updateUsuarioDto.roles
         ? await this.rolesService.findByIds(updateUsuarioDto.roles)
-        : existingUsuario.roles;
+        : existeUsuario.roles;
       console.log("existeRoles", existeRoles);
 
       const existeSucursal = updateUsuarioDto.sucursal_id
         ? await this.sucursalesService.findOne(updateUsuarioDto.sucursal_id)
-        : existingUsuario.sucursal;
+        : existeUsuario.sucursal;
       console.log("existeSucursal", existeSucursal);
 
       const existeCargo = updateUsuarioDto.cargo_id
         ? await this.cargosService.findOne(updateUsuarioDto.cargo_id)
-        : existingUsuario.cargo;
+        : existeUsuario.cargo;
       console.log("existeCargo", existeCargo);
 
       const usuarioToUpdate = {
-        ...existingUsuario,
+        ...existeUsuario,
         ...updateUsuarioDto,
         roles: existeRoles,
         sucursal: existeSucursal,

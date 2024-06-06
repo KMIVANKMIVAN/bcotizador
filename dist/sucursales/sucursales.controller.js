@@ -15,8 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SucursalesController = void 0;
 const common_1 = require("@nestjs/common");
 const sucursales_service_1 = require("./sucursales.service");
-const create_sucursale_dto_1 = require("./dto/create-sucursale.dto");
-const update_sucursale_dto_1 = require("./dto/update-sucursale.dto");
+const create_sucursal_dto_1 = require("./dto/create-sucursal.dto");
+const update_sucursal_dto_1 = require("./dto/update-sucursal.dto");
 let SucursalesController = class SucursalesController {
     constructor(sucursalesService) {
         this.sucursalesService = sucursalesService;
@@ -42,7 +42,7 @@ __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_sucursale_dto_1.CreateSucursaleDto]),
+    __metadata("design:paramtypes", [create_sucursal_dto_1.CreateSucursaleDto]),
     __metadata("design:returntype", void 0)
 ], SucursalesController.prototype, "create", null);
 __decorate([
@@ -63,7 +63,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, update_sucursale_dto_1.UpdateSucursaleDto]),
+    __metadata("design:paramtypes", [Number, update_sucursal_dto_1.UpdateSucursaleDto]),
     __metadata("design:returntype", void 0)
 ], SucursalesController.prototype, "update", null);
 __decorate([

@@ -11,8 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Usuario = void 0;
 const typeorm_1 = require("typeorm");
-const role_entity_1 = require("../../roles/entities/role.entity");
-const sucursale_entity_1 = require("../../sucursales/entities/sucursale.entity");
+const rol_entity_1 = require("../../roles/entities/rol.entity");
+const sucursal_entity_1 = require("../../sucursales/entities/sucursal.entity");
 const cargo_entity_1 = require("../../empresa/cargos/entities/cargo.entity");
 let Usuario = class Usuario {
 };
@@ -54,14 +54,14 @@ __decorate([
     __metadata("design:type", Boolean)
 ], Usuario.prototype, "se_cambiado_cntr", void 0);
 __decorate([
-    (0, typeorm_1.ManyToMany)(() => role_entity_1.Rol, (rol) => rol.usuarios, { cascade: true }),
+    (0, typeorm_1.ManyToMany)(() => rol_entity_1.Rol, (rol) => rol.usuarios, { cascade: true }),
     (0, typeorm_1.JoinTable)(),
     __metadata("design:type", Array)
 ], Usuario.prototype, "roles", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => sucursale_entity_1.Sucursal, (sucursal) => sucursal.usuarios),
+    (0, typeorm_1.ManyToOne)(() => sucursal_entity_1.Sucursal, (sucursal) => sucursal.usuarios),
     (0, typeorm_1.JoinColumn)({ name: 'sucursal_id' }),
-    __metadata("design:type", sucursale_entity_1.Sucursal)
+    __metadata("design:type", sucursal_entity_1.Sucursal)
 ], Usuario.prototype, "sucursal", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => cargo_entity_1.Cargo, (cargo) => cargo.usuarios),

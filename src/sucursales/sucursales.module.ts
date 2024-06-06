@@ -1,15 +1,14 @@
 import { Module } from '@nestjs/common';
 import { SucursalesService } from './sucursales.service';
 import { SucursalesController } from './sucursales.controller';
-import { Sucursal } from './entities/sucursale.entity';
+import { Sucursal } from './entities/sucursal.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { DepartamentosModule } from '../departamentos/departamentos.module';
-
-import { Departamento } from 'src/departamentos/entities/departamento.entity';
+import { CiudadesModule } from 'src/ciudades/ciudades.module';
+import { Ciudad } from 'src/ciudades/entities/ciudad.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Sucursal, Departamento]), DepartamentosModule],
+  imports: [TypeOrmModule.forFeature([Sucursal, Ciudad]), CiudadesModule],
   controllers: [SucursalesController],
   providers: [SucursalesService],
   exports: [TypeOrmModule, SucursalesService],

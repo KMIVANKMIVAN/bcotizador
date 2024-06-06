@@ -17,7 +17,7 @@ export class EmpresasService {
     private readonly empresaRepository: Repository<Empresa>,
   ) { }
 
-  async create(createEmpresaDto: CreateEmpresaDto) {
+  async create(createEmpresaDto: CreateEmpresaDto): Promise<Empresa> {
     try {
       const nuevaEmpresa = this.empresaRepository.create(
         createEmpresaDto,
@@ -33,7 +33,7 @@ export class EmpresasService {
     }
   }
 
-  async findAll() {
+  async findAll(): Promise<Empresa[]> {
     try {
       const empresas = await this.empresaRepository.find();
       if (!empresas || empresas.length === 0) {
@@ -56,7 +56,7 @@ export class EmpresasService {
     }
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<Empresa> {
     try {
       const empresa = await this.empresaRepository.findOneBy({ id });
       if (!empresa) {
@@ -79,7 +79,7 @@ export class EmpresasService {
     }
   }
 
-  async update(id: number, updateEmpresaDto: UpdateEmpresaDto) {
+  async update(id: number, updateEmpresaDto: UpdateEmpresaDto): Promise<Empresa> {
     try {
       const existeEmpresa = await this.findOne(id);
       // Fusionar los cambios del DTO de actualización con el objeto existente
@@ -99,7 +99,7 @@ export class EmpresasService {
     }
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<any> {
     try {
       const empresa = await this.findOne(id);
       await this.empresaRepository.delete(id);

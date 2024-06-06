@@ -5,17 +5,17 @@ import {
 } from '@nestjs/common';
 
 import { Usuario } from '../usuarios/entities/usuario.entity';
-import { Sucursal } from '../sucursales/entities/sucursale.entity';
-import { Departamento } from '../departamentos/entities/departamento.entity';
-import { Rol } from '../roles/entities/role.entity';
+import { Sucursal } from '../sucursales/entities/sucursal.entity';
+import { Rol } from '../roles/entities/rol.entity';
+import { Ciudad } from 'src/ciudades/entities/ciudad.entity';
 
 import { Cargo } from 'src/empresa/cargos/entities/cargo.entity';
 import { Unidad } from 'src/empresa/unidades/entities/unidade.entity';
-import { Direccion } from 'src/empresa/direcciones/entities/direccione.entity';
+import { Direccion } from 'src/empresa/direcciones/entities/direccion.entity';
 import { Empresa } from 'src/empresa/empresas/entities/empresa.entity';
 
 import {
-  SEMILLA_DEPARTAMENTOS,
+  SEMILLA_CIUDADES,
   SEMILLA_ROLES,
   SEMILLA_SUCURSAL,
   SEMILLA_USUARIOS,
@@ -27,8 +27,8 @@ import {
 
 import { UsuariosService } from '../usuarios/usuarios.service';
 import { SucursalesService } from '../sucursales/sucursales.service';
-import { DepartamentosService } from '../departamentos/departamentos.service';
 import { RolesService } from '../roles/roles.service';
+import { CiudadesService } from 'src/ciudades/ciudades.service';
 
 import { CargosService } from 'src/empresa/cargos/cargos.service';
 import { UnidadesService } from 'src/empresa/unidades/unidades.service';
@@ -50,24 +50,15 @@ export class SemillasService {
     private readonly usuarioRepository: Repository<Usuario>,
     @InjectRepository(Sucursal)
     private readonly sucursaleRepository: Repository<Sucursal>,
-    @InjectRepository(Departamento)
-    private readonly departamentoRepository: Repository<Departamento>,
+    @InjectRepository(Ciudad)
+    private readonly ciudadRepository: Repository<Ciudad>,
     @InjectRepository(Rol)
     private readonly roleRepository: Repository<Rol>,
 
     private readonly sucursalesService: SucursalesService,
-    private readonly departamentosService: DepartamentosService,
+    private readonly ciudadesService: CiudadesService,
     private readonly rolesService: RolesService,
     private readonly usuarioService: UsuariosService,
-
-    @InjectRepository(Cargo)
-    private readonly cargoRepository: Repository<Cargo>,
-    @InjectRepository(Unidad)
-    private readonly unidadRepository: Repository<Unidad>,
-    @InjectRepository(Direccion)
-    private readonly direccionRepository: Repository<Direccion>,
-    @InjectRepository(Empresa)
-    private readonly empresaRepository: Repository<Empresa>,
 
     private readonly cargosService: CargosService,
     private readonly unidadesService: UnidadesService,
@@ -82,7 +73,6 @@ export class SemillasService {
     try {
       if (this.isProd) {
         throw new BadRequestException({
-          statusCode: 400,
           error: `Error al ejecutar la semilla`,
           message: `Problemas en la ejecucion de la semilla`,
         });
@@ -92,7 +82,7 @@ export class SemillasService {
       await this.eliminarDatabase();
 
       //?EJECUTAR POR ORDEN
-      await this.crearDepartamentos();
+      await this.crearCiudades();
       await this.crearRoles();
       await this.crearEmpresas();
 
@@ -106,7 +96,6 @@ export class SemillasService {
     } catch (error) {
       // Manejo de excepciones
       throw new InternalServerErrorException({
-        statusCode: 500,
         message: `Error del Servidor. Revisar el metodo (ejecutarSemilla) de la ruta "semillas"`,
         error: error,
       });
@@ -114,38 +103,34 @@ export class SemillasService {
   }
 
   async eliminarDatabase() {
-    // borrar usuarios
     await this.usuarioRepository
       .createQueryBuilder()
       .delete()
       .where({})
       .execute();
 
-    // borrar empresas
     await this.sucursaleRepository
       .createQueryBuilder()
       .delete()
       .where({})
       .execute();
 
-    // borrar tipo empresas
-    await this.departamentoRepository
+    await this.ciudadRepository
       .createQueryBuilder()
       .delete()
       .where({})
       .execute();
 
-    // borrar rol
     await this.roleRepository.createQueryBuilder().delete().where({}).execute();
   }
 
   //!CREAR PRIMARIOS LOS QUE NO DEPENDEN DE NADIE
-  async crearDepartamentos(): Promise<Departamento> {
-    const departamentos = [];
-    for (const departamento of SEMILLA_DEPARTAMENTOS) {
-      departamentos.push(await this.departamentosService.create(departamento));
+  async crearCiudades(): Promise<Ciudad> {
+    const ciudades = [];
+    for (const ciudad of SEMILLA_CIUDADES) {
+      ciudades.push(await this.ciudadesService.createSemilla(ciudad));
     }
-    return departamentos[0];
+    return ciudades[0];
   }
   async crearRoles(): Promise<Rol> {
     const roles = [];

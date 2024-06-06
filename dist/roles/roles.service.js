@@ -16,7 +16,7 @@ exports.RolesService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
-const role_entity_1 = require("./entities/role.entity");
+const rol_entity_1 = require("./entities/rol.entity");
 let RolesService = class RolesService {
     constructor(rolRepository) {
         this.rolRepository = rolRepository;
@@ -147,7 +147,7 @@ let RolesService = class RolesService {
 exports.RolesService = RolesService;
 exports.RolesService = RolesService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, typeorm_1.InjectRepository)(role_entity_1.Rol)),
+    __param(0, (0, typeorm_1.InjectRepository)(rol_entity_1.Rol)),
     __metadata("design:paramtypes", [typeorm_2.Repository])
 ], RolesService);
 //# sourceMappingURL=roles.service.js.map

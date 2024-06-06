@@ -1,10 +1,11 @@
-export declare const SEMILLA_DEPARTAMENTOS: {
-    departamento: string;
+export declare const SEMILLA_CIUDADES: {
+    ciudad: string;
+    valor: number;
 }[];
 export declare const SEMILLA_SUCURSAL: {
     sucursal: string;
     ubicacion: string;
-    departamento_id: number;
+    ciudad_id: number;
 }[];
 export declare const SEMILLA_ROLES: {
     rol: string;

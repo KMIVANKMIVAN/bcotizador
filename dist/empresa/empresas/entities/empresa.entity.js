@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Empresa = void 0;
 const typeorm_1 = require("typeorm");
-const direccione_entity_1 = require("../../direcciones/entities/direccione.entity");
+const direccion_entity_1 = require("../../direcciones/entities/direccion.entity");
 let Empresa = class Empresa {
 };
 exports.Empresa = Empresa;
@@ -52,7 +52,7 @@ __decorate([
     __metadata("design:type", String)
 ], Empresa.prototype, "correo", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => direccione_entity_1.Direccion, (direccion) => direccion.empresa),
+    (0, typeorm_1.OneToMany)(() => direccion_entity_1.Direccion, (direccion) => direccion.empresa),
     __metadata("design:type", Array)
 ], Empresa.prototype, "direcciones", void 0);
 exports.Empresa = Empresa = __decorate([

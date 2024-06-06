@@ -4,7 +4,7 @@ import { UnidadesController } from './unidades.controller';
 import { Unidad } from './entities/unidade.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { Direccion } from '../direcciones/entities/direccione.entity';
+import { Direccion } from '../direcciones/entities/direccion.entity';
 import { DireccionesModule } from '../direcciones/direcciones.module';
 
 @Module({

@@ -16,7 +16,7 @@ exports.DireccionesService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
-const direccione_entity_1 = require("./entities/direccione.entity");
+const direccion_entity_1 = require("./entities/direccion.entity");
 const empresas_service_1 = require("../empresas/empresas.service");
 let DireccionesService = class DireccionesService {
     constructor(direccioneRepository, empresasService) {
@@ -140,7 +140,7 @@ let DireccionesService = class DireccionesService {
 exports.DireccionesService = DireccionesService;
 exports.DireccionesService = DireccionesService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, typeorm_1.InjectRepository)(direccione_entity_1.Direccion)),
+    __param(0, (0, typeorm_1.InjectRepository)(direccion_entity_1.Direccion)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
         empresas_service_1.EmpresasService])
 ], DireccionesService);

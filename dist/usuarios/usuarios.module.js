@@ -15,15 +15,15 @@ const typeorm_1 = require("@nestjs/typeorm");
 const sucursales_module_1 = require("../sucursales/sucursales.module");
 const roles_module_1 = require("../roles/roles.module");
 const cargos_module_1 = require("../empresa/cargos/cargos.module");
-const role_entity_1 = require("../roles/entities/role.entity");
-const sucursale_entity_1 = require("../sucursales/entities/sucursale.entity");
+const rol_entity_1 = require("../roles/entities/rol.entity");
+const sucursal_entity_1 = require("../sucursales/entities/sucursal.entity");
 const cargo_entity_1 = require("../empresa/cargos/entities/cargo.entity");
 let UsuariosModule = class UsuariosModule {
 };
 exports.UsuariosModule = UsuariosModule;
 exports.UsuariosModule = UsuariosModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([usuario_entity_1.Usuario, role_entity_1.Rol, sucursale_entity_1.Sucursal, cargo_entity_1.Cargo]), sucursales_module_1.SucursalesModule, roles_module_1.RolesModule, cargos_module_1.CargosModule],
+        imports: [typeorm_1.TypeOrmModule.forFeature([usuario_entity_1.Usuario, rol_entity_1.Rol, sucursal_entity_1.Sucursal, cargo_entity_1.Cargo]), sucursales_module_1.SucursalesModule, roles_module_1.RolesModule, cargos_module_1.CargosModule],
         controllers: [usuarios_controller_1.UsuariosController],
         providers: [usuarios_service_1.UsuariosService],
         exports: [typeorm_1.TypeOrmModule, usuarios_service_1.UsuariosService],

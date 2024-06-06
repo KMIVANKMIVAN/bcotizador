@@ -15,8 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RolesController = void 0;
 const common_1 = require("@nestjs/common");
 const roles_service_1 = require("./roles.service");
-const create_role_dto_1 = require("./dto/create-role.dto");
-const update_role_dto_1 = require("./dto/update-role.dto");
+const create_rol_dto_1 = require("./dto/create-rol.dto");
+const update_rol_dto_1 = require("./dto/update-rol.dto");
 let RolesController = class RolesController {
     constructor(rolesService) {
         this.rolesService = rolesService;
@@ -42,7 +42,7 @@ __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_role_dto_1.CreateRoleDto]),
+    __metadata("design:paramtypes", [create_rol_dto_1.CreateRoleDto]),
     __metadata("design:returntype", void 0)
 ], RolesController.prototype, "create", null);
 __decorate([
@@ -63,7 +63,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, update_role_dto_1.UpdateRoleDto]),
+    __metadata("design:paramtypes", [Number, update_rol_dto_1.UpdateRoleDto]),
     __metadata("design:returntype", void 0)
 ], RolesController.prototype, "update", null);
 __decorate([

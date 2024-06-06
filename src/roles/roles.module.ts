@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { RolesController } from './roles.controller';
-import { Rol } from './entities/role.entity';
+import { Rol } from './entities/rol.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
@@ -10,4 +10,4 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   providers: [RolesService],
   exports: [TypeOrmModule, RolesService],
 })
-export class RolesModule {}
+export class RolesModule { }

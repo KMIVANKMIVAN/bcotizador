@@ -4,7 +4,7 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
 } from 'typeorm';
-import { Direccion } from 'src/empresa/direcciones/entities/direccione.entity';
+import { Direccion } from 'src/empresa/direcciones/entities/direccion.entity';
 
 @Entity('empresas')
 export class Empresa {

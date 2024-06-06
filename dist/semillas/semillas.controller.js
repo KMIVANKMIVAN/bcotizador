@@ -20,9 +20,6 @@ let SemillasController = class SemillasController {
     ejecutarSemilla() {
         return this.semillasService.ejecutarSemilla();
     }
-    hola() {
-        return 'hola';
-    }
 };
 exports.SemillasController = SemillasController;
 __decorate([
@@ -32,12 +29,6 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], SemillasController.prototype, "ejecutarSemilla", null);
-__decorate([
-    (0, common_1.Get)('hola'),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], SemillasController.prototype, "hola", null);
 exports.SemillasController = SemillasController = __decorate([
     (0, common_1.Controller)('semillas'),
     __metadata("design:paramtypes", [semillas_service_1.SemillasService])

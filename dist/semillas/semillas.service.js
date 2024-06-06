@@ -15,18 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SemillasService = void 0;
 const common_1 = require("@nestjs/common");
 const usuario_entity_1 = require("../usuarios/entities/usuario.entity");
-const sucursale_entity_1 = require("../sucursales/entities/sucursale.entity");
-const departamento_entity_1 = require("../departamentos/entities/departamento.entity");
-const role_entity_1 = require("../roles/entities/role.entity");
-const cargo_entity_1 = require("../empresa/cargos/entities/cargo.entity");
-const unidade_entity_1 = require("../empresa/unidades/entities/unidade.entity");
-const direccione_entity_1 = require("../empresa/direcciones/entities/direccione.entity");
-const empresa_entity_1 = require("../empresa/empresas/entities/empresa.entity");
+const sucursal_entity_1 = require("../sucursales/entities/sucursal.entity");
+const rol_entity_1 = require("../roles/entities/rol.entity");
+const ciudad_entity_1 = require("../ciudades/entities/ciudad.entity");
 const semilla_datos_1 = require("./datos/semilla-datos");
 const usuarios_service_1 = require("../usuarios/usuarios.service");
 const sucursales_service_1 = require("../sucursales/sucursales.service");
-const departamentos_service_1 = require("../departamentos/departamentos.service");
 const roles_service_1 = require("../roles/roles.service");
+const ciudades_service_1 = require("../ciudades/ciudades.service");
 const cargos_service_1 = require("../empresa/cargos/cargos.service");
 const unidades_service_1 = require("../empresa/unidades/unidades.service");
 const direcciones_service_1 = require("../empresa/direcciones/direcciones.service");
@@ -35,20 +31,16 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const config_1 = require("@nestjs/config");
 let SemillasService = class SemillasService {
-    constructor(configService, usuarioRepository, sucursaleRepository, departamentoRepository, roleRepository, sucursalesService, departamentosService, rolesService, usuarioService, cargoRepository, unidadRepository, direccionRepository, empresaRepository, cargosService, unidadesService, direccionesService, empresasService) {
+    constructor(configService, usuarioRepository, sucursaleRepository, ciudadRepository, roleRepository, sucursalesService, ciudadesService, rolesService, usuarioService, cargosService, unidadesService, direccionesService, empresasService) {
         this.configService = configService;
         this.usuarioRepository = usuarioRepository;
         this.sucursaleRepository = sucursaleRepository;
-        this.departamentoRepository = departamentoRepository;
+        this.ciudadRepository = ciudadRepository;
         this.roleRepository = roleRepository;
         this.sucursalesService = sucursalesService;
-        this.departamentosService = departamentosService;
+        this.ciudadesService = ciudadesService;
         this.rolesService = rolesService;
         this.usuarioService = usuarioService;
-        this.cargoRepository = cargoRepository;
-        this.unidadRepository = unidadRepository;
-        this.direccionRepository = direccionRepository;
-        this.empresaRepository = empresaRepository;
         this.cargosService = cargosService;
         this.unidadesService = unidadesService;
         this.direccionesService = direccionesService;
@@ -59,13 +51,12 @@ let SemillasService = class SemillasService {
         try {
             if (this.isProd) {
                 throw new common_1.BadRequestException({
-                    statusCode: 400,
                     error: `Error al ejecutar la semilla`,
                     message: `Problemas en la ejecucion de la semilla`,
                 });
             }
             await this.eliminarDatabase();
-            await this.crearDepartamentos();
+            await this.crearCiudades();
             await this.crearRoles();
             await this.crearEmpresas();
             await this.crearDirecciones();
@@ -77,7 +68,6 @@ let SemillasService = class SemillasService {
         }
         catch (error) {
             throw new common_1.InternalServerErrorException({
-                statusCode: 500,
                 message: `Error del Servidor. Revisar el metodo (ejecutarSemilla) de la ruta "semillas"`,
                 error: error,
             });
@@ -94,19 +84,19 @@ let SemillasService = class SemillasService {
             .delete()
             .where({})
             .execute();
-        await this.departamentoRepository
+        await this.ciudadRepository
             .createQueryBuilder()
             .delete()
             .where({})
             .execute();
         await this.roleRepository.createQueryBuilder().delete().where({}).execute();
     }
-    async crearDepartamentos() {
-        const departamentos = [];
-        for (const departamento of semilla_datos_1.SEMILLA_DEPARTAMENTOS) {
-            departamentos.push(await this.departamentosService.create(departamento));
+    async crearCiudades() {
+        const ciudades = [];
+        for (const ciudad of semilla_datos_1.SEMILLA_CIUDADES) {
+            ciudades.push(await this.ciudadesService.createSemilla(ciudad));
         }
-        return departamentos[0];
+        return ciudades[0];
     }
     async crearRoles() {
         const roles = [];
@@ -162,26 +152,18 @@ exports.SemillasService = SemillasService;
 exports.SemillasService = SemillasService = __decorate([
     (0, common_1.Injectable)(),
     __param(1, (0, typeorm_1.InjectRepository)(usuario_entity_1.Usuario)),
-    __param(2, (0, typeorm_1.InjectRepository)(sucursale_entity_1.Sucursal)),
-    __param(3, (0, typeorm_1.InjectRepository)(departamento_entity_1.Departamento)),
-    __param(4, (0, typeorm_1.InjectRepository)(role_entity_1.Rol)),
-    __param(9, (0, typeorm_1.InjectRepository)(cargo_entity_1.Cargo)),
-    __param(10, (0, typeorm_1.InjectRepository)(unidade_entity_1.Unidad)),
-    __param(11, (0, typeorm_1.InjectRepository)(direccione_entity_1.Direccion)),
-    __param(12, (0, typeorm_1.InjectRepository)(empresa_entity_1.Empresa)),
+    __param(2, (0, typeorm_1.InjectRepository)(sucursal_entity_1.Sucursal)),
+    __param(3, (0, typeorm_1.InjectRepository)(ciudad_entity_1.Ciudad)),
+    __param(4, (0, typeorm_1.InjectRepository)(rol_entity_1.Rol)),
     __metadata("design:paramtypes", [config_1.ConfigService,
         typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository,
         sucursales_service_1.SucursalesService,
-        departamentos_service_1.DepartamentosService,
+        ciudades_service_1.CiudadesService,
         roles_service_1.RolesService,
         usuarios_service_1.UsuariosService,
-        typeorm_2.Repository,
-        typeorm_2.Repository,
-        typeorm_2.Repository,
-        typeorm_2.Repository,
         cargos_service_1.CargosService,
         unidades_service_1.UnidadesService,
         direcciones_service_1.DireccionesService,

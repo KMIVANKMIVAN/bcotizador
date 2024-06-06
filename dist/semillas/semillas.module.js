@@ -10,10 +10,10 @@ exports.SemillasModule = void 0;
 const common_1 = require("@nestjs/common");
 const semillas_service_1 = require("./semillas.service");
 const semillas_controller_1 = require("./semillas.controller");
-const departamentos_module_1 = require("../departamentos/departamentos.module");
 const roles_module_1 = require("../roles/roles.module");
 const sucursales_module_1 = require("../sucursales/sucursales.module");
 const usuarios_module_1 = require("../usuarios/usuarios.module");
+const ciudades_module_1 = require("../ciudades/ciudades.module");
 const cargos_module_1 = require("../empresa/cargos/cargos.module");
 const unidades_module_1 = require("../empresa/unidades/unidades.module");
 const direcciones_module_1 = require("../empresa/direcciones/direcciones.module");
@@ -24,7 +24,7 @@ exports.SemillasModule = SemillasModule;
 exports.SemillasModule = SemillasModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            departamentos_module_1.DepartamentosModule,
+            ciudades_module_1.CiudadesModule,
             roles_module_1.RolesModule,
             sucursales_module_1.SucursalesModule,
             usuarios_module_1.UsuariosModule,

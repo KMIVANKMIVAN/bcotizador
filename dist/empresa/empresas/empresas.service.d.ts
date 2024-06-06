@@ -9,8 +9,5 @@ export declare class EmpresasService {
     findAll(): Promise<Empresa[]>;
     findOne(id: number): Promise<Empresa>;
     update(id: number, updateEmpresaDto: UpdateEmpresaDto): Promise<Empresa>;
-    remove(id: number): Promise<{
-        success: boolean;
-        message: string;
-    }>;
+    remove(id: number): Promise<any>;
 }

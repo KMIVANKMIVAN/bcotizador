@@ -7,7 +7,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 
-import { Direccion } from 'src/empresa/direcciones/entities/direccione.entity';
+import { Direccion } from 'src/empresa/direcciones/entities/direccion.entity';
 import { Cargo } from 'src/empresa/cargos/entities/cargo.entity';
 
 @Entity('unidades')

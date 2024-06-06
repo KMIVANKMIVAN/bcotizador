@@ -16,20 +16,21 @@ exports.SucursalesService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
-const sucursale_entity_1 = require("./entities/sucursale.entity");
-const departamentos_service_1 = require("../departamentos/departamentos.service");
+const sucursal_entity_1 = require("./entities/sucursal.entity");
+const ciudades_service_1 = require("../ciudades/ciudades.service");
 let SucursalesService = class SucursalesService {
-    constructor(sucursaleRepository, departamentosService) {
+    constructor(sucursaleRepository, ciudadesService) {
         this.sucursaleRepository = sucursaleRepository;
-        this.departamentosService = departamentosService;
+        this.ciudadesService = ciudadesService;
     }
     async create(createSucursaleDto) {
         try {
-            const buscarDepartamento = await this.departamentosService.findOne(createSucursaleDto.departamento_id);
-            const { departamento_id, ...sucursalDatos } = createSucursaleDto;
+            console.log("createSucursaleDto", createSucursaleDto);
+            const buscarCiudad = await this.ciudadesService.findOne(createSucursaleDto.ciudad_id);
+            const { ciudad_id, ...sucursalDatos } = createSucursaleDto;
             const nuevaUnidad = this.sucursaleRepository.create({
                 ...sucursalDatos,
-                departamento: buscarDepartamento,
+                ciudad: buscarCiudad,
             });
             return await this.sucursaleRepository.save(nuevaUnidad);
         }
@@ -47,7 +48,7 @@ let SucursalesService = class SucursalesService {
     }
     async findAll() {
         try {
-            const sucursales = await this.sucursaleRepository.find({ relations: ['departamento'] });
+            const sucursales = await this.sucursaleRepository.find({ relations: ['ciudad'] });
             if (!sucursales || sucursales.length === 0) {
                 throw new common_1.NotFoundException({
                     message: `No se encontraron Sucursales`,
@@ -95,12 +96,12 @@ let SucursalesService = class SucursalesService {
         try {
             console.log("updateSucursaleDto", updateSucursaleDto);
             const existeSucursal = await this.findOne(id);
-            const buscarDepartamento = await this.departamentosService.findOne(updateSucursaleDto.departamento_id);
+            const buscarCiudad = await this.ciudadesService.findOne(updateSucursaleDto.ciudad_id);
             const actualizarSucursal = await this.sucursaleRepository.preload({
                 id,
                 ...updateSucursaleDto
             });
-            actualizarSucursal.departamento = buscarDepartamento;
+            actualizarSucursal.ciudad = buscarCiudad;
             return await this.sucursaleRepository.save(actualizarSucursal);
         }
         catch (error) {
@@ -137,8 +138,8 @@ let SucursalesService = class SucursalesService {
 exports.SucursalesService = SucursalesService;
 exports.SucursalesService = SucursalesService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, typeorm_1.InjectRepository)(sucursale_entity_1.Sucursal)),
+    __param(0, (0, typeorm_1.InjectRepository)(sucursal_entity_1.Sucursal)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
-        departamentos_service_1.DepartamentosService])
+        ciudades_service_1.CiudadesService])
 ], SucursalesService);
 //# sourceMappingURL=sucursales.service.js.map

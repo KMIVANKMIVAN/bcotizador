@@ -5,9 +5,9 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateRoleDto } from './dto/create-role.dto';
-import { UpdateRoleDto } from './dto/update-role.dto';
-import { Rol } from './entities/role.entity';
+import { CreateRoleDto } from './dto/create-rol.dto';
+import { UpdateRoleDto } from './dto/update-rol.dto';
+import { Rol } from './entities/rol.entity';
 
 @Injectable()
 export class RolesService {
@@ -16,7 +16,7 @@ export class RolesService {
     private readonly rolRepository: Repository<Rol>,
   ) { }
 
-  async create(createRoleDto: CreateRoleDto) {
+  async create(createRoleDto: CreateRoleDto): Promise<Rol> {
     try {
       const nuevoRol = this.rolRepository.create(createRoleDto);
       return await this.rolRepository.save(nuevoRol);
@@ -31,7 +31,7 @@ export class RolesService {
     }
   }
 
-  async findAll() {
+  async findAll(): Promise<Rol[]> {
     try {
       const roles = await this.rolRepository.find();
       if (!roles || roles.length === 0) {
@@ -54,7 +54,7 @@ export class RolesService {
     }
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<Rol> {
     try {
       const rol = await this.rolRepository.findOneBy({ id });
       if (!rol) {
@@ -76,7 +76,7 @@ export class RolesService {
       }
     }
   }
-  async findByIds(ids: number[]) {
+  async findByIds(ids: number[]): Promise<Rol[]> {
     try {
       const roles = await this.rolRepository.findByIds(ids);
       if (!roles) {
@@ -104,7 +104,7 @@ export class RolesService {
     }
   }
 
-  async update(id: number, updateRoleDto: UpdateRoleDto) {
+  async update(id: number, updateRoleDto: UpdateRoleDto): Promise<Rol> {
     try {
       const existeRol = await this.findOne(id);
       const actualizarRol = this.rolRepository.merge(existeRol, updateRoleDto);
@@ -122,7 +122,7 @@ export class RolesService {
     }
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<any> {
     try {
       const rol = await this.findOne(id);
       await this.rolRepository.delete(id);

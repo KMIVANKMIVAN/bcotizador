@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Unidad = void 0;
 const typeorm_1 = require("typeorm");
-const direccione_entity_1 = require("../../direcciones/entities/direccione.entity");
+const direccion_entity_1 = require("../../direcciones/entities/direccion.entity");
 const cargo_entity_1 = require("../../cargos/entities/cargo.entity");
 let Unidad = class Unidad {
 };
@@ -29,9 +29,9 @@ __decorate([
     __metadata("design:type", String)
 ], Unidad.prototype, "descripcion", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => direccione_entity_1.Direccion, (direccion) => direccion.unidades),
+    (0, typeorm_1.ManyToOne)(() => direccion_entity_1.Direccion, (direccion) => direccion.unidades),
     (0, typeorm_1.JoinColumn)({ name: 'direccion_id' }),
-    __metadata("design:type", direccione_entity_1.Direccion)
+    __metadata("design:type", direccion_entity_1.Direccion)
 ], Unidad.prototype, "direccion", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => cargo_entity_1.Cargo, (cargo) => cargo.unidad),

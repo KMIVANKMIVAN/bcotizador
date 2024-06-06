@@ -15,8 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DireccionesController = void 0;
 const common_1 = require("@nestjs/common");
 const direcciones_service_1 = require("./direcciones.service");
-const create_direccione_dto_1 = require("./dto/create-direccione.dto");
-const update_direccione_dto_1 = require("./dto/update-direccione.dto");
+const create_direccion_dto_1 = require("./dto/create-direccion.dto");
+const update_direccion_dto_1 = require("./dto/update-direccion.dto");
 let DireccionesController = class DireccionesController {
     constructor(direccionesService) {
         this.direccionesService = direccionesService;
@@ -42,7 +42,7 @@ __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_direccione_dto_1.CreateDireccioneDto]),
+    __metadata("design:paramtypes", [create_direccion_dto_1.CreateDireccioneDto]),
     __metadata("design:returntype", void 0)
 ], DireccionesController.prototype, "create", null);
 __decorate([
@@ -63,7 +63,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, update_direccione_dto_1.UpdateDireccioneDto]),
+    __metadata("design:paramtypes", [Number, update_direccion_dto_1.UpdateDireccioneDto]),
     __metadata("design:returntype", void 0)
 ], DireccionesController.prototype, "update", null);
 __decorate([
