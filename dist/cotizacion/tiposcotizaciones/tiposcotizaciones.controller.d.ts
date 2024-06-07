@@ -6,6 +6,7 @@ export declare class TiposcotizacionesController {
     constructor(tiposcotizacionesService: TiposcotizacionesService);
     create(createTipocotizacionDto: CreateTipocotizacionDto): Promise<import("./entities/tipocotizacion.entity").Tipocotizacion>;
     findAll(): Promise<import("./entities/tipocotizacion.entity").Tipocotizacion[]>;
+    findAllPorNombTipoCotiz(tipocotizacion: string): Promise<import("./entities/tipocotizacion.entity").Tipocotizacion[]>;
     findAllClear(): Promise<import("./entities/tipocotizacion.entity").Tipocotizacion[]>;
     findOne(id: number): Promise<import("./entities/tipocotizacion.entity").Tipocotizacion>;
     update(id: number, updateTipocotizacionDto: UpdateTipocotizacionDto): Promise<import("./entities/tipocotizacion.entity").Tipocotizacion>;

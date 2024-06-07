@@ -15,10 +15,31 @@ class CreateCotizacionDto {
 }
 exports.CreateCotizacionDto = CreateCotizacionDto;
 __decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.MaxLength)(100, { message: 'La longitud maxima es de 100 caracteres' }),
+    __metadata("design:type", String)
+], CreateCotizacionDto.prototype, "nombrecotizacion", void 0);
+__decorate([
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
 ], CreateCotizacionDto.prototype, "volumen", void 0);
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Number)
+], CreateCotizacionDto.prototype, "area", void 0);
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Number)
+], CreateCotizacionDto.prototype, "altura", void 0);
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Number)
+], CreateCotizacionDto.prototype, "nrocotizacion", void 0);
 __decorate([
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsNotEmpty)(),
@@ -59,4 +80,9 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
 ], CreateCotizacionDto.prototype, "tipovidrio_id", void 0);
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Number)
+], CreateCotizacionDto.prototype, "tipocotizacion_id", void 0);
 //# sourceMappingURL=create-cotizacion.dto.js.map

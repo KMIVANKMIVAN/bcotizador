@@ -16,9 +16,18 @@ export class CiudadeszonasController {
   findAll() {
     return this.ciudadeszonasService.findAll();
   }
+  @Get("/porciudad/:ciudadid")
+  findAllPorCiudad(@Param('ciudadid') ciudadId: number) {
+    return this.ciudadeszonasService.findAllPorCiudad(ciudadId);
+  }
   @Get('svc')
   findAllClear() {
     return this.ciudadeszonasService.findAllClear();
+  }
+
+  @Get('pornombciudzona/:nombciudzona')
+  findAllPorNombCiudZona(@Param('nombciudzona') nombciudzona: string) {
+    return this.ciudadeszonasService.findAllPorNombCiudZona(nombciudzona);
   }
 
   @Get(':id')

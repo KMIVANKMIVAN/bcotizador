@@ -30,7 +30,7 @@ exports.SEMILLA_CIUDADZONA = [
 ];
 exports.SEMILLA_NIVELPISO = [
     {
-        nivelpiso: 'zotano',
+        nivelpiso: 'sotano',
         valor: 0.2,
     },
     {
@@ -148,7 +148,7 @@ exports.SEMILLA_TIPOVIDRIO = [
         valor: 0.2,
     },
     {
-        tipovidrio: 'vidrio pvc',
+        tipovidrio: 'vidrio PVC',
         valor: 0.2,
     },
 ];

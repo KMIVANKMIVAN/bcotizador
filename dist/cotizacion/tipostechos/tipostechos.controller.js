@@ -24,6 +24,9 @@ let TipostechosController = class TipostechosController {
     create(createTipotechoDto) {
         return this.tipostechosService.create(createTipotechoDto);
     }
+    findAllPorNombTipoTecho(tipotecho) {
+        return this.tipostechosService.findAllPorNombTipoTecho(tipotecho);
+    }
     findAll() {
         return this.tipostechosService.findAll();
     }
@@ -48,6 +51,13 @@ __decorate([
     __metadata("design:paramtypes", [create_tipotecho_dto_1.CreateTipotechoDto]),
     __metadata("design:returntype", void 0)
 ], TipostechosController.prototype, "create", null);
+__decorate([
+    (0, common_1.Get)('portipotecho/:tipotecho'),
+    __param(0, (0, common_1.Param)('tipotecho')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], TipostechosController.prototype, "findAllPorNombTipoTecho", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),

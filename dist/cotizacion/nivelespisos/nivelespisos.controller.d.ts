@@ -7,6 +7,7 @@ export declare class NivelespisosController {
     create(createNivelpisoDto: CreateNivelpisoDto): Promise<import("./entities/nivelpiso.entity").Nivelpiso>;
     findAll(): Promise<import("./entities/nivelpiso.entity").Nivelpiso[]>;
     findAllClear(): Promise<import("./entities/nivelpiso.entity").Nivelpiso[]>;
+    findAllPorNombNivelPiso(nivelpiso: string): Promise<import("./entities/nivelpiso.entity").Nivelpiso[]>;
     findOne(id: number): Promise<import("./entities/nivelpiso.entity").Nivelpiso>;
     update(id: number, updateNivelpisoDto: UpdateNivelpisoDto): Promise<import("./entities/nivelpiso.entity").Nivelpiso>;
     remove(id: number): Promise<any>;

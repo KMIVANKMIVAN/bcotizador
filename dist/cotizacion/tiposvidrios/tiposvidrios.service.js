@@ -49,6 +49,31 @@ let TiposvidriosService = class TiposvidriosService {
             });
         }
     }
+    async findAllPorNombTipoVidrio(tipovidrio) {
+        try {
+            const tiposvidrios = await this.tipovidrioRepository.createQueryBuilder('tipovidrio')
+                .where('LOWER(tipovidrio.tipovidrio) LIKE LOWER(:tipovidrio)', { tipovidrio: `%${tipovidrio.toLowerCase()}%` })
+                .limit(5)
+                .getMany();
+            if (!tiposvidrios || tiposvidrios.length === 0) {
+                throw new common_1.NotFoundException({
+                    message: `No se encontraron tipos vidrios: ${tipovidrio}`,
+                });
+            }
+            return tiposvidrios;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (findAllPorNombTipoVidrio) de la ruta "tiposvidrios"`,
+                    error: `${error}`,
+                });
+            }
+        }
+    }
     async findAll() {
         try {
             const tiposvidrios = await this.tipovidrioRepository.find();

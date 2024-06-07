@@ -7,6 +7,7 @@ export declare class TiposvidriosService {
     constructor(tipovidrioRepository: Repository<Tipovidrio>);
     createSemilla(createTipovidrioDto: CreateTipovidrioDto): Promise<Tipovidrio>;
     create(createTipovidrioDto: CreateTipovidrioDto): Promise<Tipovidrio>;
+    findAllPorNombTipoVidrio(tipovidrio: string): Promise<Tipovidrio[]>;
     findAll(): Promise<Tipovidrio[]>;
     findAllClear(): Promise<Tipovidrio[]>;
     findOne(id: number): Promise<Tipovidrio>;

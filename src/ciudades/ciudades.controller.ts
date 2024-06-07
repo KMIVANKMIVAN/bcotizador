@@ -16,7 +16,10 @@ export class CiudadesController {
   findAll() {
     return this.ciudadesService.findAll();
   }
-
+  @Get('porciudad/:ciudad')
+  findAllPorNombCiudad(@Param('ciudad') ciudad: string) {
+    return this.ciudadesService.findAllPorNombCiudad(ciudad);
+  }
   @Get('svc')
   findAllClear() {
     return this.ciudadesService.findAllClear();

@@ -6,6 +6,7 @@ export declare class CotizacionesController {
     constructor(cotizacionesService: CotizacionesService);
     create(createCotizacionDto: CreateCotizacionDto): Promise<import("./entities/cotizacion.entity").Cotizacion>;
     findAll(): Promise<import("./entities/cotizacion.entity").Cotizacion[]>;
+    findAllPorNombCotiz(nombcotiz: string): Promise<import("./entities/cotizacion.entity").Cotizacion[]>;
     findOne(id: number): Promise<import("./entities/cotizacion.entity").Cotizacion>;
     update(id: number, updateCotizacionDto: UpdateCotizacionDto): Promise<import("./entities/cotizacion.entity").Cotizacion>;
     remove(id: number): Promise<any>;

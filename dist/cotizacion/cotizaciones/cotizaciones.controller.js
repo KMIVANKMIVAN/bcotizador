@@ -27,6 +27,9 @@ let CotizacionesController = class CotizacionesController {
     findAll() {
         return this.cotizacionesService.findAll();
     }
+    findAllPorNombCotiz(nombcotiz) {
+        return this.cotizacionesService.findAllPorNombCotiz(nombcotiz);
+    }
     findOne(id) {
         return this.cotizacionesService.findOne(+id);
     }
@@ -51,6 +54,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], CotizacionesController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('pornombcotiz/:nombcotiz'),
+    __param(0, (0, common_1.Param)('nombcotiz')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], CotizacionesController.prototype, "findAllPorNombCotiz", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),

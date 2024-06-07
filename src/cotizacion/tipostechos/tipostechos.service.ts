@@ -49,7 +49,30 @@ export class TipostechosService {
       });
     }
   }
+  async findAllPorNombTipoTecho(tipotecho: string): Promise<Tipotecho[]> {
+    try {
+      const tipostechos = await this.tipotechoRepository.createQueryBuilder('tipotecho')
+        .where('LOWER(tipotecho.tipotecho) LIKE LOWER(:tipotecho)', { tipotecho: `%${tipotecho.toLowerCase()}%` })
+        .limit(5)
+        .getMany();
 
+      if (!tipostechos || tipostechos.length === 0) {
+        throw new NotFoundException({
+          message: `No se encontraron tipos techos: ${tipotecho}`,
+        });
+      }
+      return tipostechos;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          message: `Error del Servidor. Revisar el metodo (findAllPorNombTipoTecho) de la ruta "tipostechos"`,
+          error: `${error}`,
+        });
+      }
+    }
+  }
   async findAll(): Promise<Tipotecho[]> {
     try {
       const tipostechos = await this.tipotechoRepository.find();

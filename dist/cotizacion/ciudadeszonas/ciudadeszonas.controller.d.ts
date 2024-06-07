@@ -6,7 +6,9 @@ export declare class CiudadeszonasController {
     constructor(ciudadeszonasService: CiudadeszonasService);
     create(createCiudadzonaDto: CreateCiudadzonaDto): Promise<import("./entities/ciudadzona.entity").Ciudadzona>;
     findAll(): Promise<import("./entities/ciudadzona.entity").Ciudadzona[]>;
+    findAllPorCiudad(ciudadId: number): Promise<import("./entities/ciudadzona.entity").Ciudadzona[]>;
     findAllClear(): Promise<import("./entities/ciudadzona.entity").Ciudadzona[]>;
+    findAllPorNombCiudZona(nombciudzona: string): Promise<import("./entities/ciudadzona.entity").Ciudadzona[]>;
     findOne(id: number): Promise<import("./entities/ciudadzona.entity").Ciudadzona>;
     update(id: number, updateCiudadzonaDto: UpdateCiudadzonaDto): Promise<import("./entities/ciudadzona.entity").Ciudadzona>;
     remove(id: number): Promise<any>;

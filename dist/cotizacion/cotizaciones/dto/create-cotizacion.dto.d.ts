@@ -1,5 +1,9 @@
 export declare class CreateCotizacionDto {
+    nombrecotizacion: string;
     volumen: number;
+    area: number;
+    altura: number;
+    nrocotizacion: number;
     cantidadventana: number;
     ciudadzona_id: number;
     nivelpiso_id: number;
@@ -8,4 +12,5 @@ export declare class CreateCotizacionDto {
     tiposuelo_id: number;
     tipotecho_id: number;
     tipovidrio_id: number;
+    tipocotizacion_id: number;
 }

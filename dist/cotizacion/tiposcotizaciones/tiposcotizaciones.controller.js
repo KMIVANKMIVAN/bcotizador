@@ -27,6 +27,9 @@ let TiposcotizacionesController = class TiposcotizacionesController {
     findAll() {
         return this.tiposcotizacionesService.findAll();
     }
+    findAllPorNombTipoCotiz(tipocotizacion) {
+        return this.tiposcotizacionesService.findAllPorNombTipoCotiz(tipocotizacion);
+    }
     findAllClear() {
         return this.tiposcotizacionesService.findAllClear();
     }
@@ -54,6 +57,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], TiposcotizacionesController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('portipocotiz/:tipocotizacion'),
+    __param(0, (0, common_1.Param)('tipocotizacion')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], TiposcotizacionesController.prototype, "findAllPorNombTipoCotiz", null);
 __decorate([
     (0, common_1.Get)('svc'),
     __metadata("design:type", Function),

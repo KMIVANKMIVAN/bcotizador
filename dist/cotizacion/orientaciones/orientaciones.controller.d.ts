@@ -6,6 +6,7 @@ export declare class OrientacionesController {
     constructor(orientacionesService: OrientacionesService);
     create(createOrientacionDto: CreateOrientacionDto): Promise<import("./entities/orientacion.entity").Orientacion>;
     findAll(): Promise<import("./entities/orientacion.entity").Orientacion[]>;
+    findAllPorNombOrient(orientacion: string): Promise<import("./entities/orientacion.entity").Orientacion[]>;
     findAllClear(): Promise<import("./entities/orientacion.entity").Orientacion[]>;
     findOne(id: number): Promise<import("./entities/orientacion.entity").Orientacion>;
     update(id: number, updateOrientacionDto: UpdateOrientacionDto): Promise<import("./entities/orientacion.entity").Orientacion>;

@@ -27,6 +27,9 @@ let TiposvidriosController = class TiposvidriosController {
     findAll() {
         return this.tiposvidriosService.findAll();
     }
+    findAllPorNombTipoVidrio(tipovidrio) {
+        return this.tiposvidriosService.findAllPorNombTipoVidrio(tipovidrio);
+    }
     findAllClear() {
         return this.tiposvidriosService.findAllClear();
     }
@@ -54,6 +57,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], TiposvidriosController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('portipovidrio/:tipovidrio'),
+    __param(0, (0, common_1.Param)('tipovidrio')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], TiposvidriosController.prototype, "findAllPorNombTipoVidrio", null);
 __decorate([
     (0, common_1.Get)('svc'),
     __metadata("design:type", Function),

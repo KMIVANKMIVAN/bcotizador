@@ -20,8 +20,20 @@ export class Cotizacion {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'numeric', precision: 5, scale: 4, nullable: false })
+  @Column({ type: 'varchar', length: 100, nullable: false })
+  nombrecotizacion: string;
+
+  @Column({ type: 'numeric', precision: 12, scale: 4, nullable: false })
   volumen: number;
+
+  @Column({ type: 'numeric', precision: 12, scale: 4, nullable: false })
+  area: number;
+
+  @Column({ type: 'numeric', precision: 12, scale: 4, nullable: false })
+  altura: number;
+
+  @Column({ type: 'smallint', nullable: false })
+  nrocotizacion: number;
 
   @Column({ type: 'smallint', nullable: false })
   cantidadventana: number;

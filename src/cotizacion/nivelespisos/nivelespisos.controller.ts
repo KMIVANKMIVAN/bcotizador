@@ -22,6 +22,11 @@ export class NivelespisosController {
     return this.nivelespisosService.findAllClear();
   }
 
+  @Get('pornivelpiso/:nivelpiso')
+  findAllPorNombNivelPiso(@Param('nivelpiso') nivelpiso: string) {
+    return this.nivelespisosService.findAllPorNombNivelPiso(nivelpiso);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.nivelespisosService.findOne(+id);

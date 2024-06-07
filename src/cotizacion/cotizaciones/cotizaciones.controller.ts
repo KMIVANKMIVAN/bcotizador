@@ -17,6 +17,11 @@ export class CotizacionesController {
     return this.cotizacionesService.findAll();
   }
 
+  @Get('pornombcotiz/:nombcotiz')
+  findAllPorNombCotiz(@Param('nombcotiz') nombcotiz: string) {
+    return this.cotizacionesService.findAllPorNombCotiz(nombcotiz);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.cotizacionesService.findOne(+id);

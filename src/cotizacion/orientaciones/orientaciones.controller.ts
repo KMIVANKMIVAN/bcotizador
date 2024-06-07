@@ -16,7 +16,10 @@ export class OrientacionesController {
   findAll() {
     return this.orientacionesService.findAll();
   }
-
+  @Get('pororient/:orientacion')
+  findAllPorNombOrient(@Param('orientacion') orientacion: string) {
+    return this.orientacionesService.findAllPorNombOrient(orientacion);
+  }
   @Get('svc')
   findAllClear() {
     return this.orientacionesService.findAllClear();

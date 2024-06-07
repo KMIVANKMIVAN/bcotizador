@@ -1,9 +1,26 @@
 import { IsNotEmpty, IsNumber, IsString, MaxLength } from 'class-validator';
 
 export class CreateCotizacionDto {
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(100, { message: 'La longitud maxima es de 100 caracteres' })
+  nombrecotizacion: string;
+
   @IsNumber()
   @IsNotEmpty()
   volumen: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  area: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  altura: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  nrocotizacion: number;
 
   @IsNumber()
   @IsNotEmpty()
@@ -36,6 +53,10 @@ export class CreateCotizacionDto {
   @IsNumber()
   @IsNotEmpty()
   tipovidrio_id: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  tipocotizacion_id: number;
   
   /* @IsNumber()
   @IsNotEmpty()

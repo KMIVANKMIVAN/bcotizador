@@ -27,9 +27,25 @@ __decorate([
     __metadata("design:type", Number)
 ], Cotizacion.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'numeric', precision: 5, scale: 4, nullable: false }),
+    (0, typeorm_1.Column)({ type: 'varchar', length: 100, nullable: false }),
+    __metadata("design:type", String)
+], Cotizacion.prototype, "nombrecotizacion", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'numeric', precision: 12, scale: 4, nullable: false }),
     __metadata("design:type", Number)
 ], Cotizacion.prototype, "volumen", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'numeric', precision: 12, scale: 4, nullable: false }),
+    __metadata("design:type", Number)
+], Cotizacion.prototype, "area", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'numeric', precision: 12, scale: 4, nullable: false }),
+    __metadata("design:type", Number)
+], Cotizacion.prototype, "altura", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'smallint', nullable: false }),
+    __metadata("design:type", Number)
+], Cotizacion.prototype, "nrocotizacion", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'smallint', nullable: false }),
     __metadata("design:type", Number)

@@ -21,7 +21,9 @@ export declare class CotizacionesService {
     constructor(cotizacionRepository: Repository<Cotizacion>, ciudadeszonasService: CiudadeszonasService, nivelespisosService: NivelespisosService, orientacionesService: OrientacionesService, tiposparedesService: TiposparedesService, tipossuelosService: TipossuelosService, tipostechosService: TipostechosService, tiposvidriosService: TiposvidriosService);
     create(createCotizacionDto: CreateCotizacionDto): Promise<Cotizacion>;
     findAll(): Promise<Cotizacion[]>;
+    findAllPorNombCotiz(nombcotiz: string): Promise<Cotizacion[]>;
     findOne(id: number): Promise<Cotizacion>;
+    findOnePorNombre(nomCotizacion: string): Promise<Cotizacion>;
     update(id: number, updateCotizacionDto: UpdateCotizacionDto): Promise<Cotizacion>;
     remove(id: number): Promise<any>;
 }

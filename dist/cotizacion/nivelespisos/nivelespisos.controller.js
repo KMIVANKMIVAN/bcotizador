@@ -30,6 +30,9 @@ let NivelespisosController = class NivelespisosController {
     findAllClear() {
         return this.nivelespisosService.findAllClear();
     }
+    findAllPorNombNivelPiso(nivelpiso) {
+        return this.nivelespisosService.findAllPorNombNivelPiso(nivelpiso);
+    }
     findOne(id) {
         return this.nivelespisosService.findOne(+id);
     }
@@ -60,6 +63,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], NivelespisosController.prototype, "findAllClear", null);
+__decorate([
+    (0, common_1.Get)('pornivelpiso/:nivelpiso'),
+    __param(0, (0, common_1.Param)('nivelpiso')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], NivelespisosController.prototype, "findAllPorNombNivelPiso", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),

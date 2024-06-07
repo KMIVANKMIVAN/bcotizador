@@ -52,7 +52,30 @@ export class CiudadesService {
       });
     }
   }
+  async findAllPorNombCiudad(ciudad: string): Promise<Ciudad[]> {
+    try {
+      const ciudadeszonas = await this.ciudadRepository.createQueryBuilder('ciudad')
+        .where('LOWER(ciudad.ciudad) LIKE LOWER(:ciudad)', { ciudad: `%${ciudad.toLowerCase()}%` })
+        .limit(5)
+        .getMany();
 
+      if (!ciudadeszonas || ciudadeszonas.length === 0) {
+        throw new NotFoundException({
+          message: `No se encontraron ciudades: ${ciudad}`,
+        });
+      }
+      return ciudadeszonas;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          message: `Error del Servidor. Revisar el metodo (findAllPorNombCiudZona) de la ruta "ciudadeszonas"`,
+          error: `${error}`,
+        });
+      }
+    }
+  }
   async findAll(): Promise<Ciudad[]> {
     try {
       const ciudades = await this.ciudadRepository.find();

@@ -27,8 +27,14 @@ let CiudadeszonasController = class CiudadeszonasController {
     findAll() {
         return this.ciudadeszonasService.findAll();
     }
+    findAllPorCiudad(ciudadId) {
+        return this.ciudadeszonasService.findAllPorCiudad(ciudadId);
+    }
     findAllClear() {
         return this.ciudadeszonasService.findAllClear();
+    }
+    findAllPorNombCiudZona(nombciudzona) {
+        return this.ciudadeszonasService.findAllPorNombCiudZona(nombciudzona);
     }
     findOne(id) {
         return this.ciudadeszonasService.findOne(+id);
@@ -55,11 +61,25 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], CiudadeszonasController.prototype, "findAll", null);
 __decorate([
+    (0, common_1.Get)("/porciudad/:ciudadid"),
+    __param(0, (0, common_1.Param)('ciudadid')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", void 0)
+], CiudadeszonasController.prototype, "findAllPorCiudad", null);
+__decorate([
     (0, common_1.Get)('svc'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], CiudadeszonasController.prototype, "findAllClear", null);
+__decorate([
+    (0, common_1.Get)('pornombciudzona/:nombciudzona'),
+    __param(0, (0, common_1.Param)('nombciudzona')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], CiudadeszonasController.prototype, "findAllPorNombCiudZona", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),

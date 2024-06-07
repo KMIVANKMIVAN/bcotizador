@@ -7,6 +7,7 @@ export declare class TipostechosService {
     constructor(tipotechoRepository: Repository<Tipotecho>);
     createSemilla(createTipotechoDto: CreateTipotechoDto): Promise<Tipotecho>;
     create(createTipotechoDto: CreateTipotechoDto): Promise<Tipotecho>;
+    findAllPorNombTipoTecho(tipotecho: string): Promise<Tipotecho[]>;
     findAll(): Promise<Tipotecho[]>;
     findAllClear(): Promise<Tipotecho[]>;
     findOne(id: number): Promise<Tipotecho>;

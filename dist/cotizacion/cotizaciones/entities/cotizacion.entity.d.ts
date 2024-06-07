@@ -8,7 +8,11 @@ import { Ciudadzona } from 'src/cotizacion/ciudadeszonas/entities/ciudadzona.ent
 import { Tipocotizacion } from 'src/cotizacion/tiposcotizaciones/entities/tipocotizacion.entity';
 export declare class Cotizacion {
     id: number;
+    nombrecotizacion: string;
     volumen: number;
+    area: number;
+    altura: number;
+    nrocotizacion: number;
     cantidadventana: number;
     ciudadzona: Ciudadzona;
     nivelpiso: Nivelpiso;

@@ -16,7 +16,10 @@ export class TiposparedesController {
   findAll() {
     return this.tiposparedesService.findAll();
   }
-
+  @Get('portipopared/:tipopared')
+  findAllPorNombTipoPared(@Param('tipopared') tipopared: string) {
+    return this.tiposparedesService.findAllPorNombTipoPared(tipopared);
+  }
   @Get('svc')
   findAllClear() {
     return this.tiposparedesService.findAllClear();

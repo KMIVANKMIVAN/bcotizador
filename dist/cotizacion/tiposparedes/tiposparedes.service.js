@@ -19,14 +19,14 @@ const typeorm_2 = require("typeorm");
 const tipopared_entity_1 = require("./entities/tipopared.entity");
 const capitalizeTextos_1 = require("../../utils/capitalizeTextos");
 let TiposparedesService = class TiposparedesService {
-    constructor(nivelpisoRepository) {
-        this.nivelpisoRepository = nivelpisoRepository;
+    constructor(tipoparedRepository) {
+        this.tipoparedRepository = tipoparedRepository;
     }
     async createSemilla(createTipoparedDto) {
         try {
             createTipoparedDto.tipopared = (0, capitalizeTextos_1.capitalizeTextos)(createTipoparedDto.tipopared);
-            const nuevoTipopared = this.nivelpisoRepository.create(createTipoparedDto);
-            return await this.nivelpisoRepository.save(nuevoTipopared);
+            const nuevoTipopared = this.tipoparedRepository.create(createTipoparedDto);
+            return await this.tipoparedRepository.save(nuevoTipopared);
         }
         catch (error) {
             throw new common_1.InternalServerErrorException({
@@ -39,8 +39,8 @@ let TiposparedesService = class TiposparedesService {
         try {
             createTipoparedDto.valor = Number(createTipoparedDto.valor) * 1 / 100;
             createTipoparedDto.tipopared = (0, capitalizeTextos_1.capitalizeTextos)(createTipoparedDto.tipopared);
-            const nuevoTipopared = this.nivelpisoRepository.create(createTipoparedDto);
-            return await this.nivelpisoRepository.save(nuevoTipopared);
+            const nuevoTipopared = this.tipoparedRepository.create(createTipoparedDto);
+            return await this.tipoparedRepository.save(nuevoTipopared);
         }
         catch (error) {
             throw new common_1.InternalServerErrorException({
@@ -49,9 +49,34 @@ let TiposparedesService = class TiposparedesService {
             });
         }
     }
+    async findAllPorNombTipoPared(tipopared) {
+        try {
+            const tiposparedes = await this.tipoparedRepository.createQueryBuilder('tipopared')
+                .where('LOWER(tipopared.tipopared) LIKE LOWER(:tipopared)', { tipopared: `%${tipopared.toLowerCase()}%` })
+                .limit(5)
+                .getMany();
+            if (!tiposparedes || tiposparedes.length === 0) {
+                throw new common_1.NotFoundException({
+                    message: `No se encontraron tipos paredes: ${tipopared}`,
+                });
+            }
+            return tiposparedes;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (findAllPorNombTipoPared) de la ruta "tiposparedes"`,
+                    error: `${error}`,
+                });
+            }
+        }
+    }
     async findAll() {
         try {
-            const tiposparedes = await this.nivelpisoRepository.find();
+            const tiposparedes = await this.tipoparedRepository.find();
             if (!tiposparedes || tiposparedes.length === 0) {
                 throw new common_1.NotFoundException({
                     message: `No se encontraron tiposparedes`,
@@ -73,7 +98,7 @@ let TiposparedesService = class TiposparedesService {
     }
     async findAllClear() {
         try {
-            const tiposparedes = await this.nivelpisoRepository.find();
+            const tiposparedes = await this.tipoparedRepository.find();
             if (!tiposparedes || tiposparedes.length === 0) {
                 throw new common_1.NotFoundException({
                     message: `No se encontraron tiposparedes`,
@@ -96,7 +121,7 @@ let TiposparedesService = class TiposparedesService {
     }
     async findOne(id) {
         try {
-            const tipopared = await this.nivelpisoRepository.findOneBy({ id });
+            const tipopared = await this.tipoparedRepository.findOneBy({ id });
             if (!tipopared) {
                 throw new common_1.NotFoundException({
                     message: `Tipopared con ID: ${id} no fue encontrada`,
@@ -120,8 +145,8 @@ let TiposparedesService = class TiposparedesService {
         try {
             const existeTipopared = await this.findOne(id);
             updateTipoparedDto.tipopared = (0, capitalizeTextos_1.capitalizeTextos)(updateTipoparedDto.tipopared);
-            const actualizarTipopared = this.nivelpisoRepository.merge(existeTipopared, updateTipoparedDto);
-            return await this.nivelpisoRepository.save(actualizarTipopared);
+            const actualizarTipopared = this.tipoparedRepository.merge(existeTipopared, updateTipoparedDto);
+            return await this.tipoparedRepository.save(actualizarTipopared);
         }
         catch (error) {
             if (error instanceof common_1.NotFoundException) {
@@ -138,7 +163,7 @@ let TiposparedesService = class TiposparedesService {
     async remove(id) {
         try {
             const tipopared = await this.findOne(id);
-            await this.nivelpisoRepository.delete(id);
+            await this.tipoparedRepository.delete(id);
             return {
                 success: true,
                 message: `Se eliminó el Tipopared con ID: ${id}`,

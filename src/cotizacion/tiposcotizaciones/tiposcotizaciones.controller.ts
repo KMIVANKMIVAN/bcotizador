@@ -16,7 +16,10 @@ export class TiposcotizacionesController {
   findAll() {
     return this.tiposcotizacionesService.findAll();
   }
-
+  @Get('portipocotiz/:tipocotizacion')
+  findAllPorNombTipoCotiz(@Param('tipocotizacion') tipocotizacion: string) {
+    return this.tiposcotizacionesService.findAllPorNombTipoCotiz(tipocotizacion);
+  }
   @Get('svc')
   findAllClear() {
     return this.tiposcotizacionesService.findAllClear();

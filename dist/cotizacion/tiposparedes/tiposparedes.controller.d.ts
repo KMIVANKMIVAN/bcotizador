@@ -6,6 +6,7 @@ export declare class TiposparedesController {
     constructor(tiposparedesService: TiposparedesService);
     create(createTipoparedDto: CreateTipoparedDto): Promise<import("./entities/tipopared.entity").Tipopared>;
     findAll(): Promise<import("./entities/tipopared.entity").Tipopared[]>;
+    findAllPorNombTipoPared(tipopared: string): Promise<import("./entities/tipopared.entity").Tipopared[]>;
     findAllClear(): Promise<import("./entities/tipopared.entity").Tipopared[]>;
     findOne(id: number): Promise<import("./entities/tipopared.entity").Tipopared>;
     update(id: number, updateTipoparedDto: UpdateTipoparedDto): Promise<import("./entities/tipopared.entity").Tipopared>;

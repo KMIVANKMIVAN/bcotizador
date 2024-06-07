@@ -7,6 +7,7 @@ export declare class CiudadesService {
     constructor(ciudadRepository: Repository<Ciudad>);
     createSemilla(createCiudadDto: CreateCiudadDto): Promise<Ciudad>;
     create(createCiudadDto: CreateCiudadDto): Promise<Ciudad>;
+    findAllPorNombCiudad(ciudad: string): Promise<Ciudad[]>;
     findAll(): Promise<Ciudad[]>;
     findAllClear(): Promise<Ciudad[]>;
     findOne(id: number): Promise<Ciudad>;

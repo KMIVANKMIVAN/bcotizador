@@ -7,6 +7,7 @@ export declare class TiposcotizacionesService {
     constructor(tipocotizacionRepository: Repository<Tipocotizacion>);
     createSemilla(createTipocotizacionDto: CreateTipocotizacionDto): Promise<Tipocotizacion>;
     create(createTipocotizacionDto: CreateTipocotizacionDto): Promise<Tipocotizacion>;
+    findAllPorNombTipoCotiz(tipocotizacion: string): Promise<Tipocotizacion[]>;
     findAll(): Promise<Tipocotizacion[]>;
     findAllClear(): Promise<Tipocotizacion[]>;
     findOne(id: number): Promise<Tipocotizacion>;

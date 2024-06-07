@@ -16,7 +16,10 @@ export class TiposvidriosController {
   findAll() {
     return this.tiposvidriosService.findAll();
   }
-
+  @Get('portipovidrio/:tipovidrio')
+  findAllPorNombTipoVidrio(@Param('tipovidrio') tipovidrio: string) {
+    return this.tiposvidriosService.findAllPorNombTipoVidrio(tipovidrio);
+  }
   @Get('svc')
   findAllClear() {
     return this.tiposvidriosService.findAllClear();

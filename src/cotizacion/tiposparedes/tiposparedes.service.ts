@@ -13,16 +13,16 @@ import { capitalizeTextos } from 'src/utils/capitalizeTextos';
 export class TiposparedesService {
   constructor(
     @InjectRepository(Tipopared)
-    private readonly nivelpisoRepository: Repository<Tipopared>,
+    private readonly tipoparedRepository: Repository<Tipopared>,
   ) { }
 
   async createSemilla(createTipoparedDto: CreateTipoparedDto): Promise<Tipopared> {
     try {
       createTipoparedDto.tipopared = capitalizeTextos(createTipoparedDto.tipopared);
-      const nuevoTipopared = this.nivelpisoRepository.create(
+      const nuevoTipopared = this.tipoparedRepository.create(
         createTipoparedDto,
       );
-      return await this.nivelpisoRepository.save(nuevoTipopared);
+      return await this.tipoparedRepository.save(nuevoTipopared);
     } catch (error) {
 
       throw new InternalServerErrorException({
@@ -36,10 +36,10 @@ export class TiposparedesService {
     try {
       createTipoparedDto.valor = Number(createTipoparedDto.valor) * 1 / 100;
       createTipoparedDto.tipopared = capitalizeTextos(createTipoparedDto.tipopared);
-      const nuevoTipopared = this.nivelpisoRepository.create(
+      const nuevoTipopared = this.tipoparedRepository.create(
         createTipoparedDto,
       );
-      return await this.nivelpisoRepository.save(nuevoTipopared);
+      return await this.tipoparedRepository.save(nuevoTipopared);
     } catch (error) {
 
       throw new InternalServerErrorException({
@@ -49,10 +49,33 @@ export class TiposparedesService {
       });
     }
   }
+  async findAllPorNombTipoPared(tipopared: string): Promise<Tipopared[]> {
+    try {
+      const tiposparedes = await this.tipoparedRepository.createQueryBuilder('tipopared')
+        .where('LOWER(tipopared.tipopared) LIKE LOWER(:tipopared)', { tipopared: `%${tipopared.toLowerCase()}%` })
+        .limit(5)
+        .getMany();
 
+      if (!tiposparedes || tiposparedes.length === 0) {
+        throw new NotFoundException({
+          message: `No se encontraron tipos paredes: ${tipopared}`,
+        });
+      }
+      return tiposparedes;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          message: `Error del Servidor. Revisar el metodo (findAllPorNombTipoPared) de la ruta "tiposparedes"`,
+          error: `${error}`,
+        });
+      }
+    }
+  }
   async findAll(): Promise<Tipopared[]> {
     try {
-      const tiposparedes = await this.nivelpisoRepository.find();
+      const tiposparedes = await this.tipoparedRepository.find();
       if (!tiposparedes || tiposparedes.length === 0) {
         throw new NotFoundException({
 
@@ -75,7 +98,7 @@ export class TiposparedesService {
 
   async findAllClear(): Promise<Tipopared[]> {
     try {
-      const tiposparedes = await this.nivelpisoRepository.find();
+      const tiposparedes = await this.tipoparedRepository.find();
       if (!tiposparedes || tiposparedes.length === 0) {
         throw new NotFoundException({
 
@@ -99,7 +122,7 @@ export class TiposparedesService {
 
   async findOne(id: number): Promise<Tipopared> {
     try {
-      const tipopared = await this.nivelpisoRepository.findOneBy({ id });
+      const tipopared = await this.tipoparedRepository.findOneBy({ id });
       if (!tipopared) {
         throw new NotFoundException({
 
@@ -124,8 +147,8 @@ export class TiposparedesService {
     try {
       const existeTipopared = await this.findOne(id);
       updateTipoparedDto.tipopared = capitalizeTextos(updateTipoparedDto.tipopared);
-      const actualizarTipopared = this.nivelpisoRepository.merge(existeTipopared, updateTipoparedDto);
-      return await this.nivelpisoRepository.save(actualizarTipopared);
+      const actualizarTipopared = this.tipoparedRepository.merge(existeTipopared, updateTipoparedDto);
+      return await this.tipoparedRepository.save(actualizarTipopared);
 
     } catch (error) {
       if (error instanceof NotFoundException) {
@@ -143,7 +166,7 @@ export class TiposparedesService {
   async remove(id: number): Promise<any> {
     try {
       const tipopared = await this.findOne(id);
-      await this.nivelpisoRepository.delete(id);
+      await this.tipoparedRepository.delete(id);
       return {
         success: true,
         message: `Se eliminó el Tipopared con ID: ${id}`,

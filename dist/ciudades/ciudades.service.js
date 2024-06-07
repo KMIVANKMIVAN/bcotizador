@@ -49,6 +49,31 @@ let CiudadesService = class CiudadesService {
             });
         }
     }
+    async findAllPorNombCiudad(ciudad) {
+        try {
+            const ciudadeszonas = await this.ciudadRepository.createQueryBuilder('ciudad')
+                .where('LOWER(ciudad.ciudad) LIKE LOWER(:ciudad)', { ciudad: `%${ciudad.toLowerCase()}%` })
+                .limit(5)
+                .getMany();
+            if (!ciudadeszonas || ciudadeszonas.length === 0) {
+                throw new common_1.NotFoundException({
+                    message: `No se encontraron ciudades: ${ciudad}`,
+                });
+            }
+            return ciudadeszonas;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (findAllPorNombCiudZona) de la ruta "ciudadeszonas"`,
+                    error: `${error}`,
+                });
+            }
+        }
+    }
     async findAll() {
         try {
             const ciudades = await this.ciudadRepository.find();

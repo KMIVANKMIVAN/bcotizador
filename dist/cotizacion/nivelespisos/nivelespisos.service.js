@@ -71,6 +71,31 @@ let NivelespisosService = class NivelespisosService {
             }
         }
     }
+    async findAllPorNombNivelPiso(nivelpiso) {
+        try {
+            const nivelespisos = await this.nivelpisoRepository.createQueryBuilder('nivelpiso')
+                .where('LOWER(nivelpiso.nivelpiso) LIKE LOWER(:nivelpiso)', { nivelpiso: `%${nivelpiso.toLowerCase()}%` })
+                .limit(5)
+                .getMany();
+            if (!nivelespisos || nivelespisos.length === 0) {
+                throw new common_1.NotFoundException({
+                    message: `No se encontraron nivel pisos: ${nivelpiso}`,
+                });
+            }
+            return nivelespisos;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (findAllPorNombNivelPiso) de la ruta "nivelespisos"`,
+                    error: `${error}`,
+                });
+            }
+        }
+    }
     async findAllClear() {
         try {
             const nivelespisos = await this.nivelpisoRepository.find();

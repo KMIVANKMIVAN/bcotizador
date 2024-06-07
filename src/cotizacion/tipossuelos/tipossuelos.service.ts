@@ -49,7 +49,30 @@ export class TipossuelosService {
       });
     }
   }
+  async findAllPorNombTipoSuelo(tiposuelo: string): Promise<Tiposuelo[]> {
+    try {
+      const tipossuelos = await this.tiposueloRepository.createQueryBuilder('tiposuelo')
+        .where('LOWER(tiposuelo.tiposuelo) LIKE LOWER(:tiposuelo)', { tiposuelo: `%${tiposuelo.toLowerCase()}%` })
+        .limit(5)
+        .getMany();
 
+      if (!tipossuelos || tipossuelos.length === 0) {
+        throw new NotFoundException({
+          message: `No se encontraron tipos suelos: ${tiposuelo}`,
+        });
+      }
+      return tipossuelos;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          message: `Error del Servidor. Revisar el metodo (findAllPorNombTipoSuelo) de la ruta "tipossuelos"`,
+          error: `${error}`,
+        });
+      }
+    }
+  }
   async findAll(): Promise<Tiposuelo[]> {
     try {
       const tipossuelos = await this.tiposueloRepository.find();

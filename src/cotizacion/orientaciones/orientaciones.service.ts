@@ -72,7 +72,30 @@ export class OrientacionesService {
       }
     }
   }
+  async findAllPorNombOrient(orientacion: string): Promise<Orientacion[]> {
+    try {
+      const orientaciones = await this.orientacionRepository.createQueryBuilder('orientacion')
+        .where('LOWER(orientacion.orientacion) LIKE LOWER(:orientacion)', { orientacion: `%${orientacion.toLowerCase()}%` })
+        .limit(5)
+        .getMany();
 
+      if (!orientaciones || orientaciones.length === 0) {
+        throw new NotFoundException({
+          message: `No se encontraron orientaciones: ${orientacion}`,
+        });
+      }
+      return orientaciones;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          message: `Error del Servidor. Revisar el metodo (findAllPorNombOrient) de la ruta "orientaciones"`,
+          error: `${error}`,
+        });
+      }
+    }
+  }
   async findAllClear(): Promise<Orientacion[]> {
     try {
       const orientaciones = await this.orientacionRepository.find();

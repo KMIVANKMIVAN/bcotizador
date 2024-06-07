@@ -49,6 +49,31 @@ let TipostechosService = class TipostechosService {
             });
         }
     }
+    async findAllPorNombTipoTecho(tipotecho) {
+        try {
+            const tipostechos = await this.tipotechoRepository.createQueryBuilder('tipotecho')
+                .where('LOWER(tipotecho.tipotecho) LIKE LOWER(:tipotecho)', { tipotecho: `%${tipotecho.toLowerCase()}%` })
+                .limit(5)
+                .getMany();
+            if (!tipostechos || tipostechos.length === 0) {
+                throw new common_1.NotFoundException({
+                    message: `No se encontraron tipos techos: ${tipotecho}`,
+                });
+            }
+            return tipostechos;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (findAllPorNombTipoTecho) de la ruta "tipostechos"`,
+                    error: `${error}`,
+                });
+            }
+        }
+    }
     async findAll() {
         try {
             const tipostechos = await this.tipotechoRepository.find();

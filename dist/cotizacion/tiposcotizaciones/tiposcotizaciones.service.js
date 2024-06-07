@@ -48,6 +48,31 @@ let TiposcotizacionesService = class TiposcotizacionesService {
             });
         }
     }
+    async findAllPorNombTipoCotiz(tipocotizacion) {
+        try {
+            const tiposcotizaciones = await this.tipocotizacionRepository.createQueryBuilder('tipocotizacion')
+                .where('LOWER(tipocotizacion.tipocotizacion) LIKE LOWER(:tipocotizacion)', { tipocotizacion: `%${tipocotizacion.toLowerCase()}%` })
+                .limit(5)
+                .getMany();
+            if (!tiposcotizaciones || tiposcotizaciones.length === 0) {
+                throw new common_1.NotFoundException({
+                    message: `No se encontraron tipos cotizaciones: ${tipocotizacion}`,
+                });
+            }
+            return tiposcotizaciones;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (findAllPorNombTipoCotiz) de la ruta "tiposcotizaciones"`,
+                    error: `${error}`,
+                });
+            }
+        }
+    }
     async findAll() {
         try {
             const tiposcotizaciones = await this.tipocotizacionRepository.find();

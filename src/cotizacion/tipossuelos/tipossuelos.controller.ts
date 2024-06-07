@@ -16,7 +16,10 @@ export class TipossuelosController {
   findAll() {
     return this.tipossuelosService.findAll();
   }
-
+  @Get('portiposuelo/:tiposuelo')
+  findAllPorNombTipoSuelo(@Param('tiposuelo') tiposuelo: string) {
+    return this.tipossuelosService.findAllPorNombTipoSuelo(tiposuelo);
+  }
   @Get('svc')
   findAllClear() {
     return this.tipossuelosService.findAllClear();

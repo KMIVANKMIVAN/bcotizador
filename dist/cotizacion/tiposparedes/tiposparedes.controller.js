@@ -27,6 +27,9 @@ let TiposparedesController = class TiposparedesController {
     findAll() {
         return this.tiposparedesService.findAll();
     }
+    findAllPorNombTipoPared(tipopared) {
+        return this.tiposparedesService.findAllPorNombTipoPared(tipopared);
+    }
     findAllClear() {
         return this.tiposparedesService.findAllClear();
     }
@@ -54,6 +57,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], TiposparedesController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('portipopared/:tipopared'),
+    __param(0, (0, common_1.Param)('tipopared')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], TiposparedesController.prototype, "findAllPorNombTipoPared", null);
 __decorate([
     (0, common_1.Get)('svc'),
     __metadata("design:type", Function),

@@ -27,6 +27,9 @@ let OrientacionesController = class OrientacionesController {
     findAll() {
         return this.orientacionesService.findAll();
     }
+    findAllPorNombOrient(orientacion) {
+        return this.orientacionesService.findAllPorNombOrient(orientacion);
+    }
     findAllClear() {
         return this.orientacionesService.findAllClear();
     }
@@ -54,6 +57,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], OrientacionesController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('pororient/:orientacion'),
+    __param(0, (0, common_1.Param)('orientacion')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], OrientacionesController.prototype, "findAllPorNombOrient", null);
 __decorate([
     (0, common_1.Get)('svc'),
     __metadata("design:type", Function),

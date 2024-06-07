@@ -83,6 +83,29 @@ let CiudadeszonasService = class CiudadeszonasService {
             }
         }
     }
+    async findAllPorCiudad(ciudadId) {
+        try {
+            const ciudadeszonas = await this.ciudadzonaRepository.find({ where: { ciudad: { id: ciudadId } } });
+            if (!ciudadeszonas || ciudadeszonas.length === 0) {
+                throw new common_1.NotFoundException({
+                    message: `No se encontraron ciudadeszonas con ID: ${ciudadId}`,
+                });
+            }
+            ciudadeszonas.forEach((coiudadzona) => delete coiudadzona.valor);
+            return ciudadeszonas;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (findAllPorCiudad) de la ruta "ciudadeszonas"`,
+                    error: `${error}`,
+                });
+            }
+        }
+    }
     async findAllClear() {
         try {
             const ciudadeszonas = await this.ciudadzonaRepository.find();
@@ -100,7 +123,32 @@ let CiudadeszonasService = class CiudadeszonasService {
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "ciudadeszonas"`,
+                    message: `Error del Servidor. Revisar el metodo (findAllClear) de la ruta "ciudadeszonas"`,
+                    error: `${error}`,
+                });
+            }
+        }
+    }
+    async findAllPorNombCiudZona(ciudzona) {
+        try {
+            const ciudadeszonas = await this.ciudadzonaRepository.createQueryBuilder('ciudadzona')
+                .where('LOWER(ciudadzona.ciudadzona) LIKE LOWER(:ciudzona)', { ciudzona: `%${ciudzona.toLowerCase()}%` })
+                .limit(5)
+                .getMany();
+            if (!ciudadeszonas || ciudadeszonas.length === 0) {
+                throw new common_1.NotFoundException({
+                    message: `No se encontraron ciudades zonas: ${ciudzona}`,
+                });
+            }
+            return ciudadeszonas;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (findAllPorNombCiudZona) de la ruta "ciudadeszonas"`,
                     error: `${error}`,
                 });
             }

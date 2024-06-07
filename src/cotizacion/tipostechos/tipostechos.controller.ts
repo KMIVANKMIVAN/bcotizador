@@ -11,7 +11,10 @@ export class TipostechosController {
   create(@Body() createTipotechoDto: CreateTipotechoDto) {
     return this.tipostechosService.create(createTipotechoDto);
   }
-
+  @Get('portipotecho/:tipotecho')
+  findAllPorNombTipoTecho(@Param('tipotecho') tipotecho: string) {
+    return this.tipostechosService.findAllPorNombTipoTecho(tipotecho);
+  }
   @Get()
   findAll() {
     return this.tipostechosService.findAll();

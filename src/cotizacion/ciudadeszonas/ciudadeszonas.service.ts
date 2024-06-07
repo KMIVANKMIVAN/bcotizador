@@ -82,6 +82,28 @@ export class CiudadeszonasService {
       }
     }
   }
+  async findAllPorCiudad(ciudadId: number): Promise<Ciudadzona[]> {
+    try {
+      const ciudadeszonas = await this.ciudadzonaRepository.find({ where: { ciudad: { id: ciudadId } } });
+
+      if (!ciudadeszonas || ciudadeszonas.length === 0) {
+        throw new NotFoundException({
+          message: `No se encontraron ciudadeszonas con ID: ${ciudadId}`,
+        });
+      }
+      ciudadeszonas.forEach((coiudadzona) => delete coiudadzona.valor);
+      return ciudadeszonas;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          message: `Error del Servidor. Revisar el metodo (findAllPorCiudad) de la ruta "ciudadeszonas"`,
+          error: `${error}`,
+        });
+      }
+    }
+  }
 
   async findAllClear(): Promise<Ciudadzona[]> {
     try {
@@ -98,7 +120,31 @@ export class CiudadeszonasService {
         throw error;
       } else {
         throw new InternalServerErrorException({
-          message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "ciudadeszonas"`,
+          message: `Error del Servidor. Revisar el metodo (findAllClear) de la ruta "ciudadeszonas"`,
+          error: `${error}`,
+        });
+      }
+    }
+  }
+  async findAllPorNombCiudZona(ciudzona: string): Promise<Ciudadzona[]> {
+    try {
+      const ciudadeszonas = await this.ciudadzonaRepository.createQueryBuilder('ciudadzona')
+        .where('LOWER(ciudadzona.ciudadzona) LIKE LOWER(:ciudzona)', { ciudzona: `%${ciudzona.toLowerCase()}%` })
+        .limit(5)
+        .getMany();
+
+      if (!ciudadeszonas || ciudadeszonas.length === 0) {
+        throw new NotFoundException({
+          message: `No se encontraron ciudades zonas: ${ciudzona}`,
+        });
+      }
+      return ciudadeszonas;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          message: `Error del Servidor. Revisar el metodo (findAllPorNombCiudZona) de la ruta "ciudadeszonas"`,
           error: `${error}`,
         });
       }

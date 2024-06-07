@@ -72,7 +72,30 @@ export class NivelespisosService {
       }
     }
   }
+  async findAllPorNombNivelPiso(nivelpiso: string): Promise<Nivelpiso[]> {
+    try {
+      const nivelespisos = await this.nivelpisoRepository.createQueryBuilder('nivelpiso')
+        .where('LOWER(nivelpiso.nivelpiso) LIKE LOWER(:nivelpiso)', { nivelpiso: `%${nivelpiso.toLowerCase()}%` })
+        .limit(5)
+        .getMany();
 
+      if (!nivelespisos || nivelespisos.length === 0) {
+        throw new NotFoundException({
+          message: `No se encontraron nivel pisos: ${nivelpiso}`,
+        });
+      }
+      return nivelespisos;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          message: `Error del Servidor. Revisar el metodo (findAllPorNombNivelPiso) de la ruta "nivelespisos"`,
+          error: `${error}`,
+        });
+      }
+    }
+  }
   async findAllClear(): Promise<Nivelpiso[]> {
     try {
       const nivelespisos = await this.nivelpisoRepository.find();

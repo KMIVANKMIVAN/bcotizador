@@ -32,7 +32,7 @@ export const SEMILLA_CIUDADZONA = [
 ];
 export const SEMILLA_NIVELPISO = [
   {
-    nivelpiso: 'zotano',
+    nivelpiso: 'sotano',
     valor: 0.2,
   },
   {
@@ -162,7 +162,7 @@ export const SEMILLA_TIPOVIDRIO = [
     valor: 0.2,
   },
   {
-    tipovidrio: 'vidrio pvc',
+    tipovidrio: 'vidrio PVC',
     valor: 0.2,
   },
   /* {
