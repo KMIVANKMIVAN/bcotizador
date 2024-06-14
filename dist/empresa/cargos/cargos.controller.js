@@ -27,6 +27,9 @@ let CargosController = class CargosController {
     findAll() {
         return this.cargosService.findAll();
     }
+    findAllPorNombCargo(cargo) {
+        return this.cargosService.findAllPorNombCargo(cargo);
+    }
     findOne(id) {
         return this.cargosService.findOne(+id);
     }
@@ -51,6 +54,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], CargosController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('porcargo/:cargo'),
+    __param(0, (0, common_1.Param)('cargo')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], CargosController.prototype, "findAllPorNombCargo", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),

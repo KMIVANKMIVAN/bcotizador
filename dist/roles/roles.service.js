@@ -35,6 +35,31 @@ let RolesService = class RolesService {
             });
         }
     }
+    async findAllPorNombRol(rol) {
+        try {
+            const roles = await this.rolRepository.createQueryBuilder('rol')
+                .where('LOWER(rol.rol) LIKE LOWER(:rol)', { rol: `%${rol.toLowerCase()}%` })
+                .limit(5)
+                .getMany();
+            if (!roles || roles.length === 0) {
+                throw new common_1.NotFoundException({
+                    message: `No se encontraron roles: ${rol}`,
+                });
+            }
+            return roles;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (findAllPorNombRol) de la ruta "roles"`,
+                    error: `${error}`,
+                });
+            }
+        }
+    }
     async findAll() {
         try {
             const roles = await this.rolRepository.find();

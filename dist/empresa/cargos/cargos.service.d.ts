@@ -8,6 +8,7 @@ export declare class CargosService {
     private readonly unidadesService;
     constructor(cargoRepository: Repository<Cargo>, unidadesService: UnidadesService);
     create(createCargoDto: CreateCargoDto): Promise<Cargo>;
+    findAllPorNombCargo(cargo: string): Promise<Cargo[]>;
     findAll(): Promise<Cargo[]>;
     findOne(id: number): Promise<Cargo>;
     update(id: number, updateCargoDto: UpdateCargoDto): Promise<Cargo>;

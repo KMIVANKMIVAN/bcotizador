@@ -5,7 +5,7 @@ import { UpdateEmpresaDto } from './dto/update-empresa.dto';
 
 @Controller('empresas')
 export class EmpresasController {
-  constructor(private readonly empresasService: EmpresasService) {}
+  constructor(private readonly empresasService: EmpresasService) { }
 
   @Post()
   create(@Body() createEmpresaDto: CreateEmpresaDto) {
@@ -16,7 +16,10 @@ export class EmpresasController {
   findAll() {
     return this.empresasService.findAll();
   }
-
+  @Get('porempresa/:empresa')
+  findAllPorNombEmpresa(@Param('empresa') empresa: string) {
+    return this.empresasService.findAllPorNombEmpresa(empresa);
+  }
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.empresasService.findOne(+id);

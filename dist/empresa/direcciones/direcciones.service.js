@@ -48,6 +48,31 @@ let DireccionesService = class DireccionesService {
             }
         }
     }
+    async findAllPorNombDireccion(direccion) {
+        try {
+            const direcciones = await this.direccioneRepository.createQueryBuilder('direccion')
+                .where('LOWER(direccion.direccion) LIKE LOWER(:direccion)', { direccion: `%${direccion.toLowerCase()}%` })
+                .limit(5)
+                .getMany();
+            if (!direcciones || direcciones.length === 0) {
+                throw new common_1.NotFoundException({
+                    message: `No se encontraron direcciones: ${direccion}`,
+                });
+            }
+            return direcciones;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (findAllPorNombDireccion) de la ruta "direcciones"`,
+                    error: `${error}`,
+                });
+            }
+        }
+    }
     async findAll() {
         try {
             const direcciones = await this.direccioneRepository.find({ relations: ['empresa'] });

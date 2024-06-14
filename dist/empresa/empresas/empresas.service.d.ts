@@ -6,6 +6,7 @@ export declare class EmpresasService {
     private readonly empresaRepository;
     constructor(empresaRepository: Repository<Empresa>);
     create(createEmpresaDto: CreateEmpresaDto): Promise<Empresa>;
+    findAllPorNombEmpresa(empresa: string): Promise<Empresa[]>;
     findAll(): Promise<Empresa[]>;
     findOne(id: number): Promise<Empresa>;
     update(id: number, updateEmpresaDto: UpdateEmpresaDto): Promise<Empresa>;

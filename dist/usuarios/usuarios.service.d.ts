@@ -13,12 +13,17 @@ export declare class UsuariosService {
     constructor(usuarioRepository: Repository<Usuario>, rolesService: RolesService, sucursalesService: SucursalesService, cargosService: CargosService);
     createSemilla(createUsuarioDto: CreateUsuarioDto): Promise<Usuario>;
     create(createUsuarioDto: CreateUsuarioDto): Promise<Usuario>;
+    findAllPorNombCi(nomci: string): Promise<Usuario[]>;
     findAll(): Promise<Usuario[]>;
     findOne(id: number): Promise<Usuario>;
     findOneUsuarioPW(id: number): Promise<Usuario>;
     findOneCi(ci: string): Promise<Usuario[]>;
     findOneByUserCi(ci: string): Promise<Usuario>;
     update(id: number, updateUsuarioDto: UpdateUsuarioDto): Promise<Usuario>;
+    updateEstado(id: number, estado: {
+        es_activo: boolean;
+    }): Promise<Usuario>;
     updateContrasenia(id: number, contraseniaAntigua: string, updateUsuarioDto: UpdateUsuarioDto): Promise<Partial<Usuario>>;
+    resetearContrasenia(id: number): Promise<Partial<Usuario>>;
     remove(id: number): Promise<any>;
 }

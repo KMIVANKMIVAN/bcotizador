@@ -6,6 +6,7 @@ export declare class CargosController {
     constructor(cargosService: CargosService);
     create(createCargoDto: CreateCargoDto): Promise<import("./entities/cargo.entity").Cargo>;
     findAll(): Promise<import("./entities/cargo.entity").Cargo[]>;
+    findAllPorNombCargo(cargo: string): Promise<import("./entities/cargo.entity").Cargo[]>;
     findOne(id: number): Promise<import("./entities/cargo.entity").Cargo>;
     update(id: number, updateCargoDto: UpdateCargoDto): Promise<import("./entities/cargo.entity").Cargo>;
     remove(id: number): Promise<any>;

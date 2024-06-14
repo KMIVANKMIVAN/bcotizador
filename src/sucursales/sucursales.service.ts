@@ -47,7 +47,30 @@ export class SucursalesService {
       }
     }
   }
+  async findAllPorNombSucursal(sucursal: string): Promise<Sucursal[]> {
+    try {
+      const sucursales = await this.sucursaleRepository.createQueryBuilder('sucursal')
+        .where('LOWER(sucursal.sucursal) LIKE LOWER(:sucursal)', { sucursal: `%${sucursal.toLowerCase()}%` })
+        .limit(5)
+        .getMany();
 
+      if (!sucursales || sucursales.length === 0) {
+        throw new NotFoundException({
+          message: `No se encontraron sucursales: ${sucursal}`,
+        });
+      }
+      return sucursales;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          message: `Error del Servidor. Revisar el metodo (findAllPorNombSucursal) de la ruta "sucursales"`,
+          error: `${error}`,
+        });
+      }
+    }
+  }
   async findAll(): Promise<Sucursal[]> {
     try {
       const sucursales = await this.sucursaleRepository.find({ relations: ['ciudad'] });

@@ -38,6 +38,31 @@ let EmpresasService = class EmpresasService {
             });
         }
     }
+    async findAllPorNombEmpresa(empresa) {
+        try {
+            const empresas = await this.empresaRepository.createQueryBuilder('empresa')
+                .where('LOWER(empresa.razon_social) LIKE LOWER(:razon_social)', { razon_social: `%${empresa.toLowerCase()}%` })
+                .limit(5)
+                .getMany();
+            if (!empresas || empresas.length === 0) {
+                throw new common_1.NotFoundException({
+                    message: `No se encontraron empresas: ${empresa}`,
+                });
+            }
+            return empresas;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (findAllPorNombEmpresa) de la ruta "empresas"`,
+                    error: `${error}`,
+                });
+            }
+        }
+    }
     async findAll() {
         try {
             const empresas = await this.empresaRepository.find();

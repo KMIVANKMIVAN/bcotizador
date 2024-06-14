@@ -48,6 +48,31 @@ let SucursalesService = class SucursalesService {
             }
         }
     }
+    async findAllPorNombSucursal(sucursal) {
+        try {
+            const sucursales = await this.sucursaleRepository.createQueryBuilder('sucursal')
+                .where('LOWER(sucursal.sucursal) LIKE LOWER(:sucursal)', { sucursal: `%${sucursal.toLowerCase()}%` })
+                .limit(5)
+                .getMany();
+            if (!sucursales || sucursales.length === 0) {
+                throw new common_1.NotFoundException({
+                    message: `No se encontraron sucursales: ${sucursal}`,
+                });
+            }
+            return sucursales;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (findAllPorNombSucursal) de la ruta "sucursales"`,
+                    error: `${error}`,
+                });
+            }
+        }
+    }
     async findAll() {
         try {
             const sucursales = await this.sucursaleRepository.find({ relations: ['ciudad'] });

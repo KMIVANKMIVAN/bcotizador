@@ -6,7 +6,17 @@ function capitalizeTextos(text) {
         return text;
     return text
         .split(' ')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .map(word => {
+        if (word.length === 2) {
+            return word.toLowerCase();
+        }
+        else if (word === word.toUpperCase()) {
+            return word;
+        }
+        else {
+            return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+        }
+    })
         .join(' ');
 }
 exports.capitalizeTextos = capitalizeTextos;

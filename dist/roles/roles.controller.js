@@ -24,6 +24,9 @@ let RolesController = class RolesController {
     create(createRoleDto) {
         return this.rolesService.create(createRoleDto);
     }
+    findAllPorNombRol(rol) {
+        return this.rolesService.findAllPorNombRol(rol);
+    }
     findAll() {
         return this.rolesService.findAll();
     }
@@ -45,6 +48,13 @@ __decorate([
     __metadata("design:paramtypes", [create_rol_dto_1.CreateRoleDto]),
     __metadata("design:returntype", void 0)
 ], RolesController.prototype, "create", null);
+__decorate([
+    (0, common_1.Get)('porrol/:rol'),
+    __param(0, (0, common_1.Param)('rol')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], RolesController.prototype, "findAllPorNombRol", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),

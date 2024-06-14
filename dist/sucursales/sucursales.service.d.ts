@@ -8,6 +8,7 @@ export declare class SucursalesService {
     private readonly ciudadesService;
     constructor(sucursaleRepository: Repository<Sucursal>, ciudadesService: CiudadesService);
     create(createSucursaleDto: CreateSucursaleDto): Promise<Sucursal>;
+    findAllPorNombSucursal(sucursal: string): Promise<Sucursal[]>;
     findAll(): Promise<Sucursal[]>;
     findOne(id: number): Promise<Sucursal>;
     update(id: number, updateSucursaleDto: UpdateSucursaleDto): Promise<Sucursal>;

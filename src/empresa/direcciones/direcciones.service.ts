@@ -45,7 +45,30 @@ export class DireccionesService {
       }
     }
   }
+  async findAllPorNombDireccion(direccion: string): Promise<Direccion[]> {
+    try {
+      const direcciones = await this.direccioneRepository.createQueryBuilder('direccion')
+        .where('LOWER(direccion.direccion) LIKE LOWER(:direccion)', { direccion: `%${direccion.toLowerCase()}%` })
+        .limit(5)
+        .getMany();
 
+      if (!direcciones || direcciones.length === 0) {
+        throw new NotFoundException({
+          message: `No se encontraron direcciones: ${direccion}`,
+        });
+      }
+      return direcciones;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          message: `Error del Servidor. Revisar el metodo (findAllPorNombDireccion) de la ruta "direcciones"`,
+          error: `${error}`,
+        });
+      }
+    }
+  }
   async findAll(): Promise<Direccion[]> {
     try {
       const direcciones = await this.direccioneRepository.find({ relations: ['empresa'] });

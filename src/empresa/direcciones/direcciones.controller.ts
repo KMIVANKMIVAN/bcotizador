@@ -11,7 +11,10 @@ export class DireccionesController {
   create(@Body() createDireccioneDto: CreateDireccioneDto) {
     return this.direccionesService.create(createDireccioneDto);
   }
-
+  @Get('pordireccion/:direccion')
+  findAllPorNombDireccion(@Param('direccion') direccion: string) {
+    return this.direccionesService.findAllPorNombDireccion(direccion);
+  }
   @Get()
   findAll() {
     return this.direccionesService.findAll();

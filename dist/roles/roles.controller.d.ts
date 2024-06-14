@@ -5,6 +5,7 @@ export declare class RolesController {
     private readonly rolesService;
     constructor(rolesService: RolesService);
     create(createRoleDto: CreateRoleDto): Promise<import("./entities/rol.entity").Rol>;
+    findAllPorNombRol(rol: string): Promise<import("./entities/rol.entity").Rol[]>;
     findAll(): Promise<import("./entities/rol.entity").Rol[]>;
     findOne(id: number): Promise<import("./entities/rol.entity").Rol>;
     update(id: number, updateRoleDto: UpdateRoleDto): Promise<import("./entities/rol.entity").Rol>;

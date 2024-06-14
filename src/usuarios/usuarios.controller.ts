@@ -19,7 +19,10 @@ export class UsuariosController {
   create(@Body() createUsuarioDto: CreateUsuarioDto) {
     return this.usuariosService.create(createUsuarioDto);
   }
-
+  @Get('pornomci/:nomci')
+  findAllPorNombCi(@Param('nomci') nomci: string) {
+    return this.usuariosService.findAllPorNombCi(nomci);
+  }
   @Get()
   findAll() {
     return this.usuariosService.findAll();
@@ -44,7 +47,14 @@ export class UsuariosController {
   update(@Param('id') id: number, @Body() updateUsuarioDto: UpdateUsuarioDto) {
     return this.usuariosService.update(+id, updateUsuarioDto);
   }
-
+  @Patch('resetcontra/:id')
+  resetearContrasenia(@Param('id') id: number) {
+    return this.usuariosService.resetearContrasenia(+id);
+  }
+  @Patch('actestado/:id')
+  async updateEstado(@Param('id') id: number, @Body() body: { es_activo: boolean }) {
+    return this.usuariosService.updateEstado(+id, body);
+  }
   @Patch('updatepw/:id')
   updateContrasenia(
     @Param('id') id: number,

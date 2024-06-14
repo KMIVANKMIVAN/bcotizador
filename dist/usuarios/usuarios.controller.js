@@ -24,6 +24,9 @@ let UsuariosController = class UsuariosController {
     create(createUsuarioDto) {
         return this.usuariosService.create(createUsuarioDto);
     }
+    findAllPorNombCi(nomci) {
+        return this.usuariosService.findAllPorNombCi(nomci);
+    }
     findAll() {
         return this.usuariosService.findAll();
     }
@@ -38,6 +41,12 @@ let UsuariosController = class UsuariosController {
     }
     update(id, updateUsuarioDto) {
         return this.usuariosService.update(+id, updateUsuarioDto);
+    }
+    resetearContrasenia(id) {
+        return this.usuariosService.resetearContrasenia(+id);
+    }
+    async updateEstado(id, body) {
+        return this.usuariosService.updateEstado(+id, body);
     }
     updateContrasenia(id, contraseniaAntigua, updateUsuarioDto) {
         return this.usuariosService.updateContrasenia(id, contraseniaAntigua, updateUsuarioDto);
@@ -54,6 +63,13 @@ __decorate([
     __metadata("design:paramtypes", [create_usuario_dto_1.CreateUsuarioDto]),
     __metadata("design:returntype", void 0)
 ], UsuariosController.prototype, "create", null);
+__decorate([
+    (0, common_1.Get)('pornomci/:nomci'),
+    __param(0, (0, common_1.Param)('nomci')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], UsuariosController.prototype, "findAllPorNombCi", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),
@@ -89,6 +105,21 @@ __decorate([
     __metadata("design:paramtypes", [Number, update_usuario_dto_1.UpdateUsuarioDto]),
     __metadata("design:returntype", void 0)
 ], UsuariosController.prototype, "update", null);
+__decorate([
+    (0, common_1.Patch)('resetcontra/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", void 0)
+], UsuariosController.prototype, "resetearContrasenia", null);
+__decorate([
+    (0, common_1.Patch)('actestado/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Object]),
+    __metadata("design:returntype", Promise)
+], UsuariosController.prototype, "updateEstado", null);
 __decorate([
     (0, common_1.Patch)('updatepw/:id'),
     __param(0, (0, common_1.Param)('id')),

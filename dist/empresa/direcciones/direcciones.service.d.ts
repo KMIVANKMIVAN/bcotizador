@@ -8,6 +8,7 @@ export declare class DireccionesService {
     private readonly empresasService;
     constructor(direccioneRepository: Repository<Direccion>, empresasService: EmpresasService);
     create(createDireccioneDto: CreateDireccioneDto): Promise<Direccion>;
+    findAllPorNombDireccion(direccion: string): Promise<Direccion[]>;
     findAll(): Promise<Direccion[]>;
     findOne(id: number): Promise<Direccion>;
     update(id: number, updateDireccioneDto: UpdateDireccioneDto): Promise<Direccion>;

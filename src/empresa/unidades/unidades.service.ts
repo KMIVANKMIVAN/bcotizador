@@ -31,7 +31,7 @@ export class UnidadesService {
 
       const nuevaUnidad = this.unidadRepository.create({
         ...unidadDatos,
-        direccion: buscarDireccion, // Asigna empresa a la direccion
+        direccion: buscarDireccion, // Asigna unidad a la direccion
       });
 
       return await this.unidadRepository.save(nuevaUnidad);
@@ -47,7 +47,30 @@ export class UnidadesService {
       }
     }
   }
+  async findAllPorNombUnidad(unidad: string): Promise<Unidad[]> {
+    try {
+      const unidades = await this.unidadRepository.createQueryBuilder('unidad')
+        .where('LOWER(unidad.unidad) LIKE LOWER(:unidad)', { unidad: `%${unidad.toLowerCase()}%` })
+        .limit(5)
+        .getMany();
 
+      if (!unidades || unidades.length === 0) {
+        throw new NotFoundException({
+          message: `No se encontraron unidades: ${unidad}`,
+        });
+      }
+      return unidades;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          message: `Error del Servidor. Revisar el metodo (findAllPorNombUnidad) de la ruta "unidades"`,
+          error: `${error}`,
+        });
+      }
+    }
+  }
   async findAll(): Promise<Unidad[]> {
     try {
       const unidades = await this.unidadRepository.find({ relations: ['direccion'] });

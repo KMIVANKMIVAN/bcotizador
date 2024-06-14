@@ -21,7 +21,10 @@ export class RolesController {
     return this.rolesService.create(createRoleDto);
   }
 
-
+  @Get('porrol/:rol')
+  findAllPorNombRol(@Param('rol') rol: string) {
+    return this.rolesService.findAllPorNombRol(rol);
+  }
   @Get()
   findAll() {
     return this.rolesService.findAll();

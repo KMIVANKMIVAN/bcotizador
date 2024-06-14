@@ -24,6 +24,9 @@ let UnidadesController = class UnidadesController {
     create(createUnidadeDto) {
         return this.unidadesService.create(createUnidadeDto);
     }
+    findAllPorNombUnidad(unidad) {
+        return this.unidadesService.findAllPorNombUnidad(unidad);
+    }
     findAll() {
         return this.unidadesService.findAll();
     }
@@ -45,6 +48,13 @@ __decorate([
     __metadata("design:paramtypes", [create_unidade_dto_1.CreateUnidadeDto]),
     __metadata("design:returntype", void 0)
 ], UnidadesController.prototype, "create", null);
+__decorate([
+    (0, common_1.Get)('porunidad/:unidad'),
+    __param(0, (0, common_1.Param)('unidad')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], UnidadesController.prototype, "findAllPorNombUnidad", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),

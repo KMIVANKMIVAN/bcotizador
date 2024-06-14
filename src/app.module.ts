@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { RolesGuard } from './auth/roles.guard';
 import { APP_GUARD } from '@nestjs/core';
 
 import { Usuario } from './usuarios/entities/usuario.entity';
@@ -47,6 +48,9 @@ import { CotizacionesModule } from './cotizacion/cotizaciones/cotizaciones.modul
 import { SemillacotizacionModule } from './semillacotizacion/semillacotizacion.module';
 import { TiposcotizacionesModule } from './cotizacion/tiposcotizaciones/tiposcotizaciones.module';
 import { PdfsModule } from './pdfs/pdfs.module';
+
+// import { CompositeGuard } from './auth/composite.guard';
+
 const bdType = 'postgres'
 // const bdType= 'mysql'
 
@@ -98,9 +102,19 @@ const bdType = 'postgres'
     TiposcotizacionesModule,
     PdfsModule,
   ],
-  providers: [AppService, {
+  /* providers: [AppService, {
     provide: APP_GUARD,
-    useClass: JwtAuthGuard,
-  },],
+    // useClass: JwtAuthGuard,
+    useClass: CompositeGuard,
+  },], */
+  providers: [
+    AppService,
+    /* JwtAuthGuard,
+    RolesGuard,
+    {
+      provide: APP_GUARD,
+      useClass: CompositeGuard,
+    }, */
+  ],
 })
 export class AppModule { }

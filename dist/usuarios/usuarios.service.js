@@ -109,6 +109,35 @@ let UsuariosService = class UsuariosService {
             }
         }
     }
+    async findAllPorNombCi(nomci) {
+        try {
+            const usuarios = await this.usuarioRepository.createQueryBuilder('usuario')
+                .leftJoinAndSelect('usuario.roles', 'roles')
+                .leftJoinAndSelect('usuario.sucursal', 'sucursal')
+                .leftJoinAndSelect('usuario.cargo', 'cargo')
+                .where('LOWER(usuario.nombres) LIKE LOWER(:nomci)', { nomci: `%${nomci.toLowerCase()}%` })
+                .orWhere('LOWER(usuario.ci) LIKE LOWER(:nomci)', { nomci: `%${nomci.toLowerCase()}%` })
+                .limit(5)
+                .getMany();
+            if (!usuarios || usuarios.length === 0) {
+                throw new common_1.NotFoundException({
+                    message: `No se encontraron usuarios con nombre o CI: ${nomci}`,
+                });
+            }
+            return usuarios;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (findAllPorNombCi) de la ruta "usuarios"`,
+                    error: `${error}`,
+                });
+            }
+        }
+    }
     async findAll() {
         try {
             const usuarios = await this.usuarioRepository.find({ relations: ['roles', 'sucursal', 'cargo'] });
@@ -272,11 +301,33 @@ let UsuariosService = class UsuariosService {
             }
         }
     }
+    async updateEstado(id, estado) {
+        try {
+            const existeUsuario = await this.findOneUsuarioPW(id);
+            existeUsuario.es_activo = estado.es_activo;
+            delete existeUsuario.contrasenia;
+            delete existeUsuario.ci;
+            delete existeUsuario.apellidos;
+            delete existeUsuario.correo;
+            delete existeUsuario.se_cambiado_cntr;
+            return this.usuarioRepository.save(existeUsuario);
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (updateEstado) de la ruta "usuarios"`,
+                    error: `${error}`,
+                });
+            }
+        }
+    }
     async updateContrasenia(id, contraseniaAntigua, updateUsuarioDto) {
         try {
             const existeUsuario = await this.findOneUsuarioPW(id);
             const contraseniaCorrecta = await bcrypt.compare(contraseniaAntigua, existeUsuario.contrasenia);
-            console.log("contraseniaCorrecta", contraseniaCorrecta);
             if (!contraseniaCorrecta) {
                 throw new common_1.NotFoundException({
                     statusCode: 400,
@@ -292,6 +343,28 @@ let UsuariosService = class UsuariosService {
             const hashedPassword = await bcrypt.hash(updateUsuarioDto.contrasenia, 10);
             existeUsuario.contrasenia = hashedPassword;
             existeUsuario.se_cambiado_cntr = true;
+            const actualizarUsuario = await this.usuarioRepository.save(existeUsuario);
+            delete actualizarUsuario.contrasenia;
+            return actualizarUsuario;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (updateContrasenia) de la ruta "usuarios"`,
+                    error: `${error}`,
+                });
+            }
+        }
+    }
+    async resetearContrasenia(id) {
+        try {
+            const existeUsuario = await this.findOneUsuarioPW(id);
+            const hashedPassword = await bcrypt.hash(existeUsuario.ci, 10);
+            existeUsuario.contrasenia = hashedPassword;
+            existeUsuario.se_cambiado_cntr = false;
             const actualizarUsuario = await this.usuarioRepository.save(existeUsuario);
             delete actualizarUsuario.contrasenia;
             return actualizarUsuario;

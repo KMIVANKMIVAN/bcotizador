@@ -11,7 +11,10 @@ export class UnidadesController {
   create(@Body() createUnidadeDto: CreateUnidadeDto) {
     return this.unidadesService.create(createUnidadeDto);
   }
-
+  @Get('porunidad/:unidad')
+  findAllPorNombUnidad(@Param('unidad') unidad: string) {
+    return this.unidadesService.findAllPorNombUnidad(unidad);
+  }
   @Get()
   findAll() {
     return this.unidadesService.findAll();

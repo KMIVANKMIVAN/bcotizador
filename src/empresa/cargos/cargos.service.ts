@@ -45,7 +45,30 @@ export class CargosService {
       }
     }
   }
+  async findAllPorNombCargo(cargo: string): Promise<Cargo[]> {
+    try {
+      const cargos = await this.cargoRepository.createQueryBuilder('cargo')
+        .where('LOWER(cargo.cargo) LIKE LOWER(:cargo)', { cargo: `%${cargo.toLowerCase()}%` })
+        .limit(5)
+        .getMany();
 
+      if (!cargos || cargos.length === 0) {
+        throw new NotFoundException({
+          message: `No se encontraron cargos: ${cargo}`,
+        });
+      }
+      return cargos;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          message: `Error del Servidor. Revisar el metodo (findAllPorNombCargo) de la ruta "cargos"`,
+          error: `${error}`,
+        });
+      }
+    }
+  }
   async findAll(): Promise<Cargo[]> {
     try {
       const cargos = await this.cargoRepository.find({ relations: ['unidad'] });

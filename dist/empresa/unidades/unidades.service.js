@@ -48,6 +48,31 @@ let UnidadesService = class UnidadesService {
             }
         }
     }
+    async findAllPorNombUnidad(unidad) {
+        try {
+            const unidades = await this.unidadRepository.createQueryBuilder('unidad')
+                .where('LOWER(unidad.unidad) LIKE LOWER(:unidad)', { unidad: `%${unidad.toLowerCase()}%` })
+                .limit(5)
+                .getMany();
+            if (!unidades || unidades.length === 0) {
+                throw new common_1.NotFoundException({
+                    message: `No se encontraron unidades: ${unidad}`,
+                });
+            }
+            return unidades;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (findAllPorNombUnidad) de la ruta "unidades"`,
+                    error: `${error}`,
+                });
+            }
+        }
+    }
     async findAll() {
         try {
             const unidades = await this.unidadRepository.find({ relations: ['direccion'] });

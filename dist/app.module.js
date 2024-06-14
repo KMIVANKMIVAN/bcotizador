@@ -12,8 +12,6 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const config_1 = require("@nestjs/config");
-const jwt_auth_guard_1 = require("./auth/jwt-auth.guard");
-const core_1 = require("@nestjs/core");
 const usuario_entity_1 = require("./usuarios/entities/usuario.entity");
 const rol_entity_1 = require("./roles/entities/rol.entity");
 const sucursal_entity_1 = require("./sucursales/entities/sucursal.entity");
@@ -101,10 +99,9 @@ exports.AppModule = AppModule = __decorate([
             tiposcotizaciones_module_1.TiposcotizacionesModule,
             pdfs_module_1.PdfsModule,
         ],
-        providers: [app_service_1.AppService, {
-                provide: core_1.APP_GUARD,
-                useClass: jwt_auth_guard_1.JwtAuthGuard,
-            },],
+        providers: [
+            app_service_1.AppService,
+        ],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

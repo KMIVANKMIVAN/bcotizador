@@ -24,6 +24,9 @@ let SucursalesController = class SucursalesController {
     create(createSucursaleDto) {
         return this.sucursalesService.create(createSucursaleDto);
     }
+    findAllPorNombSucursal(sucursal) {
+        return this.sucursalesService.findAllPorNombSucursal(sucursal);
+    }
     findAll() {
         return this.sucursalesService.findAll();
     }
@@ -45,6 +48,13 @@ __decorate([
     __metadata("design:paramtypes", [create_sucursal_dto_1.CreateSucursaleDto]),
     __metadata("design:returntype", void 0)
 ], SucursalesController.prototype, "create", null);
+__decorate([
+    (0, common_1.Get)('porsucursal/:sucursal'),
+    __param(0, (0, common_1.Param)('sucursal')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], SucursalesController.prototype, "findAllPorNombSucursal", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),

@@ -6,6 +6,7 @@ export declare class EmpresasController {
     constructor(empresasService: EmpresasService);
     create(createEmpresaDto: CreateEmpresaDto): Promise<import("./entities/empresa.entity").Empresa>;
     findAll(): Promise<import("./entities/empresa.entity").Empresa[]>;
+    findAllPorNombEmpresa(empresa: string): Promise<import("./entities/empresa.entity").Empresa[]>;
     findOne(id: number): Promise<import("./entities/empresa.entity").Empresa>;
     update(id: number, updateEmpresaDto: UpdateEmpresaDto): Promise<import("./entities/empresa.entity").Empresa>;
     remove(id: number): Promise<any>;

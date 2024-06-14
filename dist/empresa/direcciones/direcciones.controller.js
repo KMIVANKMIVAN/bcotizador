@@ -24,6 +24,9 @@ let DireccionesController = class DireccionesController {
     create(createDireccioneDto) {
         return this.direccionesService.create(createDireccioneDto);
     }
+    findAllPorNombDireccion(direccion) {
+        return this.direccionesService.findAllPorNombDireccion(direccion);
+    }
     findAll() {
         return this.direccionesService.findAll();
     }
@@ -45,6 +48,13 @@ __decorate([
     __metadata("design:paramtypes", [create_direccion_dto_1.CreateDireccioneDto]),
     __metadata("design:returntype", void 0)
 ], DireccionesController.prototype, "create", null);
+__decorate([
+    (0, common_1.Get)('pordireccion/:direccion'),
+    __param(0, (0, common_1.Param)('direccion')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], DireccionesController.prototype, "findAllPorNombDireccion", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),

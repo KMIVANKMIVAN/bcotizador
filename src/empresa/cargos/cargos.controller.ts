@@ -16,7 +16,10 @@ export class CargosController {
   findAll() {
     return this.cargosService.findAll();
   }
-
+  @Get('porcargo/:cargo')
+  findAllPorNombCargo(@Param('cargo') cargo: string) {
+    return this.cargosService.findAllPorNombCargo(cargo);
+  }
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.cargosService.findOne(+id);

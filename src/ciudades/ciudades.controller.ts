@@ -2,7 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CiudadesService } from './ciudades.service';
 import { CreateCiudadDto } from './dto/create-ciudad.dto';
 import { UpdateCiudadDto } from './dto/update-ciudad.dto';
-
+// import { Roles } from 'src/auth/roles.decorator';
+// import { RolesGuard } from 'src/auth/roles.guard';
 @Controller('ciudades')
 export class CiudadesController {
   constructor(private readonly ciudadesService: CiudadesService) { }
@@ -13,6 +14,7 @@ export class CiudadesController {
   }
 
   @Get()
+  // @Roles(1)
   findAll() {
     return this.ciudadesService.findAll();
   }

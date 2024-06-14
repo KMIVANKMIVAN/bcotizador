@@ -31,7 +31,30 @@ export class RolesService {
 
     }
   }
+  async findAllPorNombRol(rol: string): Promise<Rol[]> {
+    try {
+      const roles = await this.rolRepository.createQueryBuilder('rol')
+        .where('LOWER(rol.rol) LIKE LOWER(:rol)', { rol: `%${rol.toLowerCase()}%` })
+        .limit(5)
+        .getMany();
 
+      if (!roles || roles.length === 0) {
+        throw new NotFoundException({
+          message: `No se encontraron roles: ${rol}`,
+        });
+      }
+      return roles;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          message: `Error del Servidor. Revisar el metodo (findAllPorNombRol) de la ruta "roles"`,
+          error: `${error}`,
+        });
+      }
+    }
+  }
   async findAll(): Promise<Rol[]> {
     try {
       const roles = await this.rolRepository.find();

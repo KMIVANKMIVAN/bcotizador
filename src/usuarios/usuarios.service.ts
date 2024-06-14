@@ -121,6 +121,35 @@ export class UsuariosService {
       }
     }
   }
+  async findAllPorNombCi(nomci: string): Promise<Usuario[]> {
+    try {
+      const usuarios = await this.usuarioRepository.createQueryBuilder('usuario')
+        .leftJoinAndSelect('usuario.roles', 'roles')
+        .leftJoinAndSelect('usuario.sucursal', 'sucursal')
+        .leftJoinAndSelect('usuario.cargo', 'cargo')
+        .where('LOWER(usuario.nombres) LIKE LOWER(:nomci)', { nomci: `%${nomci.toLowerCase()}%` })
+        .orWhere('LOWER(usuario.ci) LIKE LOWER(:nomci)', { nomci: `%${nomci.toLowerCase()}%` })
+        .limit(5)
+        .getMany();
+
+      if (!usuarios || usuarios.length === 0) {
+        throw new NotFoundException({
+          message: `No se encontraron usuarios con nombre o CI: ${nomci}`,
+        });
+      }
+      return usuarios;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          message: `Error del Servidor. Revisar el metodo (findAllPorNombCi) de la ruta "usuarios"`,
+          error: `${error}`,
+        });
+      }
+    }
+  }
+
 
   async findAll(): Promise<Usuario[]> {
     try {
@@ -285,6 +314,29 @@ export class UsuariosService {
       }
     }
   }
+  async updateEstado(id: number, estado: { es_activo: boolean }): Promise<Usuario> {
+    try {
+      const existeUsuario = await this.findOneUsuarioPW(id);
+
+      existeUsuario.es_activo = estado.es_activo;
+      delete existeUsuario.contrasenia;
+      delete existeUsuario.ci;
+      delete existeUsuario.apellidos;
+      delete existeUsuario.correo;
+      delete existeUsuario.se_cambiado_cntr;
+      return this.usuarioRepository.save(existeUsuario);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          message: `Error del Servidor. Revisar el metodo (updateEstado) de la ruta "usuarios"`,
+          error: `${error}`,
+        });
+      }
+    }
+  }
+
 
   async updateContrasenia(
     id: number,
@@ -298,9 +350,6 @@ export class UsuariosService {
         contraseniaAntigua,
         existeUsuario.contrasenia,
       );
-      console.log("contraseniaCorrecta", contraseniaCorrecta);
-      // console.log("",);
-
 
       if (!contraseniaCorrecta) {
         throw new NotFoundException({
@@ -325,6 +374,41 @@ export class UsuariosService {
       // Actualiza la contraseña del usuario en la base de datos
       existeUsuario.contrasenia = hashedPassword;
       existeUsuario.se_cambiado_cntr = true;
+
+      // Guarda los cambios
+      const actualizarUsuario = await this.usuarioRepository.save(existeUsuario);
+
+      // Elimina el campo de contraseña del objeto updatedUser
+      delete actualizarUsuario.contrasenia;
+
+      return actualizarUsuario; // Devuelve todos los datos excepto la contraseña
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+
+          message: `Error del Servidor. Revisar el metodo (updateContrasenia) de la ruta "usuarios"`,
+          error: `${error}`,
+        });
+      }
+    }
+  }
+  async resetearContrasenia(
+    id: number,
+
+  ): Promise<Partial<Usuario>> {
+    try {
+      const existeUsuario = await this.findOneUsuarioPW(id);
+
+      // Hashea la nueva contraseña antes de actualizarla
+      const hashedPassword = await bcrypt.hash(
+        existeUsuario.ci,
+        10,
+      );
+      // Actualiza la contraseña del usuario en la base de datos
+      existeUsuario.contrasenia = hashedPassword;
+      existeUsuario.se_cambiado_cntr = false;
 
       // Guarda los cambios
       const actualizarUsuario = await this.usuarioRepository.save(existeUsuario);

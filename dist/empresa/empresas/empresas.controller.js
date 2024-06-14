@@ -27,6 +27,9 @@ let EmpresasController = class EmpresasController {
     findAll() {
         return this.empresasService.findAll();
     }
+    findAllPorNombEmpresa(empresa) {
+        return this.empresasService.findAllPorNombEmpresa(empresa);
+    }
     findOne(id) {
         return this.empresasService.findOne(+id);
     }
@@ -51,6 +54,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], EmpresasController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('porempresa/:empresa'),
+    __param(0, (0, common_1.Param)('empresa')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], EmpresasController.prototype, "findAllPorNombEmpresa", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),

@@ -21,7 +21,10 @@ export class SucursalesController {
     return this.sucursalesService.create(createSucursaleDto);
   }
 
-
+  @Get('porsucursal/:sucursal')
+  findAllPorNombSucursal(@Param('sucursal') sucursal: string) {
+    return this.sucursalesService.findAllPorNombSucursal(sucursal);
+  }
   @Get()
   findAll() {
     return this.sucursalesService.findAll();
