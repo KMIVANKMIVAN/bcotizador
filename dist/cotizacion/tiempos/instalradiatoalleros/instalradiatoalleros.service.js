@@ -23,6 +23,7 @@ let InstalradiatoallerosService = class InstalradiatoallerosService {
     }
     async createSemilla(createInstalradiatoalleroDto) {
         try {
+            console.log("createInstalradiatoalleroDto", createInstalradiatoalleroDto);
             const nuevoInstalradiatoallero = this.nivelpisoRepository.create(createInstalradiatoalleroDto);
             return await this.nivelpisoRepository.save(nuevoInstalradiatoallero);
         }

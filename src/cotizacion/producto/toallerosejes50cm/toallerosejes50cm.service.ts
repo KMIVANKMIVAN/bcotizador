@@ -19,6 +19,8 @@ export class Toallerosejes50cmService {
 
   async createSemilla(createToalleroeje50cmDto: CreateToalleroeje50cmDto): Promise<Toalleroeje50cm> {
     try {
+      console.log("createToalleroeje50cmDto", createToalleroeje50cmDto);
+
       createToalleroeje50cmDto.modelo = capitalizeTextos(createToalleroeje50cmDto.modelo);
       const nuevoCiudad = this.nivelpisoRepository.create(
         createToalleroeje50cmDto,

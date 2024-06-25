@@ -24,6 +24,7 @@ let Toallerosejes50cmService = class Toallerosejes50cmService {
     }
     async createSemilla(createToalleroeje50cmDto) {
         try {
+            console.log("createToalleroeje50cmDto", createToalleroeje50cmDto);
             createToalleroeje50cmDto.modelo = (0, capitalizeTextos_1.capitalizeTextos)(createToalleroeje50cmDto.modelo);
             const nuevoCiudad = this.nivelpisoRepository.create(createToalleroeje50cmDto);
             return await this.nivelpisoRepository.save(nuevoCiudad);

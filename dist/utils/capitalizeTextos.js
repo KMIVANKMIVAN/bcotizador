@@ -7,7 +7,10 @@ function capitalizeTextos(text) {
     return text
         .split(' ')
         .map(word => {
-        if (word.length === 2) {
+        if (word.length === 2 && word !== word.toLowerCase()) {
+            return word;
+        }
+        else if (word.length === 2) {
             return word.toLowerCase();
         }
         else if (word === word.toUpperCase()) {

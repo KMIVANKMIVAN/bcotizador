@@ -21,8 +21,14 @@ const tipossuelos_service_1 = require("../cotizacion/tipossuelos/tipossuelos.ser
 const tipostechos_service_1 = require("../cotizacion/tipostechos/tipostechos.service");
 const tiposvidrios_service_1 = require("../cotizacion/tiposvidrios/tiposvidrios.service");
 const tiposcotizaciones_service_1 = require("../cotizacion/tiposcotizaciones/tiposcotizaciones.service");
+const factoresviajes_service_1 = require("../cotizacion/factoresviajes/factoresviajes.service");
+const gastospersonas_service_1 = require("../cotizacion/gastospersonas/gastospersonas.service");
+const toallerosejes50cm_service_1 = require("../cotizacion/producto/toallerosejes50cm/toallerosejes50cm.service");
+const radiadoresejes50cm_service_1 = require("../cotizacion/producto/radiadoresejes50cm/radiadoresejes50cm.service");
+const instaltuberias_service_1 = require("../cotizacion/tiempos/instaltuberias/instaltuberias.service");
+const instalradiatoalleros_service_1 = require("../cotizacion/tiempos/instalradiatoalleros/instalradiatoalleros.service");
 let SemillacotizacionService = class SemillacotizacionService {
-    constructor(configService, ciudadeszonasService, nivelespisosService, orientacionesService, tiposparedesService, tipossuelosService, tipostechosService, tiposvidriosService, tiposcotizacionesService) {
+    constructor(configService, ciudadeszonasService, nivelespisosService, orientacionesService, tiposparedesService, tipossuelosService, tipostechosService, tiposvidriosService, tiposcotizacionesService, factoresviajesService, gastospersonasService, toallerosejes50cmService, radiadoresejes50cmService, instaltuberiasService, instalradiatoallerosService) {
         this.configService = configService;
         this.ciudadeszonasService = ciudadeszonasService;
         this.nivelespisosService = nivelespisosService;
@@ -32,6 +38,12 @@ let SemillacotizacionService = class SemillacotizacionService {
         this.tipostechosService = tipostechosService;
         this.tiposvidriosService = tiposvidriosService;
         this.tiposcotizacionesService = tiposcotizacionesService;
+        this.factoresviajesService = factoresviajesService;
+        this.gastospersonasService = gastospersonasService;
+        this.toallerosejes50cmService = toallerosejes50cmService;
+        this.radiadoresejes50cmService = radiadoresejes50cmService;
+        this.instaltuberiasService = instaltuberiasService;
+        this.instalradiatoallerosService = instalradiatoallerosService;
         this.isProd = configService.get('STATE') === 'prod';
     }
     async ejecutarSemillacotizacion() {
@@ -50,6 +62,12 @@ let SemillacotizacionService = class SemillacotizacionService {
             await this.crearTiposvidrios();
             await this.crearCiudadeszonas();
             await this.crearTiposcotizaciones();
+            await this.crearFactoresviajes();
+            await this.crearGastospersonas();
+            await this.crearInstalartuberias();
+            await this.crearInstalasradiatoalleros();
+            await this.crearToallerosejes50cm();
+            await this.crearRadiadoresejes50cm();
             return true;
         }
         catch (error) {
@@ -108,6 +126,48 @@ let SemillacotizacionService = class SemillacotizacionService {
         }
         return tiposcotizaciones[0];
     }
+    async crearFactoresviajes() {
+        const factoresviajes = [];
+        for (const factorviaje of semillacotizacion_datos_1.SEMILLA_FACTORVIAJE) {
+            factoresviajes.push(await this.factoresviajesService.createSemilla(factorviaje));
+        }
+        return factoresviajes[0];
+    }
+    async crearGastospersonas() {
+        const gastopersona = [];
+        for (const gastospersonas of semillacotizacion_datos_1.SEMILLA_GASTOPERSONA) {
+            gastopersona.push(await this.gastospersonasService.createSemilla(gastospersonas));
+        }
+        return gastopersona[0];
+    }
+    async crearInstalasradiatoalleros() {
+        const instalradiatoallero = [];
+        for (const instalasradiatoalleros of semillacotizacion_datos_1.SEMILLA_INSTALRADIATOALEROS) {
+            instalradiatoallero.push(await this.instalradiatoallerosService.createSemilla(instalasradiatoalleros));
+        }
+        return instalradiatoallero[0];
+    }
+    async crearInstalartuberias() {
+        const instalartuberias = [];
+        for (const instaltuberia of semillacotizacion_datos_1.SEMILLA_INSTALTUBERIAS) {
+            instalartuberias.push(await this.instaltuberiasService.createSemilla(instaltuberia));
+        }
+        return instalartuberias[0];
+    }
+    async crearRadiadoresejes50cm() {
+        const radiadoresejes50cm = [];
+        for (const radiadoreje50cm of semillacotizacion_datos_1.SEMILLA_RADIADORES50CM) {
+            radiadoresejes50cm.push(await this.radiadoresejes50cmService.createSemilla(radiadoreje50cm));
+        }
+        return radiadoresejes50cm[0];
+    }
+    async crearToallerosejes50cm() {
+        const toallerosejes50cm = [];
+        for (const toalleroeje50cm of semillacotizacion_datos_1.SEMILLA_TOALLEROS50CM) {
+            toallerosejes50cm.push(await this.toallerosejes50cmService.createSemilla(toalleroeje50cm));
+        }
+        return toallerosejes50cm[0];
+    }
     async crearCiudadeszonas() {
         const ciudadeszonas = [];
         for (const ciudadzona of semillacotizacion_datos_1.SEMILLA_CIUDADZONA) {
@@ -127,6 +187,12 @@ exports.SemillacotizacionService = SemillacotizacionService = __decorate([
         tipossuelos_service_1.TipossuelosService,
         tipostechos_service_1.TipostechosService,
         tiposvidrios_service_1.TiposvidriosService,
-        tiposcotizaciones_service_1.TiposcotizacionesService])
+        tiposcotizaciones_service_1.TiposcotizacionesService,
+        factoresviajes_service_1.FactoresviajesService,
+        gastospersonas_service_1.GastospersonasService,
+        toallerosejes50cm_service_1.Toallerosejes50cmService,
+        radiadoresejes50cm_service_1.Radiadoresejes50cmService,
+        instaltuberias_service_1.InstaltuberiasService,
+        instalradiatoalleros_service_1.InstalradiatoallerosService])
 ], SemillacotizacionService);
 //# sourceMappingURL=semillacotizacion.service.js.map

@@ -6,7 +6,7 @@ export declare class InstaltuberiasController {
     constructor(instaltuberiasService: InstaltuberiasService);
     create(createInstaltuberiaDto: CreateInstaltuberiaDto): Promise<import("./entities/instaltuberia.entity").Instaltuberia>;
     findAll(): Promise<import("./entities/instaltuberia.entity").Instaltuberia[]>;
-    findAllClear(): Promise<import("./entities/instaltuberia.entity").Instaltuberia[]>;
+    findAllClear(): Promise<Partial<import("./entities/instaltuberia.entity").Instaltuberia>[]>;
     findAllPorRango(rango: number): Promise<import("./entities/instaltuberia.entity").Instaltuberia[]>;
     findOne(id: number): Promise<import("./entities/instaltuberia.entity").Instaltuberia>;
     update(id: number, updateInstaltuberiaDto: UpdateInstaltuberiaDto): Promise<import("./entities/instaltuberia.entity").Instaltuberia>;

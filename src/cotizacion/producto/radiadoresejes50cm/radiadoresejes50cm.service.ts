@@ -19,6 +19,8 @@ export class Radiadoresejes50cmService {
 
   async createSemilla(createRadiadoreje50cmDto: CreateRadiadoreje50cmDto): Promise<Radiadoreje50cm> {
     try {
+      console.log("createRadiadoreje50cmDto",createRadiadoreje50cmDto);
+
       createRadiadoreje50cmDto.modelo = capitalizeTextos(createRadiadoreje50cmDto.modelo);
       const nuevoCiudad = this.nivelpisoRepository.create(
         createRadiadoreje50cmDto,

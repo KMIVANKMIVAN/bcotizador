@@ -9,7 +9,7 @@ export declare class InstaltuberiasService {
     create(createInstaltuberiaDto: CreateInstaltuberiaDto): Promise<Instaltuberia>;
     findAll(): Promise<Instaltuberia[]>;
     findAllPorRango(rango: number): Promise<Instaltuberia[]>;
-    findAllClear(): Promise<Instaltuberia[]>;
+    findAllClear(): Promise<Partial<Instaltuberia>[]>;
     findOne(id: number): Promise<Instaltuberia>;
     update(id: number, updateInstaltuberiaDto: UpdateInstaltuberiaDto): Promise<Instaltuberia>;
     remove(id: number): Promise<any>;

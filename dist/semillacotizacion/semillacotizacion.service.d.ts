@@ -7,6 +7,12 @@ import { TipossuelosService } from 'src/cotizacion/tipossuelos/tipossuelos.servi
 import { TipostechosService } from 'src/cotizacion/tipostechos/tipostechos.service';
 import { TiposvidriosService } from 'src/cotizacion/tiposvidrios/tiposvidrios.service';
 import { TiposcotizacionesService } from 'src/cotizacion/tiposcotizaciones/tiposcotizaciones.service';
+import { FactoresviajesService } from 'src/cotizacion/factoresviajes/factoresviajes.service';
+import { GastospersonasService } from 'src/cotizacion/gastospersonas/gastospersonas.service';
+import { Toallerosejes50cmService } from 'src/cotizacion/producto/toallerosejes50cm/toallerosejes50cm.service';
+import { Radiadoresejes50cmService } from 'src/cotizacion/producto/radiadoresejes50cm/radiadoresejes50cm.service';
+import { InstaltuberiasService } from 'src/cotizacion/tiempos/instaltuberias/instaltuberias.service';
+import { InstalradiatoallerosService } from 'src/cotizacion/tiempos/instalradiatoalleros/instalradiatoalleros.service';
 import { Ciudadzona } from 'src/cotizacion/ciudadeszonas/entities/ciudadzona.entity';
 import { Nivelpiso } from 'src/cotizacion/nivelespisos/entities/nivelpiso.entity';
 import { Orientacion } from 'src/cotizacion/orientaciones/entities/orientacion.entity';
@@ -15,6 +21,12 @@ import { Tiposuelo } from 'src/cotizacion/tipossuelos/entities/tiposuelo.entity'
 import { Tipotecho } from 'src/cotizacion/tipostechos/entities/tipotecho.entity';
 import { Tipovidrio } from 'src/cotizacion/tiposvidrios/entities/tipovidrio.entity';
 import { Tipocotizacion } from 'src/cotizacion/tiposcotizaciones/entities/tipocotizacion.entity';
+import { Factorviaje } from 'src/cotizacion/factoresviajes/entities/factorviaje.entity';
+import { Gastopersona } from 'src/cotizacion/gastospersonas/entities/gastopersona.entity';
+import { Toalleroeje50cm } from 'src/cotizacion/producto/toallerosejes50cm/entities/toalleroeje50cm.entity';
+import { Radiadoreje50cm } from 'src/cotizacion/producto/radiadoresejes50cm/entities/radiadoreje50cm.entity';
+import { Instaltuberia } from 'src/cotizacion/tiempos/instaltuberias/entities/instaltuberia.entity';
+import { Instalradiatoallero } from 'src/cotizacion/tiempos/instalradiatoalleros/entities/instalradiatoallero.entity';
 export declare class SemillacotizacionService {
     private readonly configService;
     private readonly ciudadeszonasService;
@@ -25,8 +37,14 @@ export declare class SemillacotizacionService {
     private readonly tipostechosService;
     private readonly tiposvidriosService;
     private readonly tiposcotizacionesService;
+    private readonly factoresviajesService;
+    private readonly gastospersonasService;
+    private readonly toallerosejes50cmService;
+    private readonly radiadoresejes50cmService;
+    private readonly instaltuberiasService;
+    private readonly instalradiatoallerosService;
     private isProd;
-    constructor(configService: ConfigService, ciudadeszonasService: CiudadeszonasService, nivelespisosService: NivelespisosService, orientacionesService: OrientacionesService, tiposparedesService: TiposparedesService, tipossuelosService: TipossuelosService, tipostechosService: TipostechosService, tiposvidriosService: TiposvidriosService, tiposcotizacionesService: TiposcotizacionesService);
+    constructor(configService: ConfigService, ciudadeszonasService: CiudadeszonasService, nivelespisosService: NivelespisosService, orientacionesService: OrientacionesService, tiposparedesService: TiposparedesService, tipossuelosService: TipossuelosService, tipostechosService: TipostechosService, tiposvidriosService: TiposvidriosService, tiposcotizacionesService: TiposcotizacionesService, factoresviajesService: FactoresviajesService, gastospersonasService: GastospersonasService, toallerosejes50cmService: Toallerosejes50cmService, radiadoresejes50cmService: Radiadoresejes50cmService, instaltuberiasService: InstaltuberiasService, instalradiatoallerosService: InstalradiatoallerosService);
     ejecutarSemillacotizacion(): Promise<boolean>;
     crearNivelespisos(): Promise<Nivelpiso>;
     crearOrientaciones(): Promise<Orientacion>;
@@ -35,5 +53,11 @@ export declare class SemillacotizacionService {
     crearTipostechos(): Promise<Tipotecho>;
     crearTiposvidrios(): Promise<Tipovidrio>;
     crearTiposcotizaciones(): Promise<Tipocotizacion>;
+    crearFactoresviajes(): Promise<Factorviaje>;
+    crearGastospersonas(): Promise<Gastopersona>;
+    crearInstalasradiatoalleros(): Promise<Instalradiatoallero>;
+    crearInstalartuberias(): Promise<Instaltuberia>;
+    crearRadiadoresejes50cm(): Promise<Radiadoreje50cm>;
+    crearToallerosejes50cm(): Promise<Toalleroeje50cm>;
     crearCiudadeszonas(): Promise<Ciudadzona>;
 }

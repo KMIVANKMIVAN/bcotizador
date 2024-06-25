@@ -9,7 +9,7 @@ export class Factorviaje {
   @Column({ type: 'varchar', length: 50, nullable: false })
   ciudad: string;
 
-  @Column({ type: 'numeric', precision: 5, scale: 4, nullable: false })
+  @Column({ type: 'numeric', precision: 7, scale: 4, nullable: false })
   valor: number;
 
   @OneToMany(() => Cotizacion, (cotizacion) => cotizacion.factorviaje)

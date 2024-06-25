@@ -24,6 +24,7 @@ let FactoresviajesService = class FactoresviajesService {
     }
     async createSemilla(createFactorviajeDto) {
         try {
+            console.log("createFactorviajeDto", createFactorviajeDto);
             createFactorviajeDto.ciudad = (0, capitalizeTextos_1.capitalizeTextos)(createFactorviajeDto.ciudad);
             const nuevoCiudad = this.nivelpisoRepository.create(createFactorviajeDto);
             return await this.nivelpisoRepository.save(nuevoCiudad);

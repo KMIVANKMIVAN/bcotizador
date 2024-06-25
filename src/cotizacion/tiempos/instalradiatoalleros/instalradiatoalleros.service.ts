@@ -18,6 +18,8 @@ export class InstalradiatoallerosService {
 
   async createSemilla(createInstalradiatoalleroDto: CreateInstalradiatoalleroDto): Promise<Instalradiatoallero> {
     try {
+      console.log("createInstalradiatoalleroDto",createInstalradiatoalleroDto);
+
       const nuevoInstalradiatoallero = this.nivelpisoRepository.create(
         createInstalradiatoalleroDto,
       );

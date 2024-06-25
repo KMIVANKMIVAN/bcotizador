@@ -24,6 +24,7 @@ let Radiadoresejes50cmService = class Radiadoresejes50cmService {
     }
     async createSemilla(createRadiadoreje50cmDto) {
         try {
+            console.log("createRadiadoreje50cmDto", createRadiadoreje50cmDto);
             createRadiadoreje50cmDto.modelo = (0, capitalizeTextos_1.capitalizeTextos)(createRadiadoreje50cmDto.modelo);
             const nuevoCiudad = this.nivelpisoRepository.create(createRadiadoreje50cmDto);
             return await this.nivelpisoRepository.save(nuevoCiudad);

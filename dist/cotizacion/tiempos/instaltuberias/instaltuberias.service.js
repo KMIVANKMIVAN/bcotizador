@@ -23,6 +23,7 @@ let InstaltuberiasService = class InstaltuberiasService {
     }
     async createSemilla(createInstaltuberiaDto) {
         try {
+            console.log("createInstaltuberiaDto", createInstaltuberiaDto);
             const nuevoInstaltuberia = this.nivelpisoRepository.create(createInstaltuberiaDto);
             return await this.nivelpisoRepository.save(nuevoInstaltuberia);
         }
@@ -100,8 +101,15 @@ let InstaltuberiasService = class InstaltuberiasService {
                     message: `No se encontraron instaltuberias`,
                 });
             }
-            instaltuberias.forEach((horas) => delete horas.horas);
-            return instaltuberias;
+            const result = instaltuberias.map(instaltuberia => {
+                const { inicio, fin, ...rest } = instaltuberia;
+                return {
+                    ...rest,
+                    rango: `${inicio} a ${fin}`
+                };
+            });
+            result.forEach((horas) => delete horas.horas);
+            return result;
         }
         catch (error) {
             if (error instanceof common_1.NotFoundException) {
@@ -109,7 +117,7 @@ let InstaltuberiasService = class InstaltuberiasService {
             }
             else {
                 throw new common_1.InternalServerErrorException({
-                    message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "instaltuberias"`,
+                    message: `Error del Servidor. Revisar el metodo (findAllClear) de la ruta "instaltuberias"`,
                     error: `${error}`,
                 });
             }

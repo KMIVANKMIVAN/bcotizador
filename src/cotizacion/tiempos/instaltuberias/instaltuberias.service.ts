@@ -19,6 +19,8 @@ export class InstaltuberiasService {
 
   async createSemilla(createInstaltuberiaDto: CreateInstaltuberiaDto): Promise<Instaltuberia> {
     try {
+      console.log("createInstaltuberiaDto", createInstaltuberiaDto);
+
       const nuevoInstaltuberia = this.nivelpisoRepository.create(
         createInstaltuberiaDto,
       );
@@ -94,7 +96,7 @@ export class InstaltuberiasService {
       }
     }
   }
-  async findAllClear(): Promise<Instaltuberia[]> {
+  /* async findAllClear(): Promise<Instaltuberia[]> {
     try {
       const instaltuberias = await this.nivelpisoRepository.find();
       if (!instaltuberias || instaltuberias.length === 0) {
@@ -111,6 +113,37 @@ export class InstaltuberiasService {
         throw new InternalServerErrorException({
 
           message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "instaltuberias"`,
+          error: `${error}`,
+        });
+      }
+    }
+  } */
+  async findAllClear(): Promise<Partial<Instaltuberia>[]> {
+    try {
+      const instaltuberias = await this.nivelpisoRepository.find();
+      if (!instaltuberias || instaltuberias.length === 0) {
+        throw new NotFoundException({
+          message: `No se encontraron instaltuberias`,
+        });
+      }
+
+      // Crear una nueva lista con la propiedad 'rango'
+      const result = instaltuberias.map(instaltuberia => {
+        const { inicio, fin, ...rest } = instaltuberia;
+        return {
+          ...rest,
+          rango: `${inicio} a ${fin}`
+        };
+      });
+      result.forEach((horas) => delete horas.horas);
+
+      return result;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          message: `Error del Servidor. Revisar el metodo (findAllClear) de la ruta "instaltuberias"`,
           error: `${error}`,
         });
       }

@@ -18,6 +18,12 @@ const tipossuelos_module_1 = require("../cotizacion/tipossuelos/tipossuelos.modu
 const tipostechos_module_1 = require("../cotizacion/tipostechos/tipostechos.module");
 const tiposvidrios_module_1 = require("../cotizacion/tiposvidrios/tiposvidrios.module");
 const tiposcotizaciones_module_1 = require("../cotizacion/tiposcotizaciones/tiposcotizaciones.module");
+const factoresviajes_module_1 = require("../cotizacion/factoresviajes/factoresviajes.module");
+const gastospersonas_module_1 = require("../cotizacion/gastospersonas/gastospersonas.module");
+const toallerosejes50cm_module_1 = require("../cotizacion/producto/toallerosejes50cm/toallerosejes50cm.module");
+const radiadoresejes50cm_module_1 = require("../cotizacion/producto/radiadoresejes50cm/radiadoresejes50cm.module");
+const instalradiatoalleros_module_1 = require("../cotizacion/tiempos/instalradiatoalleros/instalradiatoalleros.module");
+const instaltuberias_module_1 = require("../cotizacion/tiempos/instaltuberias/instaltuberias.module");
 let SemillacotizacionModule = class SemillacotizacionModule {
 };
 exports.SemillacotizacionModule = SemillacotizacionModule;
@@ -31,7 +37,13 @@ exports.SemillacotizacionModule = SemillacotizacionModule = __decorate([
             tipossuelos_module_1.TipossuelosModule,
             tipostechos_module_1.TipostechosModule,
             tiposvidrios_module_1.TiposvidriosModule,
-            tiposcotizaciones_module_1.TiposcotizacionesModule
+            tiposcotizaciones_module_1.TiposcotizacionesModule,
+            factoresviajes_module_1.FactoresviajesModule,
+            gastospersonas_module_1.GastospersonasModule,
+            toallerosejes50cm_module_1.Toallerosejes50cmModule,
+            radiadoresejes50cm_module_1.Radiadoresejes50cmModule,
+            instalradiatoalleros_module_1.InstalradiatoallerosModule,
+            instaltuberias_module_1.InstaltuberiasModule
         ],
         controllers: [semillacotizacion_controller_1.SemillacotizacionController],
         providers: [semillacotizacion_service_1.SemillacotizacionService],

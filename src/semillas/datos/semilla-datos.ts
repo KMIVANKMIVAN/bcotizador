@@ -50,7 +50,7 @@ export const SEMILLA_SUCURSAL = [
     sucursal: 'Showroom',
     ubicacion:
       'Avenida montenegro Nro. 911 - San Miguel.',
-      ciudad_id: 1,
+    ciudad_id: 1,
   },
 ];
 export const SEMILLA_ROLES = [
@@ -66,8 +66,8 @@ export const SEMILLA_ROLES = [
 ];
 export const SEMILLA_USUARIOS = [
   {
-    nombres: 'ADMIN',
-    apellidos: 'ADMIN',
+    nombres: 'admin',
+    apellidos: 'admin',
     ci: 'ADMINROOT',
     complemento: null,
     correo: 'admin@domoticus.com.bo',
@@ -79,8 +79,8 @@ export const SEMILLA_USUARIOS = [
     cargo_id: 1
   },
   {
-    nombres: 'ADMINLPZ',
-    apellidos: 'ADMINLPZ',
+    nombres: 'adminlpz',
+    apellidos: 'adminlpz',
     ci: 'ADMINROOTLPZ',
     complemento: null,
     correo: 'adminlpz@domoticus.com.bo',
@@ -92,8 +92,8 @@ export const SEMILLA_USUARIOS = [
     cargo_id: 2
   },
   {
-    nombres: 'CAMILA',
-    apellidos: 'BLANCO',
+    nombres: 'camila',
+    apellidos: 'blanco',
     ci: '80706050',
     complemento: 'LP',
     correo: 'camila.blanco@domoticus.com.bo',
@@ -105,8 +105,8 @@ export const SEMILLA_USUARIOS = [
     cargo_id: 9
   },
   {
-    nombres: 'MARIELA',
-    apellidos: 'LIMA',
+    nombres: 'mariela',
+    apellidos: 'lima',
     ci: '50607080',
     complemento: 'LP',
     correo: 'mariela.lima@domoticus.com.bo',
@@ -118,8 +118,8 @@ export const SEMILLA_USUARIOS = [
     cargo_id: 10
   },
   {
-    nombres: 'CINTHYA',
-    apellidos: 'CARPIO',
+    nombres: 'Cinthya',
+    apellidos: 'Carpio',
     ci: '10203040',
     complemento: 'LP',
     correo: 'cinthya.carpio@domoticus.com.bo',

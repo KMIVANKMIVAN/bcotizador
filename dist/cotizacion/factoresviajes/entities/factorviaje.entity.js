@@ -24,7 +24,7 @@ __decorate([
     __metadata("design:type", String)
 ], Factorviaje.prototype, "ciudad", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'numeric', precision: 5, scale: 4, nullable: false }),
+    (0, typeorm_1.Column)({ type: 'numeric', precision: 7, scale: 4, nullable: false }),
     __metadata("design:type", Number)
 ], Factorviaje.prototype, "valor", void 0);
 __decorate([

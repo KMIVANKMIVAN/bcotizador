@@ -19,6 +19,8 @@ export class FactoresviajesService {
 
   async createSemilla(createFactorviajeDto: CreateFactorviajeDto): Promise<Factorviaje> {
     try {
+      console.log("createFactorviajeDto",createFactorviajeDto);
+      
       createFactorviajeDto.ciudad = capitalizeTextos(createFactorviajeDto.ciudad);
       const nuevoCiudad = this.nivelpisoRepository.create(
         createFactorviajeDto,

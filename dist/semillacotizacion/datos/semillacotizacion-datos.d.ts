@@ -30,3 +30,30 @@ export declare const SEMILLA_TIPOVIDRIO: {
 export declare const SEMILLA_TIPOCOTIZACION: {
     tipocotizacion: string;
 }[];
+export declare const SEMILLA_FACTORVIAJE: {
+    ciudad: string;
+    valor: number;
+}[];
+export declare const SEMILLA_GASTOPERSONA: {
+    nropersona: number;
+    alimento: number;
+    alojamiento: number;
+    extras: number;
+}[];
+export declare const SEMILLA_RADIADORES50CM: {
+    modelo: string;
+    potenciawats: number;
+}[];
+export declare const SEMILLA_TOALLEROS50CM: {
+    modelo: string;
+    potenciawats: number;
+}[];
+export declare const SEMILLA_INSTALTUBERIAS: {
+    inicio: number;
+    fin: number;
+    horas: number;
+}[];
+export declare const SEMILLA_INSTALRADIATOALEROS: {
+    nroradiador: number;
+    horas: number;
+}[];
