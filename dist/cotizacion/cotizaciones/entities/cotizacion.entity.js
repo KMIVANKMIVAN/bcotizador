@@ -19,6 +19,12 @@ const tipotecho_entity_1 = require("../../tipostechos/entities/tipotecho.entity"
 const tipovidrio_entity_1 = require("../../tiposvidrios/entities/tipovidrio.entity");
 const ciudadzona_entity_1 = require("../../ciudadeszonas/entities/ciudadzona.entity");
 const tipocotizacion_entity_1 = require("../../tiposcotizaciones/entities/tipocotizacion.entity");
+const factorviaje_entity_1 = require("../../factoresviajes/entities/factorviaje.entity");
+const gastopersona_entity_1 = require("../../gastospersonas/entities/gastopersona.entity");
+const toalleroeje50cm_entity_1 = require("../../producto/toallerosejes50cm/entities/toalleroeje50cm.entity");
+const radiadoreje50cm_entity_1 = require("../../producto/radiadoresejes50cm/entities/radiadoreje50cm.entity");
+const instaltuberia_entity_1 = require("../../tiempos/instaltuberias/entities/instaltuberia.entity");
+const instalradiatoallero_entity_1 = require("../../tiempos/instalradiatoalleros/entities/instalradiatoallero.entity");
 let Cotizacion = class Cotizacion {
 };
 exports.Cotizacion = Cotizacion;
@@ -90,6 +96,36 @@ __decorate([
     (0, typeorm_1.JoinColumn)({ name: 'tipocotizacion_id' }),
     __metadata("design:type", tipocotizacion_entity_1.Tipocotizacion)
 ], Cotizacion.prototype, "tipocotizacion", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => factorviaje_entity_1.Factorviaje, (factorviaje) => factorviaje.cotizaciones),
+    (0, typeorm_1.JoinColumn)({ name: 'factorviaje_id' }),
+    __metadata("design:type", factorviaje_entity_1.Factorviaje)
+], Cotizacion.prototype, "factorviaje", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => toalleroeje50cm_entity_1.Toalleroeje50cm, (toalleroeje50cm) => toalleroeje50cm.cotizaciones),
+    (0, typeorm_1.JoinColumn)({ name: 'toalleroeje50cm_id' }),
+    __metadata("design:type", toalleroeje50cm_entity_1.Toalleroeje50cm)
+], Cotizacion.prototype, "toalleroeje50cm", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => gastopersona_entity_1.Gastopersona, (gastopersona) => gastopersona.cotizaciones),
+    (0, typeorm_1.JoinColumn)({ name: 'gastopersona_id' }),
+    __metadata("design:type", gastopersona_entity_1.Gastopersona)
+], Cotizacion.prototype, "gastopersona", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => radiadoreje50cm_entity_1.Radiadoreje50cm, (radiadoreje50cm) => radiadoreje50cm.cotizaciones),
+    (0, typeorm_1.JoinColumn)({ name: 'radiadoreje50cm_id' }),
+    __metadata("design:type", radiadoreje50cm_entity_1.Radiadoreje50cm)
+], Cotizacion.prototype, "radiadoreje50cm", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => instaltuberia_entity_1.Instaltuberia, (instaltuberia) => instaltuberia.cotizaciones),
+    (0, typeorm_1.JoinColumn)({ name: 'instaltuberia_id' }),
+    __metadata("design:type", instaltuberia_entity_1.Instaltuberia)
+], Cotizacion.prototype, "instaltuberia", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => instalradiatoallero_entity_1.Instalradiatoallero, (instalradiatoallero) => instalradiatoallero.cotizaciones),
+    (0, typeorm_1.JoinColumn)({ name: 'instalradiatoallero_id' }),
+    __metadata("design:type", instalradiatoallero_entity_1.Instalradiatoallero)
+], Cotizacion.prototype, "instalradiatoallero", void 0);
 exports.Cotizacion = Cotizacion = __decorate([
     (0, typeorm_1.Entity)('cotizaciones')
 ], Cotizacion);

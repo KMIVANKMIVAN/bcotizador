@@ -29,6 +29,12 @@ const tipotecho_entity_1 = require("./cotizacion/tipostechos/entities/tipotecho.
 const orientacion_entity_1 = require("./cotizacion/orientaciones/entities/orientacion.entity");
 const tipovidrio_entity_1 = require("./cotizacion/tiposvidrios/entities/tipovidrio.entity");
 const tipocotizacion_entity_1 = require("./cotizacion/tiposcotizaciones/entities/tipocotizacion.entity");
+const gastopersona_entity_1 = require("./cotizacion/gastospersonas/entities/gastopersona.entity");
+const factorviaje_entity_1 = require("./cotizacion/factoresviajes/entities/factorviaje.entity");
+const toalleroeje50cm_entity_1 = require("./cotizacion/producto/toallerosejes50cm/entities/toalleroeje50cm.entity");
+const radiadoreje50cm_entity_1 = require("./cotizacion/producto/radiadoresejes50cm/entities/radiadoreje50cm.entity");
+const instalradiatoallero_entity_1 = require("./cotizacion/tiempos/instalradiatoalleros/entities/instalradiatoallero.entity");
+const instaltuberia_entity_1 = require("./cotizacion/tiempos/instaltuberias/entities/instaltuberia.entity");
 const auth_module_1 = require("./auth/auth.module");
 const empresas_module_1 = require("./empresa/empresas/empresas.module");
 const direcciones_module_1 = require("./empresa/direcciones/direcciones.module");
@@ -50,6 +56,12 @@ const cotizaciones_module_1 = require("./cotizacion/cotizaciones/cotizaciones.mo
 const semillacotizacion_module_1 = require("./semillacotizacion/semillacotizacion.module");
 const tiposcotizaciones_module_1 = require("./cotizacion/tiposcotizaciones/tiposcotizaciones.module");
 const pdfs_module_1 = require("./pdfs/pdfs.module");
+const gastospersonas_module_1 = require("./cotizacion/gastospersonas/gastospersonas.module");
+const factoresviajes_module_1 = require("./cotizacion/factoresviajes/factoresviajes.module");
+const toallerosejes50cm_module_1 = require("./cotizacion/producto/toallerosejes50cm/toallerosejes50cm.module");
+const radiadoresejes50cm_module_1 = require("./cotizacion/producto/radiadoresejes50cm/radiadoresejes50cm.module");
+const instaltuberias_module_1 = require("./cotizacion/tiempos/instaltuberias/instaltuberias.module");
+const instalradiatoalleros_module_1 = require("./cotizacion/tiempos/instalradiatoalleros/instalradiatoalleros.module");
 const bdType = 'postgres';
 let AppModule = class AppModule {
 };
@@ -75,7 +87,14 @@ exports.AppModule = AppModule = __decorate([
                     username: configService.get('BDUSERNAME'),
                     password: configService.get('BDPASSWORD'),
                     database: configService.get('BDDATABASE'),
-                    entities: [usuario_entity_1.Usuario, rol_entity_1.Rol, ciudad_entity_1.Ciudad, sucursal_entity_1.Sucursal, empresa_entity_1.Empresa, unidade_entity_1.Unidad, cargo_entity_1.Cargo, direccion_entity_1.Direccion, ciudadzona_entity_1.Ciudadzona, cotizacion_entity_1.Cotizacion, nivelpiso_entity_1.Nivelpiso, tipopared_entity_1.Tipopared, tiposuelo_entity_1.Tiposuelo, tipotecho_entity_1.Tipotecho, orientacion_entity_1.Orientacion, tipovidrio_entity_1.Tipovidrio, tipocotizacion_entity_1.Tipocotizacion],
+                    entities: [
+                        usuario_entity_1.Usuario, rol_entity_1.Rol, ciudad_entity_1.Ciudad, sucursal_entity_1.Sucursal, empresa_entity_1.Empresa,
+                        unidade_entity_1.Unidad, cargo_entity_1.Cargo, direccion_entity_1.Direccion, ciudadzona_entity_1.Ciudadzona, cotizacion_entity_1.Cotizacion,
+                        nivelpiso_entity_1.Nivelpiso, tipopared_entity_1.Tipopared, tiposuelo_entity_1.Tiposuelo, tipotecho_entity_1.Tipotecho, orientacion_entity_1.Orientacion,
+                        tipovidrio_entity_1.Tipovidrio, tipocotizacion_entity_1.Tipocotizacion, gastopersona_entity_1.Gastopersona, factorviaje_entity_1.Factorviaje,
+                        toalleroeje50cm_entity_1.Toalleroeje50cm, radiadoreje50cm_entity_1.Radiadoreje50cm, instalradiatoallero_entity_1.Instalradiatoallero,
+                        instaltuberia_entity_1.Instaltuberia
+                    ],
                     synchronize: true,
                 }),
                 inject: [config_1.ConfigService],
@@ -98,6 +117,12 @@ exports.AppModule = AppModule = __decorate([
             semillacotizacion_module_1.SemillacotizacionModule,
             tiposcotizaciones_module_1.TiposcotizacionesModule,
             pdfs_module_1.PdfsModule,
+            gastospersonas_module_1.GastospersonasModule,
+            factoresviajes_module_1.FactoresviajesModule,
+            toallerosejes50cm_module_1.Toallerosejes50cmModule,
+            radiadoresejes50cm_module_1.Radiadoresejes50cmModule,
+            instaltuberias_module_1.InstaltuberiasModule,
+            instalradiatoalleros_module_1.InstalradiatoallerosModule,
         ],
         providers: [
             app_service_1.AppService,

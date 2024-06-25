@@ -30,7 +30,7 @@ let NivelespisosService = class NivelespisosService {
         }
         catch (error) {
             throw new common_1.InternalServerErrorException({
-                mensaje: `Error del Servidor. Revisar el metodo (create) de la ruta "nivelespisos"`,
+                mensaje: `Error del Servidor. Revisar el metodo (createSemilla) de la ruta "nivelespisos"`,
                 error: `${error}`,
             });
         }

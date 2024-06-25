@@ -13,4 +13,10 @@ export declare class CreateCotizacionDto {
     tipotecho_id: number;
     tipovidrio_id: number;
     tipocotizacion_id: number;
+    factorviaje_id: number;
+    toalleroeje50cm_id: number;
+    gastopersona_id: number;
+    radiadoreje50cm_id: number;
+    instaltuberia_id: number;
+    instalradiatoallero_id: number;
 }

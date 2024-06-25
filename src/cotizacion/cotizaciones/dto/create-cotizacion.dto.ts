@@ -25,31 +25,31 @@ export class CreateCotizacionDto {
   @IsNumber()
   @IsNotEmpty()
   cantidadventana: number;
-  
+
   @IsNumber()
   @IsNotEmpty()
   ciudadzona_id: number;
-  
+
   @IsNumber()
   @IsNotEmpty()
   nivelpiso_id: number;
-  
+
   @IsNumber()
   @IsNotEmpty()
   orientacion_id: number;
-  
+
   @IsNumber()
   @IsNotEmpty()
   tipopared_id: number;
-  
+
   @IsNumber()
   @IsNotEmpty()
   tiposuelo_id: number;
-  
+
   @IsNumber()
   @IsNotEmpty()
   tipotecho_id: number;
-  
+
   @IsNumber()
   @IsNotEmpty()
   tipovidrio_id: number;
@@ -57,8 +57,28 @@ export class CreateCotizacionDto {
   @IsNumber()
   @IsNotEmpty()
   tipocotizacion_id: number;
-  
-  /* @IsNumber()
+
+  @IsNumber()
   @IsNotEmpty()
-  _id: number; */
+  factorviaje_id: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  toalleroeje50cm_id: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  gastopersona_id: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  radiadoreje50cm_id: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  instaltuberia_id: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  instalradiatoallero_id: number;
 }

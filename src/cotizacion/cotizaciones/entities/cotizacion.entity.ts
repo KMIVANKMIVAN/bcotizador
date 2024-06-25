@@ -15,6 +15,13 @@ import { Tipovidrio } from 'src/cotizacion/tiposvidrios/entities/tipovidrio.enti
 import { Ciudadzona } from 'src/cotizacion/ciudadeszonas/entities/ciudadzona.entity';
 import { Tipocotizacion } from 'src/cotizacion/tiposcotizaciones/entities/tipocotizacion.entity';
 
+import { Factorviaje } from 'src/cotizacion/factoresviajes/entities/factorviaje.entity';
+import { Gastopersona } from 'src/cotizacion/gastospersonas/entities/gastopersona.entity';
+import { Toalleroeje50cm } from 'src/cotizacion/producto/toallerosejes50cm/entities/toalleroeje50cm.entity';
+import { Radiadoreje50cm } from 'src/cotizacion/producto/radiadoresejes50cm/entities/radiadoreje50cm.entity';
+import { Instaltuberia } from 'src/cotizacion/tiempos/instaltuberias/entities/instaltuberia.entity';
+import { Instalradiatoallero } from 'src/cotizacion/tiempos/instalradiatoalleros/entities/instalradiatoallero.entity';
+
 @Entity('cotizaciones')
 export class Cotizacion {
   @PrimaryGeneratedColumn()
@@ -69,7 +76,28 @@ export class Cotizacion {
   @ManyToOne(() => Tipocotizacion, (tipocotizacion) => tipocotizacion.cotizaciones)
   @JoinColumn({ name: 'tipocotizacion_id' })
   tipocotizacion: Tipocotizacion;
-  /* @ManyToOne(() => , () => .cotizaciones)
-  @JoinColumn({ name: '_id' })
-  : ; */
+
+  @ManyToOne(() => Factorviaje, (factorviaje) => factorviaje.cotizaciones)
+  @JoinColumn({ name: 'factorviaje_id' })
+  factorviaje: Factorviaje;
+
+  @ManyToOne(() => Toalleroeje50cm, (toalleroeje50cm) => toalleroeje50cm.cotizaciones)
+  @JoinColumn({ name: 'toalleroeje50cm_id' })
+  toalleroeje50cm: Toalleroeje50cm;
+
+  @ManyToOne(() => Gastopersona, (gastopersona) => gastopersona.cotizaciones)
+  @JoinColumn({ name: 'gastopersona_id' })
+  gastopersona: Gastopersona;
+
+  @ManyToOne(() => Radiadoreje50cm, (radiadoreje50cm) => radiadoreje50cm.cotizaciones)
+  @JoinColumn({ name: 'radiadoreje50cm_id' })
+  radiadoreje50cm: Radiadoreje50cm;
+
+  @ManyToOne(() => Instaltuberia, (instaltuberia) => instaltuberia.cotizaciones)
+  @JoinColumn({ name: 'instaltuberia_id' })
+  instaltuberia: Instaltuberia;
+
+  @ManyToOne(() => Instalradiatoallero, (instalradiatoallero) => instalradiatoallero.cotizaciones)
+  @JoinColumn({ name: 'instalradiatoallero_id' })
+  instalradiatoallero: Instalradiatoallero;
 }

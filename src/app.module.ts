@@ -26,6 +26,12 @@ import { Tipotecho } from './cotizacion/tipostechos/entities/tipotecho.entity';
 import { Orientacion } from './cotizacion/orientaciones/entities/orientacion.entity';
 import { Tipovidrio } from './cotizacion/tiposvidrios/entities/tipovidrio.entity';
 import { Tipocotizacion } from './cotizacion/tiposcotizaciones/entities/tipocotizacion.entity';
+import { Gastopersona } from './cotizacion/gastospersonas/entities/gastopersona.entity';
+import { Factorviaje } from './cotizacion/factoresviajes/entities/factorviaje.entity';
+import { Toalleroeje50cm } from './cotizacion/producto/toallerosejes50cm/entities/toalleroeje50cm.entity';
+import { Radiadoreje50cm } from './cotizacion/producto/radiadoresejes50cm/entities/radiadoreje50cm.entity';
+import { Instalradiatoallero } from './cotizacion/tiempos/instalradiatoalleros/entities/instalradiatoallero.entity';
+import { Instaltuberia } from './cotizacion/tiempos/instaltuberias/entities/instaltuberia.entity';
 
 import { AuthModule } from './auth/auth.module';
 import { EmpresasModule } from './empresa/empresas/empresas.module';
@@ -48,8 +54,15 @@ import { CotizacionesModule } from './cotizacion/cotizaciones/cotizaciones.modul
 import { SemillacotizacionModule } from './semillacotizacion/semillacotizacion.module';
 import { TiposcotizacionesModule } from './cotizacion/tiposcotizaciones/tiposcotizaciones.module';
 import { PdfsModule } from './pdfs/pdfs.module';
+import { GastospersonasModule } from './cotizacion/gastospersonas/gastospersonas.module';
+import { FactoresviajesModule } from './cotizacion/factoresviajes/factoresviajes.module';
+import { Toallerosejes50cmModule } from './cotizacion/producto/toallerosejes50cm/toallerosejes50cm.module';
+import { Radiadoresejes50cmModule } from './cotizacion/producto/radiadoresejes50cm/radiadoresejes50cm.module';
+import { InstaltuberiasModule } from './cotizacion/tiempos/instaltuberias/instaltuberias.module';
+import { InstalradiatoallerosModule } from './cotizacion/tiempos/instalradiatoalleros/instalradiatoalleros.module';
 
 // import { CompositeGuard } from './auth/composite.guard';
+
 
 const bdType = 'postgres'
 // const bdType= 'mysql'
@@ -78,7 +91,14 @@ const bdType = 'postgres'
         username: configService.get<string>('BDUSERNAME'),
         password: configService.get<string>('BDPASSWORD'),
         database: configService.get<string>('BDDATABASE'),
-        entities: [Usuario, Rol, Ciudad, Sucursal, Empresa, Unidad, Cargo, Direccion, Ciudadzona, Cotizacion, Nivelpiso, Tipopared, Tiposuelo, Tipotecho, Orientacion, Tipovidrio, Tipocotizacion],
+        entities: [
+          Usuario, Rol, Ciudad, Sucursal, Empresa,
+          Unidad, Cargo, Direccion, Ciudadzona, Cotizacion,
+          Nivelpiso, Tipopared, Tiposuelo, Tipotecho, Orientacion,
+          Tipovidrio, Tipocotizacion, Gastopersona, Factorviaje,
+          Toalleroeje50cm, Radiadoreje50cm, Instalradiatoallero,
+          Instaltuberia
+        ],
         synchronize: true, // Utilizar 'false' en producción
       }),
       inject: [ConfigService], // Correctamente ubicado dentro de TypeOrmModule.forRootAsync
@@ -101,6 +121,12 @@ const bdType = 'postgres'
     SemillacotizacionModule,
     TiposcotizacionesModule,
     PdfsModule,
+    GastospersonasModule,
+    FactoresviajesModule,
+    Toallerosejes50cmModule,
+    Radiadoresejes50cmModule,
+    InstaltuberiasModule,
+    InstalradiatoallerosModule,
   ],
   /* providers: [AppService, {
     provide: APP_GUARD,
