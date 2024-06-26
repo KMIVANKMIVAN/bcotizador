@@ -8,77 +8,57 @@ export class CreateCotizacionDto {
 
   @IsNumber()
   @IsNotEmpty()
-  volumen: number;
-
-  @IsNumber()
-  @IsNotEmpty()
-  area: number;
-
-  @IsNumber()
-  @IsNotEmpty()
-  altura: number;
-
-  @IsNumber()
-  @IsNotEmpty()
   nrocotizacion: number;
 
   @IsNumber()
-  @IsNotEmpty()
-  cantidadventana: number;
-
-  @IsNumber()
-  @IsNotEmpty()
+  //@IsNotEmpty()
   ciudadzona_id: number;
 
   @IsNumber()
-  @IsNotEmpty()
+  //@IsNotEmpty()
   nivelpiso_id: number;
 
   @IsNumber()
-  @IsNotEmpty()
+  //@IsNotEmpty()
   orientacion_id: number;
 
   @IsNumber()
-  @IsNotEmpty()
+  //@IsNotEmpty()
   tipopared_id: number;
 
   @IsNumber()
-  @IsNotEmpty()
+  //@IsNotEmpty()
   tiposuelo_id: number;
 
   @IsNumber()
-  @IsNotEmpty()
+  //@IsNotEmpty()
   tipotecho_id: number;
 
   @IsNumber()
-  @IsNotEmpty()
+  //@IsNotEmpty()
   tipovidrio_id: number;
 
   @IsNumber()
-  @IsNotEmpty()
+  //@IsNotEmpty()
   tipocotizacion_id: number;
 
   @IsNumber()
-  @IsNotEmpty()
-  factorviaje_id: number;
-
-  @IsNumber()
-  @IsNotEmpty()
+  //@IsNotEmpty()
   toalleroeje50cm_id: number;
 
   @IsNumber()
-  @IsNotEmpty()
+  //@IsNotEmpty()
   gastopersona_id: number;
 
   @IsNumber()
-  @IsNotEmpty()
+  //@IsNotEmpty()
   radiadoreje50cm_id: number;
 
   @IsNumber()
-  @IsNotEmpty()
+  //@IsNotEmpty()
   instaltuberia_id: number;
 
   @IsNumber()
-  @IsNotEmpty()
+  //@IsNotEmpty()
   instalradiatoallero_id: number;
 }

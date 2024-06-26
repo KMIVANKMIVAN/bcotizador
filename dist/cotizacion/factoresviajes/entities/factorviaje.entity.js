@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Factorviaje = void 0;
 const typeorm_1 = require("typeorm");
-const cotizacion_entity_1 = require("../../cotizaciones/entities/cotizacion.entity");
 let Factorviaje = class Factorviaje {
 };
 exports.Factorviaje = Factorviaje;
@@ -27,10 +26,6 @@ __decorate([
     (0, typeorm_1.Column)({ type: 'numeric', precision: 7, scale: 4, nullable: false }),
     __metadata("design:type", Number)
 ], Factorviaje.prototype, "valor", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => cotizacion_entity_1.Cotizacion, (cotizacion) => cotizacion.factorviaje),
-    __metadata("design:type", Array)
-], Factorviaje.prototype, "cotizaciones", void 0);
 exports.Factorviaje = Factorviaje = __decorate([
     (0, typeorm_1.Entity)('factoresviajes')
 ], Factorviaje);

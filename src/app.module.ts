@@ -32,6 +32,7 @@ import { Toalleroeje50cm } from './cotizacion/producto/toallerosejes50cm/entitie
 import { Radiadoreje50cm } from './cotizacion/producto/radiadoresejes50cm/entities/radiadoreje50cm.entity';
 import { Instalradiatoallero } from './cotizacion/tiempos/instalradiatoalleros/entities/instalradiatoallero.entity';
 import { Instaltuberia } from './cotizacion/tiempos/instaltuberias/entities/instaltuberia.entity';
+import { Cotizacionambiente } from './cotizacion/cotizacionesambientes/entities/cotizacionambiente.entity';
 
 import { AuthModule } from './auth/auth.module';
 import { EmpresasModule } from './empresa/empresas/empresas.module';
@@ -60,6 +61,7 @@ import { Toallerosejes50cmModule } from './cotizacion/producto/toallerosejes50cm
 import { Radiadoresejes50cmModule } from './cotizacion/producto/radiadoresejes50cm/radiadoresejes50cm.module';
 import { InstaltuberiasModule } from './cotizacion/tiempos/instaltuberias/instaltuberias.module';
 import { InstalradiatoallerosModule } from './cotizacion/tiempos/instalradiatoalleros/instalradiatoalleros.module';
+import { CotizacionesambientesModule } from './cotizacion/cotizacionesambientes/cotizacionesambientes.module';
 
 // import { CompositeGuard } from './auth/composite.guard';
 
@@ -97,7 +99,7 @@ const bdType = 'postgres'
           Nivelpiso, Tipopared, Tiposuelo, Tipotecho, Orientacion,
           Tipovidrio, Tipocotizacion, Gastopersona, Factorviaje,
           Toalleroeje50cm, Radiadoreje50cm, Instalradiatoallero,
-          Instaltuberia
+          Instaltuberia, Cotizacionambiente,
         ],
         synchronize: true, // Utilizar 'false' en producción
       }),
@@ -127,6 +129,7 @@ const bdType = 'postgres'
     Radiadoresejes50cmModule,
     InstaltuberiasModule,
     InstalradiatoallerosModule,
+    CotizacionesambientesModule,
   ],
   /* providers: [AppService, {
     provide: APP_GUARD,

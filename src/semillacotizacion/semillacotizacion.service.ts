@@ -99,7 +99,7 @@ export class SemillacotizacionService {
       await this.crearTiposvidrios();
       await this.crearCiudadeszonas();
       await this.crearTiposcotizaciones();
-      await this.crearFactoresviajes();
+      // await this.crearFactoresviajes();
       await this.crearGastospersonas();
       await this.crearInstalartuberias();
       await this.crearInstalasradiatoalleros();
@@ -167,13 +167,13 @@ export class SemillacotizacionService {
     }
     return tiposcotizaciones[0];
   }
-  async crearFactoresviajes(): Promise<Factorviaje> {
+  /* async crearFactoresviajes(): Promise<Factorviaje> {
     const factoresviajes = [];
     for (const factorviaje of SEMILLA_FACTORVIAJE) {
       factoresviajes.push(await this.factoresviajesService.createSemilla(factorviaje));
     }
     return factoresviajes[0];
-  }
+  } */
   async crearGastospersonas(): Promise<Gastopersona> {
     const gastopersona = [];
     for (const gastospersonas of SEMILLA_GASTOPERSONA) {

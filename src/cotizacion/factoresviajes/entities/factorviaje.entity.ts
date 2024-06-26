@@ -12,6 +12,6 @@ export class Factorviaje {
   @Column({ type: 'numeric', precision: 7, scale: 4, nullable: false })
   valor: number;
 
-  @OneToMany(() => Cotizacion, (cotizacion) => cotizacion.factorviaje)
-  cotizaciones: Cotizacion[];
+  /* @OneToMany(() => Cotizacion, (cotizacion) => cotizacion.factorviaje)
+  cotizaciones: Cotizacion[]; */
 }

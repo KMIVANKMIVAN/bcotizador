@@ -62,7 +62,6 @@ let SemillacotizacionService = class SemillacotizacionService {
             await this.crearTiposvidrios();
             await this.crearCiudadeszonas();
             await this.crearTiposcotizaciones();
-            await this.crearFactoresviajes();
             await this.crearGastospersonas();
             await this.crearInstalartuberias();
             await this.crearInstalasradiatoalleros();
@@ -125,13 +124,6 @@ let SemillacotizacionService = class SemillacotizacionService {
             tiposcotizaciones.push(await this.tiposcotizacionesService.createSemilla(tipocotizacion));
         }
         return tiposcotizaciones[0];
-    }
-    async crearFactoresviajes() {
-        const factoresviajes = [];
-        for (const factorviaje of semillacotizacion_datos_1.SEMILLA_FACTORVIAJE) {
-            factoresviajes.push(await this.factoresviajesService.createSemilla(factorviaje));
-        }
-        return factoresviajes[0];
     }
     async crearGastospersonas() {
         const gastopersona = [];

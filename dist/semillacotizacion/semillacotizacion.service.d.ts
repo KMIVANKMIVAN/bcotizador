@@ -21,7 +21,6 @@ import { Tiposuelo } from 'src/cotizacion/tipossuelos/entities/tiposuelo.entity'
 import { Tipotecho } from 'src/cotizacion/tipostechos/entities/tipotecho.entity';
 import { Tipovidrio } from 'src/cotizacion/tiposvidrios/entities/tipovidrio.entity';
 import { Tipocotizacion } from 'src/cotizacion/tiposcotizaciones/entities/tipocotizacion.entity';
-import { Factorviaje } from 'src/cotizacion/factoresviajes/entities/factorviaje.entity';
 import { Gastopersona } from 'src/cotizacion/gastospersonas/entities/gastopersona.entity';
 import { Toalleroeje50cm } from 'src/cotizacion/producto/toallerosejes50cm/entities/toalleroeje50cm.entity';
 import { Radiadoreje50cm } from 'src/cotizacion/producto/radiadoresejes50cm/entities/radiadoreje50cm.entity';
@@ -53,7 +52,6 @@ export declare class SemillacotizacionService {
     crearTipostechos(): Promise<Tipotecho>;
     crearTiposvidrios(): Promise<Tipovidrio>;
     crearTiposcotizaciones(): Promise<Tipocotizacion>;
-    crearFactoresviajes(): Promise<Factorviaje>;
     crearGastospersonas(): Promise<Gastopersona>;
     crearInstalasradiatoalleros(): Promise<Instalradiatoallero>;
     crearInstalartuberias(): Promise<Instaltuberia>;

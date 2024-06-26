@@ -6,20 +6,16 @@ import { Tipotecho } from 'src/cotizacion/tipostechos/entities/tipotecho.entity'
 import { Tipovidrio } from 'src/cotizacion/tiposvidrios/entities/tipovidrio.entity';
 import { Ciudadzona } from 'src/cotizacion/ciudadeszonas/entities/ciudadzona.entity';
 import { Tipocotizacion } from 'src/cotizacion/tiposcotizaciones/entities/tipocotizacion.entity';
-import { Factorviaje } from 'src/cotizacion/factoresviajes/entities/factorviaje.entity';
 import { Gastopersona } from 'src/cotizacion/gastospersonas/entities/gastopersona.entity';
 import { Toalleroeje50cm } from 'src/cotizacion/producto/toallerosejes50cm/entities/toalleroeje50cm.entity';
 import { Radiadoreje50cm } from 'src/cotizacion/producto/radiadoresejes50cm/entities/radiadoreje50cm.entity';
 import { Instaltuberia } from 'src/cotizacion/tiempos/instaltuberias/entities/instaltuberia.entity';
 import { Instalradiatoallero } from 'src/cotizacion/tiempos/instalradiatoalleros/entities/instalradiatoallero.entity';
+import { Cotizacionambiente } from 'src/cotizacion/cotizacionesambientes/entities/cotizacionambiente.entity';
 export declare class Cotizacion {
     id: number;
     nombrecotizacion: string;
-    volumen: number;
-    area: number;
-    altura: number;
     nrocotizacion: number;
-    cantidadventana: number;
     ciudadzona: Ciudadzona;
     nivelpiso: Nivelpiso;
     orientacion: Orientacion;
@@ -28,10 +24,10 @@ export declare class Cotizacion {
     tipotecho: Tipotecho;
     tipovidrio: Tipovidrio;
     tipocotizacion: Tipocotizacion;
-    factorviaje: Factorviaje;
     toalleroeje50cm: Toalleroeje50cm;
     gastopersona: Gastopersona;
     radiadoreje50cm: Radiadoreje50cm;
     instaltuberia: Instaltuberia;
     instalradiatoallero: Instalradiatoallero;
+    cotizacionesambientes: Cotizacionambiente[];
 }

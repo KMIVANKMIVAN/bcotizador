@@ -35,6 +35,7 @@ const toalleroeje50cm_entity_1 = require("./cotizacion/producto/toallerosejes50c
 const radiadoreje50cm_entity_1 = require("./cotizacion/producto/radiadoresejes50cm/entities/radiadoreje50cm.entity");
 const instalradiatoallero_entity_1 = require("./cotizacion/tiempos/instalradiatoalleros/entities/instalradiatoallero.entity");
 const instaltuberia_entity_1 = require("./cotizacion/tiempos/instaltuberias/entities/instaltuberia.entity");
+const cotizacionambiente_entity_1 = require("./cotizacion/cotizacionesambientes/entities/cotizacionambiente.entity");
 const auth_module_1 = require("./auth/auth.module");
 const empresas_module_1 = require("./empresa/empresas/empresas.module");
 const direcciones_module_1 = require("./empresa/direcciones/direcciones.module");
@@ -62,6 +63,7 @@ const toallerosejes50cm_module_1 = require("./cotizacion/producto/toallerosejes5
 const radiadoresejes50cm_module_1 = require("./cotizacion/producto/radiadoresejes50cm/radiadoresejes50cm.module");
 const instaltuberias_module_1 = require("./cotizacion/tiempos/instaltuberias/instaltuberias.module");
 const instalradiatoalleros_module_1 = require("./cotizacion/tiempos/instalradiatoalleros/instalradiatoalleros.module");
+const cotizacionesambientes_module_1 = require("./cotizacion/cotizacionesambientes/cotizacionesambientes.module");
 const bdType = 'postgres';
 let AppModule = class AppModule {
 };
@@ -93,7 +95,7 @@ exports.AppModule = AppModule = __decorate([
                         nivelpiso_entity_1.Nivelpiso, tipopared_entity_1.Tipopared, tiposuelo_entity_1.Tiposuelo, tipotecho_entity_1.Tipotecho, orientacion_entity_1.Orientacion,
                         tipovidrio_entity_1.Tipovidrio, tipocotizacion_entity_1.Tipocotizacion, gastopersona_entity_1.Gastopersona, factorviaje_entity_1.Factorviaje,
                         toalleroeje50cm_entity_1.Toalleroeje50cm, radiadoreje50cm_entity_1.Radiadoreje50cm, instalradiatoallero_entity_1.Instalradiatoallero,
-                        instaltuberia_entity_1.Instaltuberia
+                        instaltuberia_entity_1.Instaltuberia, cotizacionambiente_entity_1.Cotizacionambiente,
                     ],
                     synchronize: true,
                 }),
@@ -123,6 +125,7 @@ exports.AppModule = AppModule = __decorate([
             radiadoresejes50cm_module_1.Radiadoresejes50cmModule,
             instaltuberias_module_1.InstaltuberiasModule,
             instalradiatoalleros_module_1.InstalradiatoallerosModule,
+            cotizacionesambientes_module_1.CotizacionesambientesModule,
         ],
         providers: [
             app_service_1.AppService,

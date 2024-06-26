@@ -9,72 +9,50 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateCotizacionDto = void 0;
+exports.CreateCotizacionambienteDto = void 0;
 const class_validator_1 = require("class-validator");
-class CreateCotizacionDto {
+class CreateCotizacionambienteDto {
 }
-exports.CreateCotizacionDto = CreateCotizacionDto;
+exports.CreateCotizacionambienteDto = CreateCotizacionambienteDto;
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.MaxLength)(100, { message: 'La longitud maxima es de 100 caracteres' }),
     __metadata("design:type", String)
-], CreateCotizacionDto.prototype, "nombrecotizacion", void 0);
+], CreateCotizacionambienteDto.prototype, "nombreambiente", void 0);
 __decorate([
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
-], CreateCotizacionDto.prototype, "nrocotizacion", void 0);
+], CreateCotizacionambienteDto.prototype, "volumen", void 0);
 __decorate([
     (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
-], CreateCotizacionDto.prototype, "ciudadzona_id", void 0);
+], CreateCotizacionambienteDto.prototype, "area", void 0);
 __decorate([
     (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
-], CreateCotizacionDto.prototype, "nivelpiso_id", void 0);
+], CreateCotizacionambienteDto.prototype, "altura", void 0);
 __decorate([
     (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
-], CreateCotizacionDto.prototype, "orientacion_id", void 0);
+], CreateCotizacionambienteDto.prototype, "nrocelda", void 0);
 __decorate([
     (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
-], CreateCotizacionDto.prototype, "tipopared_id", void 0);
+], CreateCotizacionambienteDto.prototype, "nroradiador", void 0);
 __decorate([
     (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
-], CreateCotizacionDto.prototype, "tiposuelo_id", void 0);
+], CreateCotizacionambienteDto.prototype, "cantidadventana", void 0);
 __decorate([
     (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
-], CreateCotizacionDto.prototype, "tipotecho_id", void 0);
-__decorate([
-    (0, class_validator_1.IsNumber)(),
-    __metadata("design:type", Number)
-], CreateCotizacionDto.prototype, "tipovidrio_id", void 0);
-__decorate([
-    (0, class_validator_1.IsNumber)(),
-    __metadata("design:type", Number)
-], CreateCotizacionDto.prototype, "tipocotizacion_id", void 0);
-__decorate([
-    (0, class_validator_1.IsNumber)(),
-    __metadata("design:type", Number)
-], CreateCotizacionDto.prototype, "toalleroeje50cm_id", void 0);
-__decorate([
-    (0, class_validator_1.IsNumber)(),
-    __metadata("design:type", Number)
-], CreateCotizacionDto.prototype, "gastopersona_id", void 0);
-__decorate([
-    (0, class_validator_1.IsNumber)(),
-    __metadata("design:type", Number)
-], CreateCotizacionDto.prototype, "radiadoreje50cm_id", void 0);
-__decorate([
-    (0, class_validator_1.IsNumber)(),
-    __metadata("design:type", Number)
-], CreateCotizacionDto.prototype, "instaltuberia_id", void 0);
-__decorate([
-    (0, class_validator_1.IsNumber)(),
-    __metadata("design:type", Number)
-], CreateCotizacionDto.prototype, "instalradiatoallero_id", void 0);
-//# sourceMappingURL=create-cotizacion.dto.js.map
+], CreateCotizacionambienteDto.prototype, "cotizacion_id", void 0);
+//# sourceMappingURL=create-cotizacionambiente.dto.js.map

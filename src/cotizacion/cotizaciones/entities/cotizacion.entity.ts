@@ -21,6 +21,7 @@ import { Toalleroeje50cm } from 'src/cotizacion/producto/toallerosejes50cm/entit
 import { Radiadoreje50cm } from 'src/cotizacion/producto/radiadoresejes50cm/entities/radiadoreje50cm.entity';
 import { Instaltuberia } from 'src/cotizacion/tiempos/instaltuberias/entities/instaltuberia.entity';
 import { Instalradiatoallero } from 'src/cotizacion/tiempos/instalradiatoalleros/entities/instalradiatoallero.entity';
+import { Cotizacionambiente } from 'src/cotizacion/cotizacionesambientes/entities/cotizacionambiente.entity';
 
 @Entity('cotizaciones')
 export class Cotizacion {
@@ -30,20 +31,8 @@ export class Cotizacion {
   @Column({ type: 'varchar', length: 100, nullable: false })
   nombrecotizacion: string;
 
-  @Column({ type: 'numeric', precision: 12, scale: 4, nullable: false })
-  volumen: number;
-
-  @Column({ type: 'numeric', precision: 12, scale: 4, nullable: false })
-  area: number;
-
-  @Column({ type: 'numeric', precision: 12, scale: 4, nullable: false })
-  altura: number;
-
   @Column({ type: 'smallint', nullable: false })
   nrocotizacion: number;
-
-  @Column({ type: 'smallint', nullable: false })
-  cantidadventana: number;
 
   @ManyToOne(() => Ciudadzona, (ciudadzona) => ciudadzona.cotizaciones)
   @JoinColumn({ name: 'ciudadzona_id' })
@@ -77,10 +66,6 @@ export class Cotizacion {
   @JoinColumn({ name: 'tipocotizacion_id' })
   tipocotizacion: Tipocotizacion;
 
-  @ManyToOne(() => Factorviaje, (factorviaje) => factorviaje.cotizaciones)
-  @JoinColumn({ name: 'factorviaje_id' })
-  factorviaje: Factorviaje;
-
   @ManyToOne(() => Toalleroeje50cm, (toalleroeje50cm) => toalleroeje50cm.cotizaciones)
   @JoinColumn({ name: 'toalleroeje50cm_id' })
   toalleroeje50cm: Toalleroeje50cm;
@@ -100,4 +85,7 @@ export class Cotizacion {
   @ManyToOne(() => Instalradiatoallero, (instalradiatoallero) => instalradiatoallero.cotizaciones)
   @JoinColumn({ name: 'instalradiatoallero_id' })
   instalradiatoallero: Instalradiatoallero;
+
+  @OneToMany(() => Cotizacionambiente, (cotizacionambiente) => cotizacionambiente.cotizacion)
+  cotizacionesambientes: Cotizacionambiente[];
 }
