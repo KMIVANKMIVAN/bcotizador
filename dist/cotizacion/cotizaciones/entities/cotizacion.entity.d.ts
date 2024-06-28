@@ -16,6 +16,8 @@ export declare class Cotizacion {
     id: number;
     nombrecotizacion: string;
     nrocotizacion: number;
+    ducha: number;
+    tipocaldero: string;
     ciudadzona: Ciudadzona;
     nivelpiso: Nivelpiso;
     orientacion: Orientacion;

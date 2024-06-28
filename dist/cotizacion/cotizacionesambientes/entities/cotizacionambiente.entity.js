@@ -46,7 +46,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)({ type: 'smallint', nullable: false }),
     __metadata("design:type", Number)
-], Cotizacionambiente.prototype, "cantidadventana", void 0);
+], Cotizacionambiente.prototype, "nroventana", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => cotizacion_entity_1.Cotizacion, (cotizacion) => cotizacion.cotizacionesambientes),
     (0, typeorm_1.JoinColumn)({ name: 'cotizacion_id' }),

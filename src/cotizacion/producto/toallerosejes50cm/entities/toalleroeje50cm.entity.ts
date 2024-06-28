@@ -12,6 +12,12 @@ export class Toalleroeje50cm {
   @Column({ type: 'numeric', precision: 14, scale: 2, nullable: false })
   potenciawats: number;
 
+  @Column({ type: 'numeric', precision: 14, scale: 2, nullable: false })
+  precio: number;
+
+  @Column({ type: 'numeric', precision: 14, scale: 2, nullable: false })
+  preciopaquete: number;
+
   @OneToMany(() => Cotizacion, (cotizacion) => cotizacion.toalleroeje50cm)
   cotizaciones: Cotizacion[];
 }

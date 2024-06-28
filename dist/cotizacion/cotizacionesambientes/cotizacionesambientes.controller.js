@@ -27,6 +27,9 @@ let CotizacionesambientesController = class CotizacionesambientesController {
     findAll() {
         return this.cotizacionesambientesService.findAll();
     }
+    findAllPorCotizacion(id) {
+        return this.cotizacionesambientesService.findAllPorCotizacion(+id);
+    }
     findOne(id) {
         return this.cotizacionesambientesService.findOne(+id);
     }
@@ -51,6 +54,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], CotizacionesambientesController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)("idcotizacion/:id"),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", void 0)
+], CotizacionesambientesController.prototype, "findAllPorCotizacion", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),

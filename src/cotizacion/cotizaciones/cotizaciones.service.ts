@@ -16,6 +16,9 @@ import { TiposparedesService } from '../tiposparedes/tiposparedes.service';
 import { TipossuelosService } from '../tipossuelos/tipossuelos.service';
 import { TipostechosService } from '../tipostechos/tipostechos.service';
 import { TiposvidriosService } from '../tiposvidrios/tiposvidrios.service';
+import { Toallerosejes50cmService } from '../producto/toallerosejes50cm/toallerosejes50cm.service';
+import { Radiadoresejes50cmService } from '../producto/radiadoresejes50cm/radiadoresejes50cm.service';
+
 import { capitalizeTextos } from 'src/utils/capitalizeTextos';
 @Injectable()
 export class CotizacionesService {
@@ -30,13 +33,13 @@ export class CotizacionesService {
     private readonly tipossuelosService: TipossuelosService,
     private readonly tipostechosService: TipostechosService,
     private readonly tiposvidriosService: TiposvidriosService,
+    private readonly toallerosejes50cmService: Toallerosejes50cmService,
+    private readonly radiadoresejes50cmService: Radiadoresejes50cmService,
 
   ) { }
 
   async create(createCotizacionDto: CreateCotizacionDto): Promise<Cotizacion> {
     try {
-      console.log("createCotizacionDto", createCotizacionDto);
-
       const buscarCiudadZona = await this.ciudadeszonasService.findOne(createCotizacionDto.ciudadzona_id)
       const buscarNivelPiso = await this.nivelespisosService.findOne(createCotizacionDto.nivelpiso_id)
       const buscarOrientacion = await this.orientacionesService.findOne(createCotizacionDto.orientacion_id)
@@ -44,6 +47,11 @@ export class CotizacionesService {
       const buscarTipoSuelo = await this.tipossuelosService.findOne(createCotizacionDto.tiposuelo_id)
       const buscarTipoTecho = await this.tipostechosService.findOne(createCotizacionDto.tipotecho_id)
       const buscarTipoVidrio = await this.tiposvidriosService.findOne(createCotizacionDto.tipovidrio_id)
+      let buscarToalleroeje50cm = null;
+      if (createCotizacionDto.toalleroeje50cm_id) {
+        buscarToalleroeje50cm = await this.toallerosejes50cmService.findOne(createCotizacionDto.toalleroeje50cm_id);
+      }
+      const buscarRadiadoreje50cm = await this.radiadoresejes50cmService.findOne(createCotizacionDto.radiadoreje50cm_id)
 
       createCotizacionDto.nombrecotizacion = capitalizeTextos(createCotizacionDto.nombrecotizacion);
 
@@ -68,8 +76,9 @@ export class CotizacionesService {
         tiposuelo: buscarTipoSuelo,
         tipotecho: buscarTipoTecho,
         tipovidrio: buscarTipoVidrio,
+        toalleroeje50cm: buscarToalleroeje50cm,
+        radiadoreje50cm: buscarRadiadoreje50cm
       });
-
 
       delete nuevaCotizacion.ciudadzona.valor;
       delete nuevaCotizacion.nivelpiso.valor;
@@ -78,9 +87,10 @@ export class CotizacionesService {
       delete nuevaCotizacion.tiposuelo.valor;
       delete nuevaCotizacion.tipotecho.valor;
       delete nuevaCotizacion.tipovidrio.valor;
-
-      console.log("nuevaCotizacion", nuevaCotizacion);
-
+      if (nuevaCotizacion.toalleroeje50cm) {
+        delete nuevaCotizacion.toalleroeje50cm.potenciawats;
+      }
+      delete nuevaCotizacion.radiadoreje50cm.potenciawats;
 
       return await this.cotizacionRepository.save(nuevaCotizacion);
     } catch (error) {
@@ -99,13 +109,20 @@ export class CotizacionesService {
   async findAll(): Promise<Cotizacion[]> {
     try {
       const cotizaciones = await this.cotizacionRepository.find(
-        { relations: ['ciudadzona', 'nivelpiso', 'orientacion', 'tipopared', 'tiposuelo', 'tipotecho', 'tipovidrio',] }
+        {
+          relations: [
+            'ciudadzona', 'nivelpiso', 'orientacion', 'tipopared', 'tiposuelo', 'tipotecho', 'tipovidrio'
+            , 'tipovidrio', 'tipovidrio', 'toalleroeje50cm', 'radiadoreje50cm'
+          ],
+        }
       );
       if (!cotizaciones || cotizaciones.length === 0) {
         throw new NotFoundException({
           message: `No se encontraron Cotizaciones`,
         });
       }
+      console.log("cotizaciones", cotizaciones);
+
       cotizaciones.forEach((cotizacion) => delete cotizacion.ciudadzona.valor);
       cotizaciones.forEach((cotizacion) => delete cotizacion.nivelpiso.valor);
       cotizaciones.forEach((cotizacion) => delete cotizacion.orientacion.valor);
@@ -113,6 +130,8 @@ export class CotizacionesService {
       cotizaciones.forEach((cotizacion) => delete cotizacion.tiposuelo.valor);
       cotizaciones.forEach((cotizacion) => delete cotizacion.tipotecho.valor);
       cotizaciones.forEach((cotizacion) => delete cotizacion.tipovidrio.valor);
+      // cotizaciones.forEach((cotizacion) => delete cotizacion.toalleroeje50cm.potenciawats);
+      cotizaciones.forEach((cotizacion) => delete cotizacion.radiadoreje50cm.potenciawats);
       return cotizaciones;
     } catch (error) {
       if (error instanceof NotFoundException) {
@@ -156,7 +175,10 @@ export class CotizacionesService {
       // Buscar coincidencia exacta
       cotizaciones = await this.cotizacionRepository.find({
         where: { nombrecotizacion: nombcotiz },
-        relations: ['ciudadzona', 'nivelpiso', 'orientacion', 'tipopared', 'tiposuelo', 'tipotecho', 'tipovidrio'],
+        relations: [
+          'ciudadzona', 'nivelpiso', 'orientacion', 'tipopared', 'tiposuelo', 'tipotecho', 'tipovidrio'
+          , 'tipovidrio', 'tipovidrio', 'toalleroeje50cm', 'radiadoreje50cm'
+        ],
       });
 
       if (!cotizaciones || cotizaciones.length === 0) {
@@ -169,6 +191,8 @@ export class CotizacionesService {
           .leftJoinAndSelect('cotizacion.tiposuelo', 'tiposuelo')
           .leftJoinAndSelect('cotizacion.tipotecho', 'tipotecho')
           .leftJoinAndSelect('cotizacion.tipovidrio', 'tipovidrio')
+          .leftJoinAndSelect('cotizacion.toalleroeje50cm', 'toalleroeje50cm')
+          .leftJoinAndSelect('cotizacion.radiadoreje50cm', 'radiadoreje50cm')
           .where('LOWER(cotizacion.nombrecotizacion) LIKE LOWER(:nombcotiz)', { nombcotiz: `%${nombcotiz.toLowerCase()}%` })
           .limit(5)
           .getMany();
@@ -186,6 +210,8 @@ export class CotizacionesService {
       cotizaciones.forEach((cotizacion) => delete cotizacion.tiposuelo.valor);
       cotizaciones.forEach((cotizacion) => delete cotizacion.tipotecho.valor);
       cotizaciones.forEach((cotizacion) => delete cotizacion.tipovidrio.valor);
+      // cotizaciones.forEach((cotizacion) => delete cotizacion.toalleroeje50cm.potenciawats);
+      cotizaciones.forEach((cotizacion) => delete cotizacion.radiadoreje50cm.potenciawats);
 
       return cotizaciones;
     } catch (error) {
@@ -260,6 +286,8 @@ export class CotizacionesService {
       const buscarTipoSuelo = await this.tipossuelosService.findOne(updateCotizacionDto.tiposuelo_id)
       const buscarTipoTecho = await this.tipostechosService.findOne(updateCotizacionDto.tipotecho_id)
       const buscarTipoVidrio = await this.tiposvidriosService.findOne(updateCotizacionDto.tipovidrio_id)
+      // const buscarToalleroeje50cm = await this.toallerosejes50cmService.findOne(updateCotizacionDto.toalleroeje50cm_id)
+      const buscarRadiadoreje50cm = await this.radiadoresejes50cmService.findOne(updateCotizacionDto.radiadoreje50cm_id)
 
       updateCotizacionDto.nombrecotizacion = capitalizeTextos(updateCotizacionDto.nombrecotizacion);
 
@@ -275,6 +303,8 @@ export class CotizacionesService {
       actualizarCotizacion.tiposuelo = buscarTipoSuelo;
       actualizarCotizacion.tipotecho = buscarTipoTecho;
       actualizarCotizacion.tipovidrio = buscarTipoVidrio;
+      // actualizarCotizacion.toalleroeje50cm = buscarToalleroeje50cm;
+      actualizarCotizacion.radiadoreje50cm = buscarRadiadoreje50cm;
 
       delete actualizarCotizacion.ciudadzona.valor;
       delete actualizarCotizacion.nivelpiso.valor;
@@ -283,6 +313,8 @@ export class CotizacionesService {
       delete actualizarCotizacion.tiposuelo.valor;
       delete actualizarCotizacion.tipotecho.valor;
       delete actualizarCotizacion.tipovidrio.valor;
+      // delete actualizarCotizacion.toalleroeje50cm.potenciawats;
+      delete actualizarCotizacion.radiadoreje50cm.potenciawats;
 
       return await this.cotizacionRepository.save(actualizarCotizacion);
     } catch (error) {

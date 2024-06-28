@@ -18,9 +18,20 @@ import { Tipotecho } from '../tipostechos/entities/tipotecho.entity';
 import { TipostechosModule } from '../tipostechos/tipostechos.module';
 import { Tipovidrio } from '../tiposvidrios/entities/tipovidrio.entity';
 import { TiposvidriosModule } from '../tiposvidrios/tiposvidrios.module';
+import { Toalleroeje50cm } from '../producto/toallerosejes50cm/entities/toalleroeje50cm.entity';
+import { Toallerosejes50cmModule } from '../producto/toallerosejes50cm/toallerosejes50cm.module';
+import { Radiadoreje50cm } from '../producto/radiadoresejes50cm/entities/radiadoreje50cm.entity';
+import { Radiadoresejes50cmModule } from '../producto/radiadoresejes50cm/radiadoresejes50cm.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Cotizacion, Ciudadzona, Nivelpiso, Orientacion, Tipopared, Tiposuelo, Tipotecho, Tipovidrio]), CiudadeszonasModule, NivelespisosModule, OrientacionesModule, TiposparedesModule, TipossuelosModule, TipostechosModule, TiposvidriosModule],
+  imports: [TypeOrmModule.forFeature([
+    Cotizacion, Ciudadzona, Nivelpiso, Orientacion, Tipopared, Tiposuelo, Tipotecho,
+    Tipovidrio, Toalleroeje50cm, Radiadoreje50cm
+  ]),
+    CiudadeszonasModule, NivelespisosModule, OrientacionesModule, TiposparedesModule,
+    TipossuelosModule, TipostechosModule, TiposvidriosModule, Toallerosejes50cmModule,
+    Radiadoresejes50cmModule
+  ],
   controllers: [CotizacionesController],
   providers: [CotizacionesService],
   exports: [TypeOrmModule, CotizacionesService],

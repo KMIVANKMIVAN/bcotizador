@@ -7,6 +7,6 @@ export declare class Cotizacionambiente {
     altura: number;
     nrocelda: number;
     nroradiador: number;
-    cantidadventana: number;
+    nroventana: number;
     cotizacion: Cotizacion;
 }

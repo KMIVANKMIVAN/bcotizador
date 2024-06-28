@@ -41,6 +41,14 @@ __decorate([
     __metadata("design:type", Number)
 ], Cotizacion.prototype, "nrocotizacion", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'smallint', nullable: false }),
+    __metadata("design:type", Number)
+], Cotizacion.prototype, "ducha", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 15, nullable: false }),
+    __metadata("design:type", String)
+], Cotizacion.prototype, "tipocaldero", void 0);
+__decorate([
     (0, typeorm_1.ManyToOne)(() => ciudadzona_entity_1.Ciudadzona, (ciudadzona) => ciudadzona.cotizaciones),
     (0, typeorm_1.JoinColumn)({ name: 'ciudadzona_id' }),
     __metadata("design:type", ciudadzona_entity_1.Ciudadzona)

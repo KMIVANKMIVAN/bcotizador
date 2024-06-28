@@ -49,7 +49,7 @@ __decorate([
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
-], CreateCotizacionambienteDto.prototype, "cantidadventana", void 0);
+], CreateCotizacionambienteDto.prototype, "nroventana", void 0);
 __decorate([
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsNotEmpty)(),

@@ -47,6 +47,30 @@ let CotizacionesambientesService = class CotizacionesambientesService {
             }
         }
     }
+    async findAllPorCotizacion(id) {
+        try {
+            const cotizacionesambientes = await this.cotizacionambienteRepository.find({
+                where: { cotizacion: { id } },
+            });
+            if (!cotizacionesambientes || cotizacionesambientes.length === 0) {
+                throw new common_1.NotFoundException({
+                    message: `No se encontraron Cotizacionesambientes`,
+                });
+            }
+            return cotizacionesambientes;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException({
+                    message: `Error del Servidor. Revisar el metodo (findAll) de la ruta "cotizacionesambientes"`,
+                    error: `${error}`,
+                });
+            }
+        }
+    }
     async findAll() {
         try {
             const cotizacionesambientes = await this.cotizacionambienteRepository.find({ relations: ['cotizacion',] });
@@ -121,7 +145,7 @@ let CotizacionesambientesService = class CotizacionesambientesService {
         try {
             const cotizacionambiente = await this.findOne(id);
             await this.cotizacionambienteRepository.delete(id);
-            return { success: true, message: `Se eliminó la Cotizacionambiente con ID: ${id}` };
+            return { success: true, message: `Se eliminó la Cotizacionambiente : ${cotizacionambiente.nombreambiente}` };
         }
         catch (error) {
             if (error instanceof common_1.NotFoundException) {

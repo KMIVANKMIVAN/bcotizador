@@ -43,10 +43,14 @@ export declare const SEMILLA_GASTOPERSONA: {
 export declare const SEMILLA_RADIADORES50CM: {
     modelo: string;
     potenciawats: number;
+    precio: number;
+    preciopaquete: number;
 }[];
 export declare const SEMILLA_TOALLEROS50CM: {
     modelo: string;
     potenciawats: number;
+    precio: number;
+    preciopaquete: number;
 }[];
 export declare const SEMILLA_INSTALTUBERIAS: {
     inicio: number;

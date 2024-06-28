@@ -25,4 +25,14 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
 ], CreateRadiadoreje50cmDto.prototype, "potenciawats", void 0);
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Number)
+], CreateRadiadoreje50cmDto.prototype, "precio", void 0);
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Number)
+], CreateRadiadoreje50cmDto.prototype, "preciopaquete", void 0);
 //# sourceMappingURL=create-radiadoreje50cm.dto.js.map

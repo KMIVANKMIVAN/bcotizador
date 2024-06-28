@@ -28,6 +28,14 @@ __decorate([
     __metadata("design:type", Number)
 ], Radiadoreje50cm.prototype, "potenciawats", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'numeric', precision: 14, scale: 2, nullable: false }),
+    __metadata("design:type", Number)
+], Radiadoreje50cm.prototype, "precio", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'numeric', precision: 14, scale: 2, nullable: false }),
+    __metadata("design:type", Number)
+], Radiadoreje50cm.prototype, "preciopaquete", void 0);
+__decorate([
     (0, typeorm_1.OneToMany)(() => cotizacion_entity_1.Cotizacion, (cotizacion) => cotizacion.radiadoreje50cm),
     __metadata("design:type", Array)
 ], Radiadoreje50cm.prototype, "cotizaciones", void 0);

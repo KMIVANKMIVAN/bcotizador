@@ -34,6 +34,12 @@ export class Cotizacion {
   @Column({ type: 'smallint', nullable: false })
   nrocotizacion: number;
 
+  @Column({ type: 'smallint', nullable: false })
+  ducha: number;
+
+  @Column({ type: 'varchar', length: 15, nullable: false })
+  tipocaldero: string;
+
   @ManyToOne(() => Ciudadzona, (ciudadzona) => ciudadzona.cotizaciones)
   @JoinColumn({ name: 'ciudadzona_id' })
   ciudadzona: Ciudadzona;

@@ -249,34 +249,48 @@ exports.SEMILLA_GASTOPERSONA = [
 ];
 exports.SEMILLA_RADIADORES50CM = [
     {
-        modelo: 'cool 860',
-        potenciawats: 399,
-    },
-    {
-        modelo: 'cool 1160',
-        potenciawats: 544,
-    },
-    {
-        modelo: 'cool 1490',
-        potenciawats: 717,
-    },
-    {
-        modelo: 'cool 1740',
-        potenciawats: 850,
-    },
-];
-exports.SEMILLA_TOALLEROS50CM = [
-    {
         modelo: 'Blitiz b80',
         potenciawats: 98.8,
+        precio: 148,
+        preciopaquete: 586.74,
     },
     {
         modelo: 'Excluvisvo D3',
         potenciawats: 114,
+        precio: 156,
+        preciopaquete: 586.74,
     },
     {
         modelo: 'Super blitz b4',
         potenciawats: 124,
+        precio: 162,
+        preciopaquete: 586.74,
+    },
+];
+exports.SEMILLA_TOALLEROS50CM = [
+    {
+        modelo: 'cool 860',
+        potenciawats: 399,
+        precio: 1556.92,
+        preciopaquete: 417.74,
+    },
+    {
+        modelo: 'cool 1160',
+        potenciawats: 544,
+        precio: 1749.05,
+        preciopaquete: 417.74,
+    },
+    {
+        modelo: 'cool 1490',
+        potenciawats: 717,
+        precio: 2126.08,
+        preciopaquete: 417.74,
+    },
+    {
+        modelo: 'cool 1740',
+        potenciawats: 850,
+        precio: 2293.11,
+        preciopaquete: 417.74,
     },
 ];
 exports.SEMILLA_INSTALTUBERIAS = [

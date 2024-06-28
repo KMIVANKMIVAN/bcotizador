@@ -16,6 +16,10 @@ export class CotizacionesambientesController {
   findAll() {
     return this.cotizacionesambientesService.findAll();
   }
+  @Get("idcotizacion/:id")
+  findAllPorCotizacion(@Param('id') id: number) {
+    return this.cotizacionesambientesService.findAllPorCotizacion(+id);
+  }
 
   @Get(':id')
   findOne(@Param('id') id: number) {

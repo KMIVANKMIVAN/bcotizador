@@ -5,6 +5,6 @@ export declare class CreateCotizacionambienteDto {
     altura: number;
     nrocelda: number;
     nroradiador: number;
-    cantidadventana: number;
+    nroventana: number;
     cotizacion_id: number;
 }

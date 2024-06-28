@@ -24,9 +24,11 @@ const tiposparedes_service_1 = require("../tiposparedes/tiposparedes.service");
 const tipossuelos_service_1 = require("../tipossuelos/tipossuelos.service");
 const tipostechos_service_1 = require("../tipostechos/tipostechos.service");
 const tiposvidrios_service_1 = require("../tiposvidrios/tiposvidrios.service");
+const toallerosejes50cm_service_1 = require("../producto/toallerosejes50cm/toallerosejes50cm.service");
+const radiadoresejes50cm_service_1 = require("../producto/radiadoresejes50cm/radiadoresejes50cm.service");
 const capitalizeTextos_1 = require("../../utils/capitalizeTextos");
 let CotizacionesService = class CotizacionesService {
-    constructor(cotizacionRepository, ciudadeszonasService, nivelespisosService, orientacionesService, tiposparedesService, tipossuelosService, tipostechosService, tiposvidriosService) {
+    constructor(cotizacionRepository, ciudadeszonasService, nivelespisosService, orientacionesService, tiposparedesService, tipossuelosService, tipostechosService, tiposvidriosService, toallerosejes50cmService, radiadoresejes50cmService) {
         this.cotizacionRepository = cotizacionRepository;
         this.ciudadeszonasService = ciudadeszonasService;
         this.nivelespisosService = nivelespisosService;
@@ -35,10 +37,11 @@ let CotizacionesService = class CotizacionesService {
         this.tipossuelosService = tipossuelosService;
         this.tipostechosService = tipostechosService;
         this.tiposvidriosService = tiposvidriosService;
+        this.toallerosejes50cmService = toallerosejes50cmService;
+        this.radiadoresejes50cmService = radiadoresejes50cmService;
     }
     async create(createCotizacionDto) {
         try {
-            console.log("createCotizacionDto", createCotizacionDto);
             const buscarCiudadZona = await this.ciudadeszonasService.findOne(createCotizacionDto.ciudadzona_id);
             const buscarNivelPiso = await this.nivelespisosService.findOne(createCotizacionDto.nivelpiso_id);
             const buscarOrientacion = await this.orientacionesService.findOne(createCotizacionDto.orientacion_id);
@@ -46,6 +49,11 @@ let CotizacionesService = class CotizacionesService {
             const buscarTipoSuelo = await this.tipossuelosService.findOne(createCotizacionDto.tiposuelo_id);
             const buscarTipoTecho = await this.tipostechosService.findOne(createCotizacionDto.tipotecho_id);
             const buscarTipoVidrio = await this.tiposvidriosService.findOne(createCotizacionDto.tipovidrio_id);
+            let buscarToalleroeje50cm = null;
+            if (createCotizacionDto.toalleroeje50cm_id) {
+                buscarToalleroeje50cm = await this.toallerosejes50cmService.findOne(createCotizacionDto.toalleroeje50cm_id);
+            }
+            const buscarRadiadoreje50cm = await this.radiadoresejes50cmService.findOne(createCotizacionDto.radiadoreje50cm_id);
             createCotizacionDto.nombrecotizacion = (0, capitalizeTextos_1.capitalizeTextos)(createCotizacionDto.nombrecotizacion);
             const maxNroCotizacion = await this.cotizacionRepository
                 .createQueryBuilder('cotizacion')
@@ -64,6 +72,8 @@ let CotizacionesService = class CotizacionesService {
                 tiposuelo: buscarTipoSuelo,
                 tipotecho: buscarTipoTecho,
                 tipovidrio: buscarTipoVidrio,
+                toalleroeje50cm: buscarToalleroeje50cm,
+                radiadoreje50cm: buscarRadiadoreje50cm
             });
             delete nuevaCotizacion.ciudadzona.valor;
             delete nuevaCotizacion.nivelpiso.valor;
@@ -72,7 +82,10 @@ let CotizacionesService = class CotizacionesService {
             delete nuevaCotizacion.tiposuelo.valor;
             delete nuevaCotizacion.tipotecho.valor;
             delete nuevaCotizacion.tipovidrio.valor;
-            console.log("nuevaCotizacion", nuevaCotizacion);
+            if (nuevaCotizacion.toalleroeje50cm) {
+                delete nuevaCotizacion.toalleroeje50cm.potenciawats;
+            }
+            delete nuevaCotizacion.radiadoreje50cm.potenciawats;
             return await this.cotizacionRepository.save(nuevaCotizacion);
         }
         catch (error) {
@@ -89,12 +102,18 @@ let CotizacionesService = class CotizacionesService {
     }
     async findAll() {
         try {
-            const cotizaciones = await this.cotizacionRepository.find({ relations: ['ciudadzona', 'nivelpiso', 'orientacion', 'tipopared', 'tiposuelo', 'tipotecho', 'tipovidrio',] });
+            const cotizaciones = await this.cotizacionRepository.find({
+                relations: [
+                    'ciudadzona', 'nivelpiso', 'orientacion', 'tipopared', 'tiposuelo', 'tipotecho', 'tipovidrio',
+                    'tipovidrio', 'tipovidrio', 'toalleroeje50cm', 'radiadoreje50cm'
+                ],
+            });
             if (!cotizaciones || cotizaciones.length === 0) {
                 throw new common_1.NotFoundException({
                     message: `No se encontraron Cotizaciones`,
                 });
             }
+            console.log("cotizaciones", cotizaciones);
             cotizaciones.forEach((cotizacion) => delete cotizacion.ciudadzona.valor);
             cotizaciones.forEach((cotizacion) => delete cotizacion.nivelpiso.valor);
             cotizaciones.forEach((cotizacion) => delete cotizacion.orientacion.valor);
@@ -102,6 +121,7 @@ let CotizacionesService = class CotizacionesService {
             cotizaciones.forEach((cotizacion) => delete cotizacion.tiposuelo.valor);
             cotizaciones.forEach((cotizacion) => delete cotizacion.tipotecho.valor);
             cotizaciones.forEach((cotizacion) => delete cotizacion.tipovidrio.valor);
+            cotizaciones.forEach((cotizacion) => delete cotizacion.radiadoreje50cm.potenciawats);
             return cotizaciones;
         }
         catch (error) {
@@ -121,7 +141,10 @@ let CotizacionesService = class CotizacionesService {
             let cotizaciones;
             cotizaciones = await this.cotizacionRepository.find({
                 where: { nombrecotizacion: nombcotiz },
-                relations: ['ciudadzona', 'nivelpiso', 'orientacion', 'tipopared', 'tiposuelo', 'tipotecho', 'tipovidrio'],
+                relations: [
+                    'ciudadzona', 'nivelpiso', 'orientacion', 'tipopared', 'tiposuelo', 'tipotecho', 'tipovidrio',
+                    'tipovidrio', 'tipovidrio', 'toalleroeje50cm', 'radiadoreje50cm'
+                ],
             });
             if (!cotizaciones || cotizaciones.length === 0) {
                 cotizaciones = await this.cotizacionRepository.createQueryBuilder('cotizacion')
@@ -132,6 +155,8 @@ let CotizacionesService = class CotizacionesService {
                     .leftJoinAndSelect('cotizacion.tiposuelo', 'tiposuelo')
                     .leftJoinAndSelect('cotizacion.tipotecho', 'tipotecho')
                     .leftJoinAndSelect('cotizacion.tipovidrio', 'tipovidrio')
+                    .leftJoinAndSelect('cotizacion.toalleroeje50cm', 'toalleroeje50cm')
+                    .leftJoinAndSelect('cotizacion.radiadoreje50cm', 'radiadoreje50cm')
                     .where('LOWER(cotizacion.nombrecotizacion) LIKE LOWER(:nombcotiz)', { nombcotiz: `%${nombcotiz.toLowerCase()}%` })
                     .limit(5)
                     .getMany();
@@ -148,6 +173,7 @@ let CotizacionesService = class CotizacionesService {
             cotizaciones.forEach((cotizacion) => delete cotizacion.tiposuelo.valor);
             cotizaciones.forEach((cotizacion) => delete cotizacion.tipotecho.valor);
             cotizaciones.forEach((cotizacion) => delete cotizacion.tipovidrio.valor);
+            cotizaciones.forEach((cotizacion) => delete cotizacion.radiadoreje50cm.potenciawats);
             return cotizaciones;
         }
         catch (error) {
@@ -220,6 +246,7 @@ let CotizacionesService = class CotizacionesService {
             const buscarTipoSuelo = await this.tipossuelosService.findOne(updateCotizacionDto.tiposuelo_id);
             const buscarTipoTecho = await this.tipostechosService.findOne(updateCotizacionDto.tipotecho_id);
             const buscarTipoVidrio = await this.tiposvidriosService.findOne(updateCotizacionDto.tipovidrio_id);
+            const buscarRadiadoreje50cm = await this.radiadoresejes50cmService.findOne(updateCotizacionDto.radiadoreje50cm_id);
             updateCotizacionDto.nombrecotizacion = (0, capitalizeTextos_1.capitalizeTextos)(updateCotizacionDto.nombrecotizacion);
             const actualizarCotizacion = await this.cotizacionRepository.preload({
                 id,
@@ -232,6 +259,7 @@ let CotizacionesService = class CotizacionesService {
             actualizarCotizacion.tiposuelo = buscarTipoSuelo;
             actualizarCotizacion.tipotecho = buscarTipoTecho;
             actualizarCotizacion.tipovidrio = buscarTipoVidrio;
+            actualizarCotizacion.radiadoreje50cm = buscarRadiadoreje50cm;
             delete actualizarCotizacion.ciudadzona.valor;
             delete actualizarCotizacion.nivelpiso.valor;
             delete actualizarCotizacion.orientacion.valor;
@@ -239,6 +267,7 @@ let CotizacionesService = class CotizacionesService {
             delete actualizarCotizacion.tiposuelo.valor;
             delete actualizarCotizacion.tipotecho.valor;
             delete actualizarCotizacion.tipovidrio.valor;
+            delete actualizarCotizacion.radiadoreje50cm.potenciawats;
             return await this.cotizacionRepository.save(actualizarCotizacion);
         }
         catch (error) {
@@ -283,6 +312,8 @@ exports.CotizacionesService = CotizacionesService = __decorate([
         tiposparedes_service_1.TiposparedesService,
         tipossuelos_service_1.TipossuelosService,
         tipostechos_service_1.TipostechosService,
-        tiposvidrios_service_1.TiposvidriosService])
+        tiposvidrios_service_1.TiposvidriosService,
+        toallerosejes50cm_service_1.Toallerosejes50cmService,
+        radiadoresejes50cm_service_1.Radiadoresejes50cmService])
 ], CotizacionesService);
 //# sourceMappingURL=cotizaciones.service.js.map

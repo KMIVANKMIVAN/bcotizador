@@ -28,7 +28,7 @@ export class CreateCotizacionambienteDto {
 
   @IsNumber()
   @IsNotEmpty()
-  cantidadventana: number;
+  nroventana: number;
 
   @IsNumber()
   @IsNotEmpty()

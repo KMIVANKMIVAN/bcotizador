@@ -13,12 +13,13 @@ const cotizacionesambientes_controller_1 = require("./cotizacionesambientes.cont
 const cotizaciones_module_1 = require("../cotizaciones/cotizaciones.module");
 const cotizacionambiente_entity_1 = require("./entities/cotizacionambiente.entity");
 const typeorm_1 = require("@nestjs/typeorm");
+const cotizacion_entity_1 = require("../cotizaciones/entities/cotizacion.entity");
 let CotizacionesambientesModule = class CotizacionesambientesModule {
 };
 exports.CotizacionesambientesModule = CotizacionesambientesModule;
 exports.CotizacionesambientesModule = CotizacionesambientesModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([cotizacionambiente_entity_1.Cotizacionambiente,]), cotizaciones_module_1.CotizacionesModule],
+        imports: [typeorm_1.TypeOrmModule.forFeature([cotizacionambiente_entity_1.Cotizacionambiente, cotizacion_entity_1.Cotizacion]), cotizaciones_module_1.CotizacionesModule],
         controllers: [cotizacionesambientes_controller_1.CotizacionesambientesController],
         providers: [cotizacionesambientes_service_1.CotizacionesambientesService],
         exports: [typeorm_1.TypeOrmModule, cotizacionesambientes_service_1.CotizacionesambientesService],

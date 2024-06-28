@@ -9,4 +9,12 @@ export class CreateToalleroeje50cmDto {
   @IsNumber()
   @IsNotEmpty()
   potenciawats: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  precio: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  preciopaquete: number;
 }

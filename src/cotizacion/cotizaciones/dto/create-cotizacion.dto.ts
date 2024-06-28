@@ -11,6 +11,10 @@ export class CreateCotizacionDto {
   nrocotizacion: number;
 
   @IsNumber()
+  @IsNotEmpty()
+  ducha: number;
+
+  @IsNumber()
   //@IsNotEmpty()
   ciudadzona_id: number;
 
@@ -44,15 +48,15 @@ export class CreateCotizacionDto {
 
   @IsNumber()
   //@IsNotEmpty()
-  toalleroeje50cm_id: number;
-
-  @IsNumber()
-  //@IsNotEmpty()
   gastopersona_id: number;
 
   @IsNumber()
   //@IsNotEmpty()
   radiadoreje50cm_id: number;
+
+  @IsNumber()
+  //@IsNotEmpty()
+  toalleroeje50cm_id: number;
 
   @IsNumber()
   //@IsNotEmpty()

@@ -32,7 +32,7 @@ export class Cotizacionambiente {
   nroradiador: number;
 
   @Column({ type: 'smallint', nullable: false })
-  cantidadventana: number;
+  nroventana: number;
 
   @ManyToOne(() => Cotizacion, (cotizacion) => cotizacion.cotizacionesambientes)
   @JoinColumn({ name: 'cotizacion_id' })

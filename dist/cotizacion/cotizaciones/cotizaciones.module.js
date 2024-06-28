@@ -26,12 +26,23 @@ const tipotecho_entity_1 = require("../tipostechos/entities/tipotecho.entity");
 const tipostechos_module_1 = require("../tipostechos/tipostechos.module");
 const tipovidrio_entity_1 = require("../tiposvidrios/entities/tipovidrio.entity");
 const tiposvidrios_module_1 = require("../tiposvidrios/tiposvidrios.module");
+const toalleroeje50cm_entity_1 = require("../producto/toallerosejes50cm/entities/toalleroeje50cm.entity");
+const toallerosejes50cm_module_1 = require("../producto/toallerosejes50cm/toallerosejes50cm.module");
+const radiadoreje50cm_entity_1 = require("../producto/radiadoresejes50cm/entities/radiadoreje50cm.entity");
+const radiadoresejes50cm_module_1 = require("../producto/radiadoresejes50cm/radiadoresejes50cm.module");
 let CotizacionesModule = class CotizacionesModule {
 };
 exports.CotizacionesModule = CotizacionesModule;
 exports.CotizacionesModule = CotizacionesModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([cotizacion_entity_1.Cotizacion, ciudadzona_entity_1.Ciudadzona, nivelpiso_entity_1.Nivelpiso, orientacion_entity_1.Orientacion, tipopared_entity_1.Tipopared, tiposuelo_entity_1.Tiposuelo, tipotecho_entity_1.Tipotecho, tipovidrio_entity_1.Tipovidrio]), ciudadeszonas_module_1.CiudadeszonasModule, nivelespisos_module_1.NivelespisosModule, orientaciones_module_1.OrientacionesModule, tiposparedes_module_1.TiposparedesModule, tipossuelos_module_1.TipossuelosModule, tipostechos_module_1.TipostechosModule, tiposvidrios_module_1.TiposvidriosModule],
+        imports: [typeorm_1.TypeOrmModule.forFeature([
+                cotizacion_entity_1.Cotizacion, ciudadzona_entity_1.Ciudadzona, nivelpiso_entity_1.Nivelpiso, orientacion_entity_1.Orientacion, tipopared_entity_1.Tipopared, tiposuelo_entity_1.Tiposuelo, tipotecho_entity_1.Tipotecho,
+                tipovidrio_entity_1.Tipovidrio, toalleroeje50cm_entity_1.Toalleroeje50cm, radiadoreje50cm_entity_1.Radiadoreje50cm
+            ]),
+            ciudadeszonas_module_1.CiudadeszonasModule, nivelespisos_module_1.NivelespisosModule, orientaciones_module_1.OrientacionesModule, tiposparedes_module_1.TiposparedesModule,
+            tipossuelos_module_1.TipossuelosModule, tipostechos_module_1.TipostechosModule, tiposvidrios_module_1.TiposvidriosModule, toallerosejes50cm_module_1.Toallerosejes50cmModule,
+            radiadoresejes50cm_module_1.Radiadoresejes50cmModule
+        ],
         controllers: [cotizaciones_controller_1.CotizacionesController],
         providers: [cotizaciones_service_1.CotizacionesService],
         exports: [typeorm_1.TypeOrmModule, cotizaciones_service_1.CotizacionesService],

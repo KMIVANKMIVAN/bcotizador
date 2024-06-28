@@ -9,6 +9,8 @@ import { TiposparedesService } from '../tiposparedes/tiposparedes.service';
 import { TipossuelosService } from '../tipossuelos/tipossuelos.service';
 import { TipostechosService } from '../tipostechos/tipostechos.service';
 import { TiposvidriosService } from '../tiposvidrios/tiposvidrios.service';
+import { Toallerosejes50cmService } from '../producto/toallerosejes50cm/toallerosejes50cm.service';
+import { Radiadoresejes50cmService } from '../producto/radiadoresejes50cm/radiadoresejes50cm.service';
 export declare class CotizacionesService {
     private readonly cotizacionRepository;
     private readonly ciudadeszonasService;
@@ -18,7 +20,9 @@ export declare class CotizacionesService {
     private readonly tipossuelosService;
     private readonly tipostechosService;
     private readonly tiposvidriosService;
-    constructor(cotizacionRepository: Repository<Cotizacion>, ciudadeszonasService: CiudadeszonasService, nivelespisosService: NivelespisosService, orientacionesService: OrientacionesService, tiposparedesService: TiposparedesService, tipossuelosService: TipossuelosService, tipostechosService: TipostechosService, tiposvidriosService: TiposvidriosService);
+    private readonly toallerosejes50cmService;
+    private readonly radiadoresejes50cmService;
+    constructor(cotizacionRepository: Repository<Cotizacion>, ciudadeszonasService: CiudadeszonasService, nivelespisosService: NivelespisosService, orientacionesService: OrientacionesService, tiposparedesService: TiposparedesService, tipossuelosService: TipossuelosService, tipostechosService: TipostechosService, tiposvidriosService: TiposvidriosService, toallerosejes50cmService: Toallerosejes50cmService, radiadoresejes50cmService: Radiadoresejes50cmService);
     create(createCotizacionDto: CreateCotizacionDto): Promise<Cotizacion>;
     findAll(): Promise<Cotizacion[]>;
     findAllPorNombCotiz(nombcotiz: string): Promise<Cotizacion[]>;
